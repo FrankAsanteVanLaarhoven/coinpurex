@@ -216,7 +216,7 @@ const state = {
       name: 'Elena Rostova',
       initials: 'ER',
       strategy: 'L2 Velocity Alpha',
-      bio: 'Polygon zkEVM & Arbitrum Nitro atomic flash loan arbitrage.',
+      bio: 'Layer-2 Rollup & Optimistic cross-venue atomic flash loan arbitrage.',
       roi12m: 64.5,
       sharpe: 3.88,
       winRate: 88.5,
@@ -261,7 +261,7 @@ const state = {
     { time: '12:06:50', manager: 'Elena Rostova', pair: 'BTC/DAI', action: 'BUY', amount: '0.20 BTC', userFilled: '$13,690.00', profit: '+$182.40' }
   ],
 
-  // Coinbase Custody & XRPL Security Suite
+  // Institutional Cold Custody & Preimage Escrow Suite
   custodyVault: {
     proofOfSolvency: {
       merkleRoot: '0x8fa3d9b4c0e172a694bf1529d81e053a479b8c2e',
@@ -297,8 +297,8 @@ const state = {
     ],
     xrplEscrows: [
       {
-        id: 'esc-xrp-701',
-        asset: 'RLUSD / DAI',
+        id: 'esc-701',
+        asset: 'USDs / DAI',
         recipient: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
         amount: 150000,
         conditionHash: 'sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
@@ -306,7 +306,7 @@ const state = {
         claimed: false
       },
       {
-        id: 'esc-xrp-702',
+        id: 'esc-702',
         asset: 'WETH',
         recipient: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
         amount: 25.0,
@@ -316,10 +316,10 @@ const state = {
       }
     ],
     xrplTrustlines: [
-      { token: 'RLUSD (Ripple USD)', issuer: 'Ripple Ledger Gateway', limit: 10000000, active: true },
-      { token: 'DAI (MakerDAO)', issuer: 'Apex Treasury Multi-Sig', limit: 50000000, active: true },
-      { token: 'WBTC (Institutional)', issuer: 'Coinbase Custody Gateway', limit: 250, active: true },
-      { token: 'WETH (Institutional)', issuer: 'Coinbase Prime Gateway', limit: 3500, active: true }
+      { token: 'USDs (Sovereign USD)', issuer: 'Universal Settlement Gateway', limit: 10000000, active: true },
+      { token: 'DAI (Decentralized)', issuer: 'Apex Treasury Multi-Sig', limit: 50000000, active: true },
+      { token: 'WBTC (Institutional)', issuer: 'Qualified Custody Gateway', limit: 250, active: true },
+      { token: 'WETH (Institutional)', issuer: 'Primary Institutional Gateway', limit: 3500, active: true }
     ]
   },
 
@@ -328,36 +328,36 @@ const state = {
     {
       id: 'news-1',
       category: 'REGULATION',
-      title: 'SEC Grants Accelerated Registration to Qualified Institutional On-Chain DEX Settlement Platforms',
+      title: 'Regulatory Framework Grants Accelerated Status to Qualified Institutional On-Chain DEX Settlement Platforms',
       time: '4 mins ago',
-      source: 'Bloomberg Terminal',
+      source: 'Institutional Wire',
       impact: 'HIGH IMPACT',
-      summary: 'Federal regulators publish revised custody and settlement framework allowing cryptographic 48-hour time locks and TRISA Travel Rule compliance for institutional clearing.'
+      summary: 'Regulators publish revised custody and settlement framework allowing cryptographic 48-hour time locks and TRISA Travel Rule compliance for institutional clearing.'
     },
     {
       id: 'news-2',
       category: 'LIQUIDITY',
-      title: 'XRP Ledger (XRPL) Cross-Chain Interledger Escrows Surpass $1.2B in Monthly Settlement Volume',
+      title: 'Cross-Chain Conditional Preimage Escrows Surpass $1.2B in Monthly Settlement Volume',
       time: '18 mins ago',
-      source: 'Reuters Financial',
+      source: 'Global Financial Wire',
       impact: 'BULLISH',
-      summary: 'Interledger Protocol RFC-2004 conditional preimage escrows establish seamless liquidity routing between Ethereum L2s, Ripple USD, and sovereign institutional treasuries.'
+      summary: 'Cryptographic preimage escrows establish seamless liquidity routing between Layer-2 rollups, sovereign stable assets, and institutional treasuries.'
     },
     {
       id: 'news-3',
       category: 'DEFI',
       title: 'Apex Yield Vault Total Assets Exceed $80M Following Automated Compound Harvest',
       time: '35 mins ago',
-      source: 'DefiLlama Intelligence',
+      source: 'Reserve Analytics',
       impact: 'GROWTH',
       summary: 'Institutional ERC-4626 multi-asset yield vaults complete scheduled weekly harvest, raising net annual percentage yield to 8.45% on USDC/DAI reserves.'
     },
     {
       id: 'news-4',
       category: 'ARBITRAGE',
-      title: 'Arbitrum Nitro and Polygon zkEVM Atomic Spread Engine Executes $22M Without Slippage',
+      title: 'Atomic Layer-2 Cross-Venue Spread Engine Executes $22M Without Slippage',
       time: '1 hour ago',
-      source: 'L2Beat Analytics',
+      source: 'Sequencer Network Intelligence',
       impact: 'TECHNICAL',
       summary: 'Microsecond cross-venue flash loan arbitrage engine delivers consistent 28 bps spread captures across order book and AMM liquidity pools.'
     }
@@ -649,7 +649,7 @@ function renderCopyTrading() {
   }
 }
 
-// --- Render Coinbase Custody & XRPL Security ---
+// --- Render Cold Custody & Cryptographic Escrows ---
 function renderCustody() {
   const reqList = document.getElementById('active-vault-requests-list');
   if (reqList) {
@@ -757,21 +757,115 @@ function renderArbitrage() {
   if (flashLoanBtn && !flashLoanBtn.dataset.wired) {
     flashLoanBtn.dataset.wired = 'true';
     flashLoanBtn.addEventListener('click', () => {
-      showToast('Flash Loan Arbitrage executed across Arbitrum & DEX: 44 bps captured, net profit +$2,450 DAI', 'success');
+      showToast('Flash Loan Arbitrage executed across Layer-2 Sequencer & AMM: 44 bps captured, net profit +$2,450 DAI', 'success');
       logTelemetry('FlashLoanArbExecuted', 'ApexArbitrageEngine', 'Flash loan 500,000 DAI -> 44 bps spread captured');
     });
   }
+
+  const netContainer = document.getElementById('crosschain-networks-container');
+  if (netContainer) {
+    const networks = [
+      { name: 'Layer-2 ZK-Rollup Relay', chainId: 'EVM 324', status: 'ACTIVE', latency: '12ms', tvl: '$48.2M', tag: 'ZERO KNOWLEDGE' },
+      { name: 'Optimistic Execution Layer', chainId: 'EVM 42161', status: 'ACTIVE', latency: '18ms', tvl: '$94.6M', tag: 'OPTIMISTIC ROLLUP' },
+      { name: 'Sovereign High-Throughput L2', chainId: 'EVM 8453', status: 'ACTIVE', latency: '8ms', tvl: '$112.5M', tag: 'FAST FINALITY' },
+      { name: 'Multi-Chain PoS Scaling Bridge', chainId: 'EVM 137', status: 'ACTIVE', latency: '24ms', tvl: '$35.1M', tag: 'CHECKPOINT SYNC' }
+    ];
+    netContainer.innerHTML = networks.map(net => `
+      <div class="sector-card" style="padding: 1.1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">${net.name}</span>
+          <span class="badge bid">${net.status}</span>
+        </div>
+        <div style="font-size: 0.72rem; color: var(--accent-cyan); font-family: var(--font-mono);">${net.chainId} • ${net.tag}</div>
+        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; background: var(--bg-surface); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div><span style="color: var(--text-muted); font-size: 0.7rem;">Bridge Latency</span> <div class="mono" style="font-weight: 700; color: var(--signal-bid);">${net.latency}</div></div>
+          <div><span style="color: var(--text-muted); font-size: 0.7rem;">Bridge Liquidity</span> <div class="mono" style="font-weight: 700;">${net.tvl}</div></div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  const spreadsBody = document.getElementById('arbitrage-spreads-body');
+  if (spreadsBody) {
+    const opps = [
+      { pair: 'BTC/DAI', venueA: '$68,450.00 (Apex)', venueB: '$68,690.00 (L2 AMM)', spread: '+35 bps', profit: '+$4,820.00' },
+      { pair: 'ETH/DAI', venueA: '$3,520.00 (Apex)', venueB: '$3,535.50 (L2 AMM)', spread: '+44 bps', profit: '+$2,450.00' },
+      { pair: 'SOL/DAI', venueA: '$182.40 (Apex)', venueB: '$183.15 (L2 AMM)', spread: '+41 bps', profit: '+$1,280.00' },
+      { pair: 'LINK/DAI', venueA: '$18.75 (Apex)', venueB: '$18.82 (L2 AMM)', spread: '+37 bps', profit: '+$640.00' }
+    ];
+    spreadsBody.innerHTML = opps.map(o => `
+      <tr>
+        <td style="font-weight: 700;">${o.pair}</td>
+        <td class="mono">${o.venueA}</td>
+        <td class="mono">${o.venueB}</td>
+        <td class="mono" style="color: var(--signal-bid); font-weight: 700;">${o.spread}</td>
+        <td class="mono" style="color: var(--signal-bid); font-weight: 700;">${o.profit}</td>
+        <td>
+          <button class="btn-primary" style="padding: 0.3rem 0.65rem; font-size: 0.72rem;" onclick="showToast('Executed atomic flash loan arbitrage on ${o.pair}: ${o.profit} net profit', 'success'); logTelemetry('FlashArbExecuted', 'ApexArb', 'Spread: ${o.spread} on ${o.pair}');">
+            Execute Arb
+          </button>
+        </td>
+      </tr>
+    `).join('');
+  }
 }
 
-// --- Render Securities & FTPS ---
+// --- Render Tokenized RWAs & Clearing ---
 function renderSecurities() {
   const sftpClearBtn = document.getElementById('sftp-batch-clear-btn');
   if (sftpClearBtn && !sftpClearBtn.dataset.wired) {
     sftpClearBtn.dataset.wired = 'true';
     sftpClearBtn.addEventListener('click', () => {
-      showToast('FTPS Batch Clearing Gateway: 450 ISO-20022 institutional orders settled on-chain ($15.8M)', 'success');
-      logTelemetry('BatchSettled', 'ApexSettlementGateway', '450 trades settled via cryptographic FTPS gateway');
+      showToast('Batch Clearing Gateway: 450 ISO-20022 institutional orders settled on-chain ($15.8M)', 'success');
+      logTelemetry('BatchSettled', 'ApexSettlementGateway', '450 trades settled via cryptographic clearing gateway');
     });
+  }
+
+  const rwaContainer = document.getElementById('securities-rwa-container');
+  if (rwaContainer) {
+    const rwas = [
+      { ticker: 'US-TREASURY-01', name: 'Tokenized 3-Month US Treasury Bills', yield: '5.18% APY', standard: 'ERC-3643 KYC/AML', issuance: '$50,000,000', custodian: 'Tier-1 Depository Trust' },
+      { ticker: 'PRIME-RE-04', name: 'Prime Commercial Real Estate Token', yield: '7.40% Net Dist.', standard: 'Reg D / Reg S Accredited', issuance: '$32,500,000', custodian: 'Regulated Title & Escrow Corp' },
+      { ticker: 'CORP-CREDIT-AA', name: 'Corporate Floating Rate Credit Facility', yield: '8.85% Benchmark', standard: 'Institutional Qualified Buyer', issuance: '$75,000,000', custodian: 'Qualified Custody Clearing Bank' }
+    ];
+    rwaContainer.innerHTML = rwas.map(r => `
+      <div class="sector-card" style="padding: 1.15rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">${r.ticker}</div>
+            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem;">${r.name}</div>
+          </div>
+          <span class="badge bid">${r.yield}</span>
+        </div>
+        <div style="background: var(--bg-surface); padding: 0.6rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin: 0.75rem 0; font-size: 0.75rem; display: flex; flex-direction: column; gap: 0.3rem;">
+          <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-muted);">Standard:</span> <span>${r.standard}</span></div>
+          <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-muted);">Total Pool:</span> <span class="mono" style="font-weight: 700;">${r.issuance}</span></div>
+          <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-muted);">Custodian:</span> <span>${r.custodian}</span></div>
+        </div>
+        <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="showToast('KYC credential validated for ${r.ticker}. Allocation order staged.', 'success'); logTelemetry('RWAAllocated', 'ApexRWA', 'Allocated: ${r.ticker}');">
+          Subscribe Institutional Allocation
+        </button>
+      </div>
+    `).join('');
+  }
+
+  const batchesBody = document.getElementById('ftps-batches-body');
+  if (batchesBody) {
+    const batches = [
+      { id: 'BATCH-20261023-01', proof: '0x3a9f...c81e', uri: 'sftp://clearing.gateway.internal/eod/b-01.xml', trades: '1,240', vol: '$48,250,000', status: 'SETTLED' },
+      { id: 'BATCH-20261023-02', proof: '0x7b12...49da', uri: 'sftp://clearing.gateway.internal/eod/b-02.xml', trades: '890', vol: '$32,100,000', status: 'SETTLED' },
+      { id: 'BATCH-20261023-03', proof: '0x9e44...f231', uri: 'sftp://clearing.gateway.internal/eod/b-03.xml', trades: '450', vol: '$15,800,000', status: 'PENDING' }
+    ];
+    batchesBody.innerHTML = batches.map(b => `
+      <tr>
+        <td class="mono" style="font-weight: 700;">${b.id}</td>
+        <td class="mono" style="color: var(--accent-cyan);">${b.proof}</td>
+        <td class="mono" style="font-size: 0.72rem; color: var(--text-muted);">${b.uri}</td>
+        <td class="mono">${b.trades}</td>
+        <td class="mono" style="font-weight: 700;">${b.vol}</td>
+        <td><span class="badge ${b.status === 'SETTLED' ? 'bid' : 'ask'}">${b.status}</span></td>
+      </tr>
+    `).join('');
   }
 }
 
