@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Local Environment & Secrets
+.env
+.env.local
+.secret
+*.pem
+*.key
+
+# Build & Hardhat Cache
+artifacts/
+cache/
+build/
+coverage/
+coverage.json
+.nyc_output/
+
+# macOS System Files
+.DS_Store
+*.log

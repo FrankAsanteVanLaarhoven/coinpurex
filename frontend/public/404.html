@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 // Route Not Found - APEX Protocol</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="app.css">
+  <style>
+    .not-found-container {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+    .glitch-code {
+      font-size: 5rem;
+      font-weight: 900;
+      font-family: var(--font-mono);
+      background: linear-gradient(90deg, #f43f5e, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="brand-group">
+      <div class="logo-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="22" height="22">
+          <polygon points="16,4 27,11 27,23 16,28 5,23 5,11" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          <line x1="16" y1="4" x2="16" y2="28" stroke="#38bdf8" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="brand-titles">
+        <span class="brand-name">APEX PROTOCOL</span>
+        <span class="brand-tagline">Sovereign DEX &amp; Treasury</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="not-found-container">
+    <div class="glitch-code">404</div>
+    <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Requested Route Not Found</h1>
+    <p style="color: var(--text-muted); max-width: 480px; margin-bottom: 1.5rem;">
+      The requested endpoint does not map to any active smart contract or trading terminal view on the Apex Enterprise Platform.
+    </p>
+    <a href="/" class="btn-secondary" style="border-color: var(--accent-cyan); color: var(--accent-cyan); text-decoration: none;">
+      Return to Apex Terminal &rarr;
+    </a>
+  </main>
+</body>
+</html>

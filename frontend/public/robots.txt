@@ -1,0 +1,8 @@
+# Apex Enterprise Platform - Robots Policy
+# Classification: Local Development & Staging Preview Environment
+
+User-agent: *
+Disallow: /
+
+# Canonical production discovery (when promoted to approved domain):
+# Sitemap: https://apex.enterprise.finance/sitemap.xml

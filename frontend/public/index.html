@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APEX // Enterprise Sovereign DEX &amp; Multi-Sig Treasury</title>
+  
+  <!-- SEO & Quality Gate Metadata (DEVELOPMENT_QUALITY Q01-Q07) -->
+  <meta name="description" content="High-performance institutional order book decentralized exchange and M-of-N multi-signature governance treasury platform built on Solidity 0.8.20.">
+  <meta name="keywords" content="decentralized exchange, order book, multisig, treasury, web3, solidity, ethereum">
+  <link rel="canonical" href="http://localhost:4200/">
+
+  <!-- Favicon & Touch Icons -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="favicon.svg">
+
+  <!-- Open Graph & Social Cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Apex Institutional Web3">
+  <meta property="og:title" content="APEX // Enterprise Sovereign DEX &amp; Multi-Sig Treasury">
+  <meta property="og:description" content="High-performance institutional order book decentralized exchange and M-of-N multi-signature governance treasury platform.">
+  <meta property="og:image" content="http://localhost:4200/og-image.svg">
+  <meta property="og:url" content="http://localhost:4200/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="APEX // Enterprise Sovereign DEX &amp; Multi-Sig Treasury">
+  <meta name="twitter:description" content="High-performance institutional order book decentralized exchange and M-of-N multi-signature governance treasury platform.">
+  <meta name="twitter:image" content="http://localhost:4200/og-image.svg">
+
+  <!-- Design System Stylesheet -->
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+  <!-- Top Sticky Institutional Navbar (Apple Precision) -->
+  <header class="navbar" role="banner">
+    <div class="brand-group">
+      <div class="logo-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="22" height="22">
+          <polygon points="16,4 27,11 27,23 16,28 5,23 5,11" fill="none" stroke="#38bdf8" stroke-width="2"/>
+          <line x1="16" y1="4" x2="16" y2="28" stroke="#38bdf8" stroke-width="1.5"/>
+          <polyline points="5,11 16,16 27,11" stroke="#818cf8" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <div class="brand-titles">
+        <span class="brand-name">APEX PROTOCOL</span>
+        <span class="brand-tagline">Sovereign DEX &amp; Treasury</span>
+      </div>
+    </div>
+
+    <!-- Segmented Navigation (Mission Hub Selector) -->
+    <nav class="nav-segments" aria-label="Main Navigation">
+      <button class="nav-tab-btn active" data-tab="dex" id="tab-dex-btn" aria-label="Switch to DEX Terminal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        DEX Terminal
+      </button>
+      <button class="nav-tab-btn" data-tab="treasury" id="tab-treasury-btn" aria-label="Switch to Multi-Sig Treasury">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/></svg>
+        Multi-Sig Treasury
+      </button>
+      <button class="nav-tab-btn" data-tab="telemetry" id="tab-telemetry-btn" aria-label="Switch to On-Chain Telemetry">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Palantir Telemetry
+      </button>
+    </nav>
+
+    <!-- Right Controls: Persona Switcher & Web3 Status -->
+    <div class="nav-actions">
+      <div class="status-indicator" title="Connected to Local EVM Sandbox">
+        <span class="status-dot"></span>
+        <span class="mono" style="font-weight: 700;">EVM ACTIVE</span>
+      </div>
+
+      <button class="btn-secondary" id="faucet-btn" aria-label="Open Token Faucet">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+        Faucet
+      </button>
+
+      <button class="btn-secondary" id="deposit-drawer-btn" aria-label="Deposit Tokens into DEX">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+        Deposit/Withdraw
+      </button>
+
+      <select id="persona-select" class="persona-select" aria-label="Select Testing Persona"></select>
+
+      <button class="btn-secondary" id="connect-web3-btn" aria-label="Connect MetaMask Wallet">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        Web3
+      </button>
+    </div>
+  </header>
+
+  <!-- App Main Content Area -->
+  <main class="app-container" role="main">
+
+    <!-- Active Persona Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+      <h1 style="font-size: 1.1rem; font-weight: 700; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem;">
+        <span>Cockpit Identity:</span>
+        <span id="active-persona-badge" class="mono" style="color: var(--accent-cyan); font-weight: 800;">
+          Signer 1 (Sec Admin) • 0x7099...79C8
+        </span>
+      </h1>
+      <div style="font-size: 0.75rem; color: var(--text-muted);">
+        Environment: <span style="color: var(--signal-bid); font-weight: 700;">Local Testnet / Staging Preview</span>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         VIEW 1: APEX ORDER BOOK DEX TERMINAL
+         ==================================================================== -->
+    <section id="dex-view" class="dex-grid" aria-label="Decentralized Exchange Terminal">
+      <!-- Top Market Ticker Header -->
+      <div class="ticker-bar">
+        <div class="pair-selector">
+          <span style="font-weight: 700; font-size: 0.8rem; color: var(--text-muted);">MARKET:</span>
+          <div id="pair-selector-btns" style="display: flex; gap: 0.35rem;"></div>
+        </div>
+
+        <div class="ticker-metrics">
+          <div class="metric-item">
+            <span class="metric-label">Mark Price</span>
+            <span class="metric-value" id="ticker-mark-price">$68,450.00</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">24h Change</span>
+            <span class="metric-value positive" id="ticker-change">+3.42%</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">24h High</span>
+            <span class="metric-value" id="ticker-high">$69,200.00</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">24h Low</span>
+            <span class="metric-value" id="ticker-low">$67,100.00</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">24h Volume</span>
+            <span class="metric-value" id="ticker-volume">$4,218,000.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left Column: Palantir Live Order Book -->
+      <div class="card" style="min-height: 520px;">
+        <div class="card-header">
+          <span>Order Book</span>
+          <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: normal;">Tick: 0.01</span>
+        </div>
+        <div class="card-body" style="padding: 0; justify-content: space-between;">
+          <!-- Asks Table (Sells) -->
+          <div style="overflow-y: auto; max-height: 220px; display: flex; flex-direction: column-reverse;">
+            <table class="order-book-table" aria-label="Sell Orders (Asks)">
+              <thead>
+                <tr>
+                  <th>Price (DAI)</th>
+                  <th>Size</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="order-book-asks"></tbody>
+            </table>
+          </div>
+
+          <!-- Mid Spread Bar -->
+          <div class="spread-divider" id="order-book-spread">
+            <span>SPREAD</span>
+            <span class="mono">--</span>
+          </div>
+
+          <!-- Bids Table (Buys) -->
+          <div style="overflow-y: auto; max-height: 220px;">
+            <table class="order-book-table" aria-label="Buy Orders (Bids)">
+              <tbody id="order-book-bids"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Column: Interactive Depth & Candlestick Chart -->
+      <div class="card">
+        <div class="card-header">
+          <span>Visual Telemetry &amp; Price Action</span>
+          <div class="chart-toolbar">
+            <div class="chart-type-selector">
+              <button class="toolbar-btn active" data-chart="depth">Market Depth</button>
+              <button class="toolbar-btn" data-chart="candles">Candles</button>
+            </div>
+            <div class="timeframe-selector" style="margin-left: 0.75rem;">
+              <button class="toolbar-btn active" data-tf="1H">1H</button>
+              <button class="toolbar-btn" data-tf="1D">1D</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body chart-container">
+          <svg id="trading-chart-svg" class="chart-svg" preserveAspectRatio="none" role="img" aria-label="Interactive Market Depth and Candlestick Chart"></svg>
+        </div>
+      </div>
+
+      <!-- Right Column: Institutional Order Execution (Apple Elegance) -->
+      <div class="card order-form-panel">
+        <div class="card-header">
+          <span>Execute Order</span>
+          <span style="font-size: 0.7rem; color: var(--accent-cyan); font-weight: 700;">Zero Slippage Limit</span>
+        </div>
+        <div class="card-body">
+          <!-- Limit vs Market Tabs -->
+          <div class="order-form-tabs" role="tablist">
+            <button class="form-tab-btn active" data-type="LIMIT" role="tab" aria-selected="true">Limit Order</button>
+            <button class="form-tab-btn" data-type="MARKET" role="tab" aria-selected="false">Market Order</button>
+          </div>
+
+          <!-- Buy / Sell Side Selector -->
+          <div class="side-toggle-group">
+            <button class="side-btn buy active" data-side="BUY">BUY</button>
+            <button class="side-btn sell" data-side="SELL">SELL</button>
+          </div>
+
+          <!-- Balance Available -->
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.85rem;">
+            <span style="color: var(--text-muted);">Available in DEX:</span>
+            <span id="order-avail-balance" class="mono" style="font-weight: 700; color: var(--text-primary);">--</span>
+          </div>
+
+          <!-- Limit Price Input -->
+          <div class="input-group" id="order-price-group">
+            <label class="input-label" for="order-price-input">
+              <span>Price</span>
+              <span>DAI</span>
+            </label>
+            <div class="input-wrapper">
+              <input type="number" id="order-price-input" class="form-input" placeholder="0.00" step="any">
+              <span class="input-unit">DAI</span>
+            </div>
+          </div>
+
+          <!-- Order Amount Input -->
+          <div class="input-group">
+            <label class="input-label" for="order-amount-input">
+              <span>Amount</span>
+              <span class="base-unit-label">BTC</span>
+            </label>
+            <div class="input-wrapper">
+              <input type="number" id="order-amount-input" class="form-input" placeholder="0.00" step="any">
+              <span class="input-unit base-unit-label">BTC</span>
+            </div>
+          </div>
+
+          <!-- Allocation Percentage Pills -->
+          <div class="percentage-pills">
+            <button class="pct-pill" data-pct="25">25%</button>
+            <button class="pct-pill" data-pct="50">50%</button>
+            <button class="pct-pill" data-pct="75">75%</button>
+            <button class="pct-pill" data-pct="100">100%</button>
+          </div>
+
+          <!-- Order Summary Breakdown -->
+          <div style="background: rgba(0,0,0,0.25); border-radius: var(--radius-md); padding: 0.85rem; margin-bottom: 1rem;">
+            <div class="order-summary-row">
+              <span>Estimated Total:</span>
+              <span id="order-summary-total" class="val">$0.00</span>
+            </div>
+            <div class="order-summary-row">
+              <span>Protocol Fee (0.1%):</span>
+              <span id="order-summary-fee" class="val">$0.00</span>
+            </div>
+            <div class="order-summary-row" style="margin-bottom: 0;">
+              <span>Execution Priority:</span>
+              <span class="val" style="color: var(--accent-cyan);">Price-Time Priority</span>
+            </div>
+          </div>
+
+          <!-- Primary Submit Button -->
+          <button id="execute-order-btn" class="btn-execute buy">
+            BUY BTC
+          </button>
+        </div>
+      </div>
+
+      <!-- Bottom Span: Active Orders & Market Trades Stream -->
+      <div class="card activity-card">
+        <div class="card-header">
+          <span>Active Open Orders &amp; Global Trade Stream</span>
+        </div>
+        <div class="card-body" style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+          <!-- Open Orders -->
+          <div>
+            <h2 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem; text-transform: uppercase;">
+              My Open Orders
+            </h2>
+            <div class="table-responsive">
+              <table class="standard-table" aria-label="Open Limit Orders">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Side</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="user-open-orders-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent Market Trades -->
+          <div>
+            <h2 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem; text-transform: uppercase;">
+              Recent Market Trades
+            </h2>
+            <div class="table-responsive" style="max-height: 200px; overflow-y: auto;">
+              <table class="standard-table" aria-label="Recent Market Trades">
+                <thead>
+                  <tr>
+                    <th>Side</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody id="trades-stream-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 2: MULTI-SIG TREASURY & GOVERNANCE VIEW
+         ==================================================================== -->
+    <section id="treasury-view" class="treasury-view" style="display: none;" aria-label="Multi-Sig Treasury Cockpit">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.4rem; font-weight: 800;">Institutional Treasury Reserves</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted);" id="treasury-quorum-label">
+            2 of 3 Signers Required (M-of-N Quorum)
+          </p>
+        </div>
+        <button class="btn-secondary" id="new-proposal-btn" style="background: var(--bg-elevated); border-color: var(--accent-cyan); color: var(--accent-cyan);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          Propose New Treasury Transfer
+        </button>
+      </div>
+
+      <!-- Treasury Reserves Metrics Cards -->
+      <div class="treasury-metrics-row">
+        <div class="metric-card">
+          <span class="metric-card-title">Native ETH Reserve</span>
+          <span class="metric-card-val" id="treasury-eth-reserves">245.50 ETH</span>
+          <span class="metric-card-sub">Core Layer-1 Liquidity Reserve</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-card-title">DAI Stablecoin Reserve</span>
+          <span class="metric-card-val" id="treasury-dai-reserves">$1,250,000.00</span>
+          <span class="metric-card-sub">DEX Quote Settlement Backing</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-card-title">WBTC Institutional Vault</span>
+          <span class="metric-card-val" id="treasury-btc-reserves">14.25 BTC</span>
+          <span class="metric-card-sub">Collateral &amp; Market Making Vault</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-card-title">Chainlink LINK Staking</span>
+          <span class="metric-card-val" id="treasury-link-reserves">15,400 LINK</span>
+          <span class="metric-card-sub">Decentralized Oracle Upkeep Fund</span>
+        </div>
+      </div>
+
+      <!-- Multi-Sig Transfer Proposals Queue -->
+      <div class="card">
+        <div class="card-header">
+          <span>Active Governance Proposals &amp; Multi-Signer Queue</span>
+          <span style="font-size: 0.72rem; color: var(--signal-bid); font-weight: 700;">Consensus Engine Online</span>
+        </div>
+        <div class="card-body">
+          <div id="proposals-queue-container" class="proposal-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 3: PALANTIR TELEMETRY AUDIT STREAM
+         ==================================================================== -->
+    <section id="telemetry-view" class="card" style="display: none;" aria-label="On-Chain Telemetry Inspector">
+      <div class="card-header">
+        <span>Palantir Real-Time On-Chain Event Auditor</span>
+        <span class="mono" style="font-size: 0.75rem; color: var(--accent-cyan);">Live Block Stream</span>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="standard-table" aria-label="On-Chain Telemetry Logs">
+            <thead>
+              <tr>
+                <th>Block #</th>
+                <th>Event Type</th>
+                <th>Smart Contract Emitter</th>
+                <th>Telemetry Details</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="telemetry-logs-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================
+       MODAL 1: FAUCET CLAIM MODAL
+       ==================================================================== -->
+  <div class="modal-backdrop" id="faucet-modal" role="dialog" aria-modal="true" aria-labelledby="faucet-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="faucet-title">Institutional Testnet Faucet</h3>
+        <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Instant sandbox liquidity dispenser. Dispenses test tokens directly to your active persona:
+        </p>
+        <ul style="padding-left: 1.25rem; font-size: 0.85rem; color: var(--accent-cyan); display: flex; flex-direction: column; gap: 0.35rem;">
+          <li>10,000 DAI (Maker Stablecoin)</li>
+          <li>10.0 ETH (Native Gas &amp; Collateral)</li>
+          <li>1.0 WBTC (Wrapped Bitcoin)</li>
+          <li>500 LINK (Chainlink Oracle Token)</li>
+        </ul>
+        <button id="claim-faucet-btn" class="btn-execute buy" style="margin-top: 1rem;">
+          Dispense Faucet Tokens Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 2: DEPOSIT / WITHDRAW INTO DEX
+       ==================================================================== -->
+  <div class="modal-backdrop" id="deposit-modal" role="dialog" aria-modal="true" aria-labelledby="deposit-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="deposit-title">Deposit / Withdraw Trading Custody</h3>
+        <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Transfer assets between your external Web3 wallet and the Enterprise DEX smart contract balance.
+        </p>
+
+        <div class="input-group">
+          <label class="input-label" for="deposit-token-select">Select Asset</label>
+          <select id="deposit-token-select" class="form-input">
+            <option value="DAI">DAI Stablecoin</option>
+            <option value="BTC">WBTC (Wrapped Bitcoin)</option>
+            <option value="ETH">WETH (Wrapped Ethereum)</option>
+            <option value="LINK">LINK (Chainlink)</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="deposit-amount-input">Deposit Amount</label>
+          <input type="number" id="deposit-amount-input" class="form-input" placeholder="e.g. 5000" step="any">
+        </div>
+
+        <button id="execute-deposit-btn" class="btn-execute buy" style="margin-top: 0.5rem;">
+          Deposit Tokens into DEX
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 3: PROPOSE MULTI-SIG TRANSFER MODAL
+       ==================================================================== -->
+  <div class="modal-backdrop" id="new-proposal-modal" role="dialog" aria-modal="true" aria-labelledby="proposal-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="proposal-modal-title">Create Treasury Proposal</h3>
+        <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <label class="input-label" for="prop-desc-input">Proposal Purpose / Description</label>
+          <input type="text" id="prop-desc-input" class="form-input" placeholder="e.g. Protocol Security Audit Retainer">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="prop-to-input">Recipient Destination Address</label>
+          <input type="text" id="prop-to-input" class="form-input mono" placeholder="0x...">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="input-group">
+            <label class="input-label" for="prop-token-select">Asset</label>
+            <select id="prop-token-select" class="form-input">
+              <option value="ETH">Native ETH</option>
+              <option value="DAI">DAI Stablecoin</option>
+              <option value="BTC">WBTC</option>
+              <option value="LINK">LINK</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="prop-amount-input">Amount</label>
+            <input type="number" id="prop-amount-input" class="form-input" placeholder="e.g. 25" step="any">
+          </div>
+        </div>
+
+        <button id="submit-proposal-btn" class="btn-execute buy" style="margin-top: 0.5rem;">
+          Submit Proposal for Multi-Sig Signing
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Footer with Quality Gate Status (DEVELOPMENT_QUALITY.md) -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-left">
+      <span class="gate-badge">QUALITY GATE: COMPLIANT</span>
+      <span>APEX Sovereign DEX &amp; Multi-Sig Governance Platform • Version 2.0.0 Enterprise</span>
+    </div>
+    <div>
+      <span>Solidity 0.8.20 • OpenZeppelin Standards • Palantir Telemetry • Apple Human Precision</span>
+    </div>
+  </footer>
+
+  <!-- Native Interactive Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
