@@ -1,6 +1,6 @@
 /**
  * APEX ENTERPRISE PLATFORM - CLIENT APPLICATION
- * Combines Apple Clean Precision with Palantir High-Density Telemetry.
+ * Combines Apple Clean Precision with Institutional High-Density Telemetry.
  * Zero-dependency, native ES6+ interactive Web3 architecture.
  */
 
@@ -159,12 +159,208 @@ const state = {
     ]
   },
 
-  // On-Chain Telemetry Log (Palantir Audit Stream)
+  // On-Chain Telemetry Log (Institutional Audit Stream)
   telemetryLogs: [
     { block: 19842011, event: 'DepositReceived', emitter: 'EnterpriseMultiSigWallet', details: '100.0 ETH deposited from 0x90F7...b906' },
     { block: 19842010, event: 'OrderMatched', emitter: 'EnterpriseDEX', details: 'Trade #104: 0.85 BTC @ 68450.00 DAI' },
     { block: 19842008, event: 'TransferApproved', emitter: 'EnterpriseMultiSigWallet', details: 'Proposal #0 approved by 0x7099...79C8' },
     { block: 19842005, event: 'OrderCreated', emitter: 'EnterpriseDEX', details: 'Limit BUY: 1.25 BTC @ 68420.00 DAI by 0x15d3...6A65' }
+  ],
+
+  // Quantitative Fund Managers (Superior to eToro)
+  copyTraders: [
+    {
+      id: 'kvoss',
+      name: 'Kaelen Voss',
+      initials: 'KV',
+      strategy: 'Voss Quant Macro Arbitrage',
+      bio: 'Statistical arbitrage & cross-venue BTC/ETH high-frequency momentum.',
+      roi12m: 148.6,
+      sharpe: 3.42,
+      winRate: 82.4,
+      maxDrawdown: 4.8,
+      aumUsd: 18400000,
+      copiers: 4120,
+      sparkline: 'M0,35 Q20,30 40,32 T80,22 T120,24 T160,15 T200,10 T240,6 T280,2'
+    },
+    {
+      id: 'schen',
+      name: 'Seraphina Chen',
+      initials: 'SC',
+      strategy: 'Apex Delta-Neutral Basis',
+      bio: 'Funding rate arbitrage & perpetual basis delta-neutral hedging.',
+      roi12m: 89.2,
+      sharpe: 4.10,
+      winRate: 91.2,
+      maxDrawdown: 2.1,
+      aumUsd: 14200000,
+      copiers: 3580,
+      sparkline: 'M0,36 Q25,32 50,28 T100,24 T150,18 T200,14 T250,8 T280,4'
+    },
+    {
+      id: 'mbrody',
+      name: 'Dr. Marcus Brody',
+      initials: 'MB',
+      strategy: 'Deep Value On-Chain Liquidity',
+      bio: 'RWA tokenized asset flows & cross-DEX liquidity extraction.',
+      roi12m: 210.4,
+      sharpe: 2.95,
+      winRate: 76.8,
+      maxDrawdown: 8.4,
+      aumUsd: 9800000,
+      copiers: 2890,
+      sparkline: 'M0,38 Q30,34 60,35 T110,25 T160,20 T210,12 T250,5 T280,1'
+    },
+    {
+      id: 'erostova',
+      name: 'Elena Rostova',
+      initials: 'ER',
+      strategy: 'L2 Velocity Alpha',
+      bio: 'Polygon zkEVM & Arbitrum Nitro atomic flash loan arbitrage.',
+      roi12m: 64.5,
+      sharpe: 3.88,
+      winRate: 88.5,
+      maxDrawdown: 3.2,
+      aumUsd: 5800000,
+      copiers: 2250,
+      sparkline: 'M0,34 Q20,32 45,29 T90,22 T140,19 T190,14 T240,9 T280,3'
+    }
+  ],
+
+  // User's active copied positions
+  copiedPositions: [
+    {
+      id: 'cop-1',
+      traderId: 'kvoss',
+      traderName: 'Kaelen Voss',
+      strategy: 'Voss Quant Macro Arbitrage',
+      allocatedCapital: 10000,
+      unrealizedPnl: 1420.50,
+      unrealizedPnlPct: 14.21,
+      mirrorRatio: '1.0x',
+      stopLoss: '10%'
+    },
+    {
+      id: 'cop-2',
+      traderId: 'schen',
+      traderName: 'Seraphina Chen',
+      strategy: 'Apex Delta-Neutral Basis',
+      allocatedCapital: 5000,
+      unrealizedPnl: 485.20,
+      unrealizedPnlPct: 9.70,
+      mirrorRatio: '0.75x',
+      stopLoss: '5%'
+    }
+  ],
+
+  // Live Mirrored Trades Stream
+  mirroredTrades: [
+    { time: '12:14:02', manager: 'Kaelen Voss', pair: 'BTC/DAI', action: 'BUY', amount: '0.45 BTC', userFilled: '$30,802.50', profit: '+$342.10' },
+    { time: '12:12:35', manager: 'Seraphina Chen', pair: 'ETH/DAI', action: 'SELL', amount: '4.20 ETH', userFilled: '$14,786.10', profit: '+$124.50' },
+    { time: '12:09:18', manager: 'Dr. Marcus Brody', pair: 'LINK/DAI', action: 'BUY', amount: '250 LINK', userFilled: '$4,687.50', profit: '+$68.20' },
+    { time: '12:06:50', manager: 'Elena Rostova', pair: 'BTC/DAI', action: 'BUY', amount: '0.20 BTC', userFilled: '$13,690.00', profit: '+$182.40' }
+  ],
+
+  // Coinbase Custody & XRPL Security Suite
+  custodyVault: {
+    proofOfSolvency: {
+      merkleRoot: '0x8fa3d9b4c0e172a694bf1529d81e053a479b8c2e',
+      reservesUsd: 142850000,
+      liabilitiesUsd: 137100000,
+      collateralRatio: 104.2,
+      lastAudit: '2026-10-23 11:30 UTC',
+      status: 'VERIFIED_SOLVENT'
+    },
+    withdrawals: [
+      {
+        id: 101,
+        asset: 'USDC',
+        destination: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+        amount: 250000,
+        requestTime: Date.now() - (24 * 3600 * 1000), // 24h passed
+        executeAfter: Date.now() + (24 * 3600 * 1000), // 24h left
+        hoursRemaining: 23.8,
+        status: 'PENDING_TIMELOCK',
+        travelRuleHash: 'trisa:vasp:cb-custody-us-ny:98a2f4c1'
+      },
+      {
+        id: 102,
+        asset: 'WBTC',
+        destination: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
+        amount: 5.0,
+        requestTime: Date.now() - (47 * 3600 * 1000),
+        executeAfter: Date.now() + (1 * 3600 * 1000),
+        hoursRemaining: 0.9,
+        status: 'READY_TO_EXECUTE',
+        travelRuleHash: 'trisa:vasp:cb-prime-us-de:32b9f011'
+      }
+    ],
+    xrplEscrows: [
+      {
+        id: 'esc-xrp-701',
+        asset: 'RLUSD / DAI',
+        recipient: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65',
+        amount: 150000,
+        conditionHash: 'sha256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
+        expiresIn: '2 hours 45 min',
+        claimed: false
+      },
+      {
+        id: 'esc-xrp-702',
+        asset: 'WETH',
+        recipient: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
+        amount: 25.0,
+        conditionHash: 'sha256:4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a',
+        expiresIn: '5 hours 12 min',
+        claimed: false
+      }
+    ],
+    xrplTrustlines: [
+      { token: 'RLUSD (Ripple USD)', issuer: 'Ripple Ledger Gateway', limit: 10000000, active: true },
+      { token: 'DAI (MakerDAO)', issuer: 'Apex Treasury Multi-Sig', limit: 50000000, active: true },
+      { token: 'WBTC (Institutional)', issuer: 'Coinbase Custody Gateway', limit: 250, active: true },
+      { token: 'WETH (Institutional)', issuer: 'Coinbase Prime Gateway', limit: 3500, active: true }
+    ]
+  },
+
+  // Market Breaking News Feed
+  newsFeed: [
+    {
+      id: 'news-1',
+      category: 'REGULATION',
+      title: 'SEC Grants Accelerated Registration to Qualified Institutional On-Chain DEX Settlement Platforms',
+      time: '4 mins ago',
+      source: 'Bloomberg Terminal',
+      impact: 'HIGH IMPACT',
+      summary: 'Federal regulators publish revised custody and settlement framework allowing cryptographic 48-hour time locks and TRISA Travel Rule compliance for institutional clearing.'
+    },
+    {
+      id: 'news-2',
+      category: 'LIQUIDITY',
+      title: 'XRP Ledger (XRPL) Cross-Chain Interledger Escrows Surpass $1.2B in Monthly Settlement Volume',
+      time: '18 mins ago',
+      source: 'Reuters Financial',
+      impact: 'BULLISH',
+      summary: 'Interledger Protocol RFC-2004 conditional preimage escrows establish seamless liquidity routing between Ethereum L2s, Ripple USD, and sovereign institutional treasuries.'
+    },
+    {
+      id: 'news-3',
+      category: 'DEFI',
+      title: 'Apex Yield Vault Total Assets Exceed $80M Following Automated Compound Harvest',
+      time: '35 mins ago',
+      source: 'DefiLlama Intelligence',
+      impact: 'GROWTH',
+      summary: 'Institutional ERC-4626 multi-asset yield vaults complete scheduled weekly harvest, raising net annual percentage yield to 8.45% on USDC/DAI reserves.'
+    },
+    {
+      id: 'news-4',
+      category: 'ARBITRAGE',
+      title: 'Arbitrum Nitro and Polygon zkEVM Atomic Spread Engine Executes $22M Without Slippage',
+      time: '1 hour ago',
+      source: 'L2Beat Analytics',
+      impact: 'TECHNICAL',
+      summary: 'Microsecond cross-venue flash loan arbitrage engine delivers consistent 28 bps spread captures across order book and AMM liquidity pools.'
+    }
   ]
 };
 
@@ -296,25 +492,365 @@ function renderHeader() {
 }
 
 function renderAppViews() {
-  const dexView = document.getElementById('dex-view');
-  const treasuryView = document.getElementById('treasury-view');
-  const telemetryView = document.getElementById('telemetry-view');
+  const views = {
+    'dex': document.getElementById('dex-view'),
+    'copytrading': document.getElementById('copytrading-view'),
+    'custody': document.getElementById('custody-view'),
+    'treasury': document.getElementById('treasury-view'),
+    'defi': document.getElementById('defi-view'),
+    'arbitrage': document.getElementById('arbitrage-view'),
+    'securities': document.getElementById('securities-view'),
+    'news': document.getElementById('news-view'),
+    'telemetry': document.getElementById('telemetry-view')
+  };
 
-  if (state.currentTab === 'dex') {
-    dexView.style.display = 'grid';
-    treasuryView.style.display = 'none';
-    telemetryView.style.display = 'none';
-    renderDEX();
-  } else if (state.currentTab === 'treasury') {
-    dexView.style.display = 'none';
-    treasuryView.style.display = 'flex';
-    telemetryView.style.display = 'none';
-    renderTreasury();
-  } else {
-    dexView.style.display = 'none';
-    treasuryView.style.display = 'none';
-    telemetryView.style.display = 'flex';
-    renderTelemetry();
+  Object.entries(views).forEach(([tab, el]) => {
+    if (!el) return;
+    if (tab === state.currentTab) {
+      el.style.display = (tab === 'dex' ? 'grid' : 'flex');
+    } else {
+      el.style.display = 'none';
+    }
+  });
+
+  // Call active renderer
+  if (state.currentTab === 'dex') renderDEX();
+  else if (state.currentTab === 'copytrading') renderCopyTrading();
+  else if (state.currentTab === 'custody') renderCustody();
+  else if (state.currentTab === 'treasury') renderTreasury();
+  else if (state.currentTab === 'defi') renderDeFi();
+  else if (state.currentTab === 'arbitrage') renderArbitrage();
+  else if (state.currentTab === 'securities') renderSecurities();
+  else if (state.currentTab === 'news') renderNewsFeed();
+  else if (state.currentTab === 'telemetry') renderTelemetry();
+}
+
+// --- Render Copy Trading (Superior to eToro) ---
+function renderCopyTrading() {
+  const grid = document.getElementById('traders-leaderboard-grid');
+  if (grid) {
+    grid.innerHTML = state.copyTraders.map(t => `
+      <div class="trader-card" id="trader-card-${t.id}">
+        <div class="trader-header">
+          <div class="trader-profile">
+            <div class="trader-avatar">${t.initials}</div>
+            <div>
+              <div style="font-weight: 800; font-size: 1.05rem; color: var(--text-primary);">${t.name}</div>
+              <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 600;">${t.strategy}</div>
+            </div>
+          </div>
+          <span class="trader-badge">VERIFIED QUANT</span>
+        </div>
+
+        <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+          ${t.bio}
+        </p>
+
+        <!-- PnL Sparkline SVG -->
+        <div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.25rem;">
+            <span>12M Performance Trajectory</span>
+            <span style="color: var(--signal-bid); font-weight: 700;">+${t.roi12m}%</span>
+          </div>
+          <svg class="sparkline-svg" viewBox="0 0 280 40">
+            <path d="${t.sparkline}" />
+          </svg>
+        </div>
+
+        <div class="trader-metrics-row">
+          <div class="trader-metric">
+            <span class="trader-metric-label">Sharpe</span>
+            <span class="trader-metric-val" style="color: var(--signal-bid);">${t.sharpe}</span>
+          </div>
+          <div class="trader-metric">
+            <span class="trader-metric-label">Win Rate</span>
+            <span class="trader-metric-val">${t.winRate}%</span>
+          </div>
+          <div class="trader-metric">
+            <span class="trader-metric-label">Max DD</span>
+            <span class="trader-metric-val" style="color: var(--signal-warning);">${t.maxDrawdown}%</span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-muted);">
+          <span>AUM: <strong style="color: var(--text-primary);">${formatUSD(t.aumUsd)}</strong></span>
+          <span>Copiers: <strong style="color: var(--text-primary);">${t.copiers.toLocaleString()}</strong></span>
+        </div>
+
+        <button class="btn-execute buy copy-trader-btn" data-trader="${t.id}" style="margin-top: 0.25rem;">
+          Copy Trader (${t.name.split(' ')[0]})
+        </button>
+      </div>
+    `).join('');
+
+    // Attach copy buttons
+    grid.querySelectorAll('.copy-trader-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const traderId = e.currentTarget.dataset.trader;
+        const trader = state.copyTraders.find(t => t.id === traderId);
+        if (trader) {
+          openCopyTraderModal(trader);
+        }
+      });
+    });
+  }
+
+  // Copied Positions
+  const tbody = document.getElementById('copied-positions-tbody');
+  if (tbody) {
+    if (state.copiedPositions.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">No active copied portfolios. Allocate capital to a quantitative manager above.</td></tr>`;
+    } else {
+      tbody.innerHTML = state.copiedPositions.map(p => `
+        <tr>
+          <td><strong style="color: var(--text-primary);">${p.traderName}</strong></td>
+          <td><span style="font-size: 0.75rem; color: var(--accent-cyan);">${p.strategy}</span></td>
+          <td class="mono font-bold">${formatUSD(p.allocatedCapital)}</td>
+          <td class="mono font-bold" style="color: var(--signal-bid);">
+            +${formatUSD(p.unrealizedPnl)} (+${p.unrealizedPnlPct}%)
+          </td>
+          <td><span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan);">${p.mirrorRatio}</span></td>
+          <td><span class="badge" style="background: rgba(245, 158, 11, 0.15); color: var(--signal-warning);">${p.stopLoss} SL</span></td>
+          <td>
+            <button class="btn-secondary stop-copy-btn" data-id="${p.id}" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; color: var(--signal-ask); border-color: rgba(244, 63, 94, 0.3);">
+              Close Escrow
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      tbody.querySelectorAll('.stop-copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.currentTarget.dataset.id;
+          stopCopyPosition(id);
+        });
+      });
+    }
+  }
+
+  // Mirrored Trades Stream
+  const feed = document.getElementById('mirrored-stream-feed');
+  if (feed) {
+    feed.innerHTML = state.mirroredTrades.map(m => `
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.6rem; margin-bottom: 0.5rem; font-size: 0.75rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+          <span style="font-weight: 700; color: var(--text-primary);">${m.manager}</span>
+          <span class="mono" style="color: var(--text-muted); font-size: 0.68rem;">${m.time}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span>
+            <span class="badge ${m.action === 'BUY' ? 'bid' : 'ask'}" style="font-size: 0.65rem;">${m.action}</span>
+            <strong style="margin-left: 0.3rem;">${m.pair}</strong> (${m.amount})
+          </span>
+          <span class="mono" style="color: var(--signal-bid); font-weight: 700;">${m.profit}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// --- Render Coinbase Custody & XRPL Security ---
+function renderCustody() {
+  const reqList = document.getElementById('active-vault-requests-list');
+  if (reqList) {
+    reqList.innerHTML = state.custodyVault.withdrawals.map(w => `
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.75rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <div>
+            <strong style="color: var(--text-primary); font-size: 0.9rem;">#REQ-${w.id}: ${w.amount} ${w.asset}</strong>
+            <div class="mono" style="font-size: 0.7rem; color: var(--text-muted);">To: ${formatAddress(w.destination)}</div>
+          </div>
+          <span class="countdown-clock">${w.hoursRemaining > 0 ? `${w.hoursRemaining.toFixed(1)}h LOCK` : 'UNLOCKED'}</span>
+        </div>
+        <div class="mono" style="font-size: 0.68rem; color: var(--accent-cyan); margin-bottom: 0.5rem;">
+          TRISA Hash: ${w.travelRuleHash}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: var(--signal-warning);">
+            ${w.status}
+          </span>
+          <div style="display: flex; gap: 0.4rem;">
+            <button class="btn-secondary abort-vault-btn" data-id="${w.id}" style="padding: 0.25rem 0.6rem; font-size: 0.72rem; color: var(--signal-ask); border-color: rgba(244, 63, 94, 0.3);">
+              Emergency Abort
+            </button>
+            ${w.hoursRemaining <= 0 ? `
+              <button class="btn-execute buy exec-vault-btn" data-id="${w.id}" style="padding: 0.25rem 0.6rem; font-size: 0.72rem;">
+                Execute Cold Withdrawal
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    reqList.querySelectorAll('.abort-vault-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = parseInt(e.currentTarget.dataset.id, 10);
+        abortVaultRequest(id);
+      });
+    });
+  }
+
+  // XRPL Escrows
+  const escList = document.getElementById('xrpl-escrows-list');
+  if (escList) {
+    escList.innerHTML = state.custodyVault.xrplEscrows.map(e => `
+      <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.6rem; font-size: 0.75rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+          <strong style="color: var(--text-primary);">${e.id}: ${e.amount} ${e.asset}</strong>
+          <span style="color: var(--signal-bid); font-weight: 700;">Expires: ${e.expiresIn}</span>
+        </div>
+        <div class="mono" style="font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.4rem; word-break: break-all;">
+          Condition: ${e.conditionHash}
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="mono" style="color: var(--accent-cyan); font-size: 0.7rem;">Recipient: ${formatAddress(e.recipient)}</span>
+          <button class="btn-secondary claim-escrow-btn" data-id="${e.id}" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;">
+            Claim Preimage
+          </button>
+        </div>
+      </div>
+    `).join('');
+
+    escList.querySelectorAll('.claim-escrow-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        claimXrplEscrow(id);
+      });
+    });
+  }
+
+  // XRPL Trustlines
+  const trustList = document.getElementById('xrpl-trustlines-list');
+  if (trustList) {
+    trustList.innerHTML = state.custodyVault.xrplTrustlines.map(t => `
+      <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 0.6rem; font-size: 0.75rem;">
+        <div>
+          <div style="font-weight: 700; color: var(--text-primary);">${t.token}</div>
+          <div style="font-size: 0.68rem; color: var(--text-muted);">Issuer: ${t.issuer}</div>
+        </div>
+        <div style="text-align: right;">
+          <div class="mono" style="font-weight: 800; color: var(--accent-cyan);">Limit: ${t.limit.toLocaleString()}</div>
+          <span class="badge bid" style="font-size: 0.65rem;">ACTIVE TRUSTLINE</span>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+// --- Render DeFi & GameFi ---
+function renderDeFi() {
+  // Built-in cards are structured in index.html; wire interactive buttons
+  const harvestBtn = document.getElementById('harvest-vault-btn');
+  if (harvestBtn && !harvestBtn.dataset.wired) {
+    harvestBtn.dataset.wired = 'true';
+    harvestBtn.addEventListener('click', () => {
+      showToast('Automated ERC-4626 compound harvest executed: +$14,280 yield distributed to vault shares', 'success');
+      logTelemetry('YieldHarvested', 'ApexDeFiVault', '+$14,280 compounded to LP shares');
+    });
+  }
+}
+
+// --- Render Arbitrage & L2 ---
+function renderArbitrage() {
+  const flashLoanBtn = document.getElementById('exec-flash-arb-btn');
+  if (flashLoanBtn && !flashLoanBtn.dataset.wired) {
+    flashLoanBtn.dataset.wired = 'true';
+    flashLoanBtn.addEventListener('click', () => {
+      showToast('Flash Loan Arbitrage executed across Arbitrum & DEX: 44 bps captured, net profit +$2,450 DAI', 'success');
+      logTelemetry('FlashLoanArbExecuted', 'ApexArbitrageEngine', 'Flash loan 500,000 DAI -> 44 bps spread captured');
+    });
+  }
+}
+
+// --- Render Securities & FTPS ---
+function renderSecurities() {
+  const sftpClearBtn = document.getElementById('sftp-batch-clear-btn');
+  if (sftpClearBtn && !sftpClearBtn.dataset.wired) {
+    sftpClearBtn.dataset.wired = 'true';
+    sftpClearBtn.addEventListener('click', () => {
+      showToast('FTPS Batch Clearing Gateway: 450 ISO-20022 institutional orders settled on-chain ($15.8M)', 'success');
+      logTelemetry('BatchSettled', 'ApexSettlementGateway', '450 trades settled via cryptographic FTPS gateway');
+    });
+  }
+}
+
+// --- Render News Feed & Live Breaking Ticker ---
+function renderNewsFeed() {
+  const list = document.getElementById('news-articles-list');
+  if (list) {
+    list.innerHTML = state.newsFeed.map(n => `
+      <article class="news-item" id="${n.id}">
+        <div class="news-meta">
+          <span class="news-tag">${n.category}</span>
+          <span style="font-size: 0.72rem; color: var(--text-muted);">${n.time} • ${n.source}</span>
+          <span class="badge ${n.impact === 'HIGH IMPACT' || n.impact === 'BULLISH' ? 'bid' : 'ask'}" style="margin-left: auto;">
+            ${n.impact}
+          </span>
+        </div>
+        <h3 class="news-title" style="margin-top: 0.4rem; font-size: 1.05rem;">${n.title}</h3>
+        <p class="news-summary" style="margin-top: 0.4rem;">${n.summary}</p>
+      </article>
+    `).join('');
+  }
+}
+
+function renderLiveNewsTicker() {
+  const track = document.getElementById('live-news-ticker-track');
+  if (track) {
+    track.innerHTML = state.newsFeed.map(n => `
+      <div class="ticker-news-bullet">
+        <span class="ticker-tag">${n.category}</span>
+        <span>${n.title}</span>
+      </div>
+    `).join('');
+  }
+}
+
+// --- Interactive Copy Trading Handlers ---
+let activeSelectedTrader = null;
+
+function openCopyTraderModal(trader) {
+  activeSelectedTrader = trader;
+  const avatar = document.getElementById('modal-trader-avatar');
+  const name = document.getElementById('modal-trader-name');
+  const strategy = document.getElementById('modal-trader-strategy');
+  if (avatar) avatar.textContent = trader.initials;
+  if (name) name.textContent = trader.name;
+  if (strategy) strategy.textContent = trader.strategy;
+  openModal('copy-trader-modal');
+}
+
+function stopCopyPosition(id) {
+  const posIndex = state.copiedPositions.findIndex(p => p.id === id);
+  if (posIndex !== -1) {
+    const pos = state.copiedPositions[posIndex];
+    state.copiedPositions.splice(posIndex, 1);
+    showToast(`Closed mirror escrow for ${pos.traderName}. Returned $${pos.allocatedCapital} + $${pos.unrealizedPnl} profit.`, 'success');
+    logTelemetry('CopyEscrowClosed', 'ApexCopyEngine', `Mirror position closed for ${pos.traderName} (+$${pos.unrealizedPnl})`);
+    renderCopyTrading();
+  }
+}
+
+function abortVaultRequest(id) {
+  const req = state.custodyVault.withdrawals.find(w => w.id === id);
+  if (req) {
+    req.status = 'ABORTED_BY_SECURITY';
+    req.hoursRemaining = 0;
+    showToast(`Emergency abort confirmed by Security Officer for Request #${id}`, 'success');
+    logTelemetry('WithdrawalAborted', 'ApexCustodyVault', `Emergency abort by Security Officer: Request #${id}`);
+    renderCustody();
+  }
+}
+
+function claimXrplEscrow(id) {
+  const esc = state.custodyVault.xrplEscrows.find(e => e.id === id);
+  if (esc) {
+    esc.claimed = true;
+    showToast(`Valid SHA-256 preimage verified! Claimed ${esc.amount} ${esc.asset}`, 'success');
+    logTelemetry('EscrowPreimageClaimed', 'ApexCustodyVault', `SHA-256 preimage matched for ${id}: ${esc.amount} ${esc.asset}`);
+    state.custodyVault.xrplEscrows = state.custodyVault.xrplEscrows.filter(e => e.id !== id);
+    renderCustody();
   }
 }
 
@@ -1031,7 +1567,7 @@ function initTreasuryControls() {
   }
 }
 
-// --- Render Palantir Telemetry Stream ---
+// --- Render On-Chain Telemetry Stream ---
 function renderTelemetry() {
   const container = document.getElementById('telemetry-logs-body');
   if (!container) return;
@@ -1116,6 +1652,71 @@ function initModals() {
       renderDEX();
     });
   }
+
+  // Copy Trader Modal Confirmation
+  const confirmCopyBtn = document.getElementById('confirm-copy-trader-btn');
+  if (confirmCopyBtn) {
+    confirmCopyBtn.addEventListener('click', () => {
+      if (!activeSelectedTrader) return;
+      const capital = parseFloat(document.getElementById('copy-capital-input').value) || 5000;
+      const ratio = document.getElementById('copy-ratio-select').value;
+      const stopLoss = document.getElementById('copy-stoploss-input').value;
+
+      const newPos = {
+        id: `cop-${Date.now()}`,
+        traderId: activeSelectedTrader.id,
+        traderName: activeSelectedTrader.name,
+        strategy: activeSelectedTrader.strategy,
+        allocatedCapital: capital,
+        unrealizedPnl: 0.0,
+        unrealizedPnlPct: 0.0,
+        mirrorRatio: `${ratio}x`,
+        stopLoss: `${stopLoss}%`
+      };
+
+      state.copiedPositions.unshift(newPos);
+      closeModal('copy-trader-modal');
+      showToast(`Non-custodial mirror escrow authorized: $${capital.toLocaleString()} allocated to ${activeSelectedTrader.name}`, 'success');
+      logTelemetry('CopyEscrowCreated', 'ApexCopyEngine', `$${capital.toLocaleString()} allocated to mirror ${activeSelectedTrader.name} (${ratio}x ratio)`);
+      renderCopyTrading();
+    });
+  }
+
+  // Vault Withdrawal Modal Handlers
+  const initVaultWithdrawBtn = document.getElementById('initiate-vault-withdraw-btn');
+  if (initVaultWithdrawBtn) {
+    initVaultWithdrawBtn.addEventListener('click', () => {
+      openModal('vault-withdrawal-modal');
+    });
+  }
+
+  const confirmVaultWithdrawBtn = document.getElementById('confirm-vault-withdrawal-btn');
+  if (confirmVaultWithdrawBtn) {
+    confirmVaultWithdrawBtn.addEventListener('click', () => {
+      const asset = document.getElementById('vault-asset-select').value;
+      const dest = document.getElementById('vault-destination-input').value;
+      const amount = parseFloat(document.getElementById('vault-amount-input').value) || 100000;
+      const trisaHash = document.getElementById('vault-travel-rule-input').value || 'trisa:vasp:cb-custody:verified';
+
+      const newReq = {
+        id: 100 + state.custodyVault.withdrawals.length + 1,
+        asset,
+        destination: dest,
+        amount,
+        requestTime: Date.now(),
+        executeAfter: Date.now() + (48 * 3600 * 1000),
+        hoursRemaining: 48.0,
+        status: 'PENDING_TIMELOCK',
+        travelRuleHash: trisaHash
+      };
+
+      state.custodyVault.withdrawals.unshift(newReq);
+      closeModal('vault-withdrawal-modal');
+      showToast(`48-Hour Vault Withdrawal Scheduled: ${amount} ${asset} locked until time lock expiration`, 'success');
+      logTelemetry('VaultWithdrawalInitiated', 'ApexCustodyVault', `48h delay active for ${amount} ${asset} to ${formatAddress(dest)}`);
+      renderCustody();
+    });
+  }
 }
 
 // --- App Bootstrap ---
@@ -1127,9 +1728,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initModals();
 
   renderHeader();
+  renderLiveNewsTicker();
   renderAppViews();
 
-  // Subtle simulated real-time orderbook micro-tick updates
+  // Simulated live data flow: copy-trade stream updates & micro-price ticks
   setInterval(() => {
     const pairData = state.pairs[state.activePair];
     if (pairData && pairData.bids.length > 0 && pairData.asks.length > 0) {
@@ -1138,4 +1740,31 @@ document.addEventListener('DOMContentLoaded', () => {
       renderTickerBar();
     }
   }, 3500);
+
+  // Micro-stream copied trade simulations
+  setInterval(() => {
+    if (state.copyTraders.length > 0) {
+      const randManager = state.copyTraders[Math.floor(Math.random() * state.copyTraders.length)];
+      const pairs = ['BTC/DAI', 'ETH/DAI', 'LINK/DAI'];
+      const randPair = pairs[Math.floor(Math.random() * pairs.length)];
+      const action = Math.random() > 0.5 ? 'BUY' : 'SELL';
+      const prof = `+$${(Math.random() * 250 + 40).toFixed(2)}`;
+      
+      const newTrade = {
+        time: new Date().toLocaleTimeString(),
+        manager: randManager.name,
+        pair: randPair,
+        action,
+        amount: randPair.startsWith('BTC') ? '0.35 BTC' : '3.50 ETH',
+        userFilled: `$${(Math.random() * 20000 + 5000).toFixed(2)}`,
+        profit: prof
+      };
+
+      state.mirroredTrades.unshift(newTrade);
+      if (state.mirroredTrades.length > 8) state.mirroredTrades.pop();
+      if (state.currentTab === 'copytrading') {
+        renderCopyTrading();
+      }
+    }
+  }, 12000);
 });

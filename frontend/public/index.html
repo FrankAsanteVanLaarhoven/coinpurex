@@ -53,13 +53,37 @@
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
         DEX Terminal
       </button>
+      <button class="nav-tab-btn" data-tab="copytrading" id="tab-copytrading-btn" aria-label="Switch to Copy Trading">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Copy Trading
+      </button>
+      <button class="nav-tab-btn" data-tab="custody" id="tab-custody-btn" aria-label="Switch to Institutional Custody and XRPL Security">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Custody &amp; XRPL
+      </button>
       <button class="nav-tab-btn" data-tab="treasury" id="tab-treasury-btn" aria-label="Switch to Multi-Sig Treasury">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/></svg>
         Multi-Sig Treasury
       </button>
+      <button class="nav-tab-btn" data-tab="defi" id="tab-defi-btn" aria-label="Switch to DeFi and GameFi">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+        DeFi &amp; GameFi
+      </button>
+      <button class="nav-tab-btn" data-tab="arbitrage" id="tab-arbitrage-btn" aria-label="Switch to Polygon and Arbitrum Arbitrage">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
+        Arbitrage &amp; L2
+      </button>
+      <button class="nav-tab-btn" data-tab="securities" id="tab-securities-btn" aria-label="Switch to Securities and FTPS">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Securities &amp; FTPS
+      </button>
+      <button class="nav-tab-btn" data-tab="news" id="tab-news-btn" aria-label="Switch to Live News Feed">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+        Live News
+      </button>
       <button class="nav-tab-btn" data-tab="telemetry" id="tab-telemetry-btn" aria-label="Switch to On-Chain Telemetry">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        Palantir Telemetry
+        Telemetry
       </button>
     </nav>
 
@@ -88,6 +112,15 @@
       </button>
     </div>
   </header>
+
+  <!-- Live Breaking News Streaming Ticker -->
+  <div class="news-ticker-container" role="region" aria-label="Live Market News Ticker">
+    <div class="news-ticker-badge">
+      <span class="news-pulse-dot"></span>
+      <span>BREAKING NEWS</span>
+    </div>
+    <div class="news-ticker-track" id="live-news-ticker-track"></div>
+  </div>
 
   <!-- App Main Content Area -->
   <main class="app-container" role="main">
@@ -140,7 +173,7 @@
         </div>
       </div>
 
-      <!-- Left Column: Palantir Live Order Book -->
+      <!-- Left Column: Institutional Live Order Book -->
       <div class="card" style="min-height: 520px;">
         <div class="card-header">
           <span>Order Book</span>
@@ -381,11 +414,11 @@
     </section>
 
     <!-- ====================================================================
-         VIEW 3: PALANTIR TELEMETRY AUDIT STREAM
+         VIEW 3: ON-CHAIN TELEMETRY AUDIT STREAM
          ==================================================================== -->
     <section id="telemetry-view" class="card" style="display: none;" aria-label="On-Chain Telemetry Inspector">
       <div class="card-header">
-        <span>Palantir Real-Time On-Chain Event Auditor</span>
+        <span>Real-Time On-Chain Event Auditor</span>
         <span class="mono" style="font-size: 0.75rem; color: var(--accent-cyan);">Live Block Stream</span>
       </div>
       <div class="card-body">
@@ -402,6 +435,384 @@
             </thead>
             <tbody id="telemetry-logs-body"></tbody>
           </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 4: DEFI VAULTS & GAMEFI ASSET HUB
+         ==================================================================== -->
+    <section id="defi-view" class="treasury-view" style="display: none;" aria-label="DeFi and GameFi Hub">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.4rem; font-weight: 800;">Apex DeFi Yield &amp; GameFi Metaverse Hub</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            ERC-4626 Institutional Yield Vaults, Multi-Asset Staking &amp; Tournament Prize Pool Custody
+          </p>
+        </div>
+      </div>
+
+      <!-- DeFi Vaults Grid -->
+      <div class="sector-hub-grid" id="defi-vaults-container"></div>
+
+      <!-- GameFi Tournament Pools Card -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <span>GameFi Esports Tournament Escrows &amp; NFT Vaults</span>
+          <span class="badge success">Smart Contract Custody</span>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="standard-table" aria-label="GameFi Tournament Pools">
+              <thead>
+                <tr>
+                  <th>Pool ID</th>
+                  <th>Tournament / Game</th>
+                  <th>Locked Prize Pool</th>
+                  <th>Participants</th>
+                  <th>Escrow Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="gamefi-pools-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 5: POLYGON & ARBITRUM CROSS-CHAIN ARBITRAGE TERMINAL
+         ==================================================================== -->
+    <section id="arbitrage-view" class="treasury-view" style="display: none;" aria-label="Cross-Chain Arbitrage Terminal">
+      <div>
+        <h2 style="font-size: 1.4rem; font-weight: 800;">Cross-Chain Gateway &amp; Atomic Arbitrage Engine</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Multi-chain routing across Polygon PoS, Arbitrum One Nitro, Base &amp; Ethereum L1 with Flash Loan Arbitrage
+        </p>
+      </div>
+
+      <!-- Connected Networks Card -->
+      <div class="card">
+        <div class="card-header">
+          <span>Connected Multi-Chain Liquidity Networks</span>
+          <span style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700;">Zero-Knowledge &amp; Rollup Relays</span>
+        </div>
+        <div class="card-body">
+          <div class="sector-hub-grid" id="crosschain-networks-container"></div>
+        </div>
+      </div>
+
+      <!-- Live Arbitrage Spreads Table -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <span>Live Triangular &amp; Cross-Venue Arbitrage Opportunities</span>
+          <span class="badge success">MEV-Protected Private Mempool</span>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="standard-table" aria-label="Live Arbitrage Spreads">
+              <thead>
+                <tr>
+                  <th>Market Pair</th>
+                  <th>Venue A (Order Book)</th>
+                  <th>Venue B (L2 AMM)</th>
+                  <th>Spread (BPS)</th>
+                  <th>Projected Net Profit</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="arbitrage-spreads-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 6: TOKENIZED SECURITIES (RWA) & FTPS CLEARING GATEWAY
+         ==================================================================== -->
+    <section id="securities-view" class="treasury-view" style="display: none;" aria-label="Securities and FTPS Gateway">
+      <div>
+        <h2 style="font-size: 1.4rem; font-weight: 800;">Regulated Securities (ERC-3643 / RWA) &amp; FTPS Clearing Gateway</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          SEC Regulation D/S Compliant Tokenized Real World Assets &amp; Cryptographic FTPS Institutional Clearing
+        </p>
+      </div>
+
+      <!-- Securities Instruments Grid -->
+      <div class="sector-hub-grid" id="securities-rwa-container"></div>
+
+      <!-- FTPS Batch Clearing Logs Card -->
+      <div class="card" style="margin-top: 1.5rem;">
+        <div class="card-header">
+          <span>FTPS / SFTP End-of-Day Institutional Clearing Batches</span>
+          <span class="mono" style="font-size: 0.72rem; color: var(--signal-bid); font-weight: 700;">ISO-20022 Compliant</span>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="standard-table" aria-label="FTPS Clearing Batches">
+              <thead>
+                <tr>
+                  <th>Batch ID</th>
+                  <th>Merkle Proof Root</th>
+                  <th>SFTP Ledger URI</th>
+                  <th>Trade Volume</th>
+                  <th>Cleared Volume USD</th>
+                  <th>Settlement Status</th>
+                </tr>
+              </thead>
+              <tbody id="ftps-batches-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 7: DEDICATED LIVE MARKET NEWS FEED
+         ==================================================================== -->
+    <section id="news-view" class="treasury-view" style="display: none;" aria-label="Live Market News Intelligence">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.4rem; font-weight: 800;">Live Institutional Market Intelligence</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Real-time breaking financial wires covering DeFi, GameFi, Polygon, Arbitrum, Tokenized Securities, and Macro
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="news-filter-pills">
+          <button class="pair-btn active" data-filter="ALL">ALL</button>
+          <button class="pair-btn" data-filter="DEFI">DEFI</button>
+          <button class="pair-btn" data-filter="GAMEFI">GAMEFI</button>
+          <button class="pair-btn" data-filter="ARBITRAGE">ARBITRAGE</button>
+          <button class="pair-btn" data-filter="SECURITIES">SECURITIES</button>
+        </div>
+      </div>
+
+      <div class="news-feed-grid" style="margin-top: 1rem;">
+        <div id="news-articles-list" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+        
+        <!-- News Intelligence Sidebar -->
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="card">
+            <div class="card-header">
+              <span>Market Sentiment Pulse</span>
+            </div>
+            <div class="card-body" style="gap: 1rem;">
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem;">
+                  <span>Bullish Sentiment</span>
+                  <span style="color: var(--signal-bid); font-weight: 700;">78%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" style="width: 78%; background: var(--signal-bid);"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem;">
+                  <span>Neutral / Institutional Holding</span>
+                  <span style="color: var(--accent-cyan); font-weight: 700;">16%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" style="width: 16%; background: var(--accent-cyan);"></div></div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem;">
+                  <span>Macro Risk Aversion</span>
+                  <span style="color: var(--signal-ask); font-weight: 700;">6%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" style="width: 6%; background: var(--signal-ask);"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span>Live Wire Sources</span>
+            </div>
+            <div class="card-body" style="font-size: 0.8rem; gap: 0.5rem; color: var(--text-secondary);">
+              <div>• Bloomberg Terminal Data Feed (Direct)</div>
+              <div>• Reuters Institutional Financial Wires</div>
+              <div>• SEC Regulatory &amp; Enforcement Bulletins</div>
+              <div>• L2Beat Cross-Chain Sequencer Monitors</div>
+              <div>• DefiLlama Yield &amp; TVL Analytics</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 8: SOCIAL COPY TRADING HUB (SUPERIOR TO ETORO)
+         ==================================================================== -->
+    <section id="copytrading-view" class="treasury-view" style="display: none;" aria-label="Social Copy Trading Platform">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">Institutional Copy Trading</h2>
+          <p style="color: var(--text-secondary); font-size: 0.85rem;">
+            Verifiable on-chain alpha with institutional quantitative managers. Non-custodial mirror execution with microsecond Rust settlement.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <div class="security-shield-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            ON-CHAIN AUDITED PERFORMANCE
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Macro Metrics -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-card-label">Total Mirrored AUM</div>
+          <div class="metric-card-value" style="color: var(--accent-cyan);">$48,250,000</div>
+          <div style="font-size: 0.75rem; color: var(--signal-bid);">+18.4% month-over-month</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">30D Copier Profit</div>
+          <div class="metric-card-value" style="color: var(--signal-bid);">+$4,620,000</div>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);">Direct net payouts</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Avg Strategy Sharpe</div>
+          <div class="metric-card-value">3.25</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Risk-adjusted return hurdle</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Active Mirror Contracts</div>
+          <div class="metric-card-value">12,840</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Non-custodial smart escrows</div>
+        </div>
+      </div>
+
+      <!-- Quantitative Managers Leaderboard -->
+      <h3 style="font-size: 1.1rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem;">Verified Quantitative Managers</h3>
+      <div class="traders-grid" id="traders-leaderboard-grid"></div>
+
+      <!-- Active Copied Positions & Live Stream -->
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.25rem; margin-top: 1.5rem;">
+        <div class="card">
+          <div class="card-header">
+            <span>Your Active Copied Portfolios</span>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Auto-rebalancing active</span>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div style="overflow-x: auto;">
+              <table class="proposal-table" aria-label="Active Copied Positions">
+                <thead>
+                  <tr>
+                    <th>Lead Manager</th>
+                    <th>Strategy</th>
+                    <th>Allocated Capital</th>
+                    <th>Unrealized PnL</th>
+                    <th>Mirror Ratio</th>
+                    <th>Protection</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="copied-positions-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span>Live Mirrored Trade Stream</span>
+            <span class="news-pulse-dot" style="display: inline-block;"></span>
+          </div>
+          <div class="card-body" style="padding: 0.75rem; max-height: 380px; overflow-y: auto;" id="mirrored-stream-feed"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         VIEW 9: INSTITUTIONAL CUSTODY & XRPL SECURITY (COINBASE + XRP GRADE)
+         ==================================================================== -->
+    <section id="custody-view" class="treasury-view" style="display: none;" aria-label="Coinbase and XRP Ledger Custody Suite">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">Enterprise Cold Custody &amp; XRPL Security</h2>
+          <p style="color: var(--text-secondary); font-size: 0.85rem;">
+            Coinbase Vault 48-Hour Delay &amp; Emergency Abort, Merkle Proof-of-Solvency, and XRP Ledger Preimage Conditional Escrows.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-primary" id="initiate-vault-withdraw-btn" style="padding: 0.45rem 1rem; font-size: 0.8rem;">
+            Initiate 48h Vault Withdrawal
+          </button>
+        </div>
+      </div>
+
+      <!-- Security Grid Cards -->
+      <div class="custody-grid">
+        <!-- Card 1: Coinbase-Style 48h Time-Locked Vault -->
+        <div class="card">
+          <div class="card-header">
+            <span>Coinbase Vault: 48h Delayed Withdrawal</span>
+            <span class="security-shield-badge">COLD STORAGE PROTECTED</span>
+          </div>
+          <div class="card-body" style="gap: 0.75rem;">
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">
+              Withdrawals from cold vaults require a 48-hour time lock and multi-factor approval. The designated Security Officer can abort suspicious requests instantly.
+            </p>
+            <div id="active-vault-requests-list" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+          </div>
+        </div>
+
+        <!-- Card 2: Merkle Proof of Solvency -->
+        <div class="card">
+          <div class="card-header">
+            <span>Cryptographic Proof of Solvency</span>
+            <span class="security-shield-badge">104.2% COLLATERALIZED</span>
+          </div>
+          <div class="card-body" style="gap: 0.75rem;">
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">
+              Real-time Merkle Tree root attestation verifying 1:1 backing across cold vault reserves, matching Coinbase &amp; Kraken solvency standards.
+            </p>
+            <div>
+              <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Latest Merkle Root:</span>
+              <div class="merkle-root-display">
+                <span>0x8fa3d9b4c0e172a694bf1529d81e053a479b8c2e</span>
+                <span style="color: var(--signal-bid); font-weight: 700;">VERIFIED</span>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.8rem;">
+              <div style="background: var(--bg-surface); padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <div style="color: var(--text-muted); font-size: 0.7rem;">Total Reserves (AUM)</div>
+                <div style="font-weight: 800; color: var(--text-primary);">$142,850,000</div>
+              </div>
+              <div style="background: var(--bg-surface); padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                <div style="color: var(--text-muted); font-size: 0.7rem;">Depositor Liabilities</div>
+                <div style="font-weight: 800; color: var(--text-primary);">$137,100,000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: XRP Ledger Preimage Conditional Escrows -->
+        <div class="card">
+          <div class="card-header">
+            <span>XRP Ledger (XRPL) Conditional Escrows</span>
+            <span class="security-shield-badge">ILP RFC-2004</span>
+          </div>
+          <div class="card-body" style="gap: 0.75rem;">
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">
+              Interledger Protocol (ILP) preimage escrows. Capital is locked cryptographically and released only when the counterparty supplies the valid SHA-256 preimage before expiration.
+            </p>
+            <div id="xrpl-escrows-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+          </div>
+        </div>
+
+        <!-- Card 4: XRPL Trustline & FATF Compliance -->
+        <div class="card">
+          <div class="card-header">
+            <span>XRPL Trustlines &amp; FATF TRISA Compliance</span>
+            <span class="security-shield-badge">TRAVEL RULE READY</span>
+          </div>
+          <div class="card-body" style="gap: 0.75rem;">
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">
+              Account-level counterparty limits with cryptographic travel rule hashes identifying beneficiary institutions.
+            </p>
+            <div id="xrpl-trustlines-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -514,6 +925,105 @@
     </div>
   </div>
 
+  <!-- ====================================================================
+       MODAL 4: COPY QUANTITATIVE MANAGER MODAL (SUPERIOR TO ETORO)
+       ==================================================================== -->
+  <div class="modal-backdrop" id="copy-trader-modal" role="dialog" aria-modal="true" aria-labelledby="copy-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="copy-modal-title">Copy Quantitative Strategy</h3>
+        <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg-surface); padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); margin-bottom: 1rem;">
+          <div class="trader-avatar" id="modal-trader-avatar">KV</div>
+          <div>
+            <div id="modal-trader-name" style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">Kaelen Voss</div>
+            <div id="modal-trader-strategy" style="font-size: 0.75rem; color: var(--accent-cyan);">Voss Quant Macro Arbitrage</div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="copy-capital-input">Capital to Allocate (DAI)</label>
+          <input type="number" id="copy-capital-input" class="form-input" placeholder="e.g. 5000" min="500" step="100" value="5000">
+          <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem;">Min: $500 • Non-custodial smart escrow allocation</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="input-group">
+            <label class="input-label" for="copy-ratio-select">Mirror Execution Ratio</label>
+            <select id="copy-ratio-select" class="form-input">
+              <option value="1.0">1.0x (100% Proportional)</option>
+              <option value="0.75">0.75x (75% Conservative)</option>
+              <option value="0.5">0.5x (50% Defensive)</option>
+              <option value="1.5">1.5x (150% Aggressive)</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="copy-stoploss-input">Stop-Loss Circuit Breaker</label>
+            <select id="copy-stoploss-input" class="form-input">
+              <option value="5">5% Max Drawdown</option>
+              <option value="10" selected>10% Max Drawdown</option>
+              <option value="15">15% Max Drawdown</option>
+              <option value="20">20% Max Drawdown</option>
+            </select>
+          </div>
+        </div>
+
+        <button id="confirm-copy-trader-btn" class="btn-execute buy" style="margin-top: 0.5rem;">
+          Authorize Non-Custodial Copy Escrow
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 5: COINBASE-STYLE 48H VAULT WITHDRAWAL MODAL
+       ==================================================================== -->
+  <div class="modal-backdrop" id="vault-withdrawal-modal" role="dialog" aria-modal="true" aria-labelledby="vault-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="vault-modal-title">Initiate 48h Vault Withdrawal</h3>
+        <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.78rem; color: var(--signal-warning);">
+          <strong>Coinbase Vault Security Policy:</strong> All withdrawals enter a mandatory 48-hour time lock before execution. The designated Security Officer can abort suspicious requests instantly.
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="vault-asset-select">Asset to Withdraw</label>
+          <select id="vault-asset-select" class="form-input">
+            <option value="USDC">USDC (Cold Storage Vault)</option>
+            <option value="DAI">DAI Stablecoin</option>
+            <option value="WBTC">WBTC Institutional</option>
+            <option value="WETH">WETH Institutional</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="vault-destination-input">Whitelisted Cold Storage Destination</label>
+          <input type="text" id="vault-destination-input" class="form-input mono" placeholder="0x..." value="0x70997970C51812dc3A010C7d01b50e0d17dc79C8">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="vault-amount-input">Amount</label>
+          <input type="number" id="vault-amount-input" class="form-input" placeholder="e.g. 250000" step="any" value="250000">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="vault-travel-rule-input">FATF TRISA Travel Rule Hash / Beneficiary</label>
+          <input type="text" id="vault-travel-rule-input" class="form-input mono" value="trisa:vasp:cb-custody-us-ny:98a2f4c1">
+        </div>
+
+        <button id="confirm-vault-withdrawal-btn" class="btn-execute sell" style="margin-top: 0.5rem;">
+          Lock Withdrawal into 48h Vault Schedule
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
@@ -524,7 +1034,7 @@
       <span>APEX Sovereign DEX &amp; Multi-Sig Governance Platform • Version 2.0.0 Enterprise</span>
     </div>
     <div>
-      <span>Solidity 0.8.20 • OpenZeppelin Standards • Palantir Telemetry • Apple Human Precision</span>
+      <span>Solidity 0.8.20 • OpenZeppelin Standards • Institutional Telemetry • Apple Human Precision</span>
     </div>
   </footer>
 

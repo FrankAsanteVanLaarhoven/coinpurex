@@ -20,3 +20,8 @@ coverage.json
 # macOS System Files
 .DS_Store
 *.log
+
+# Rust & Go Build Artifacts
+**/target/
+**/Cargo.lock
+backend/go-gateway/gateway
