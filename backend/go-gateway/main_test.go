@@ -336,3 +336,82 @@ func TestWriteWsText_Framing(t *testing.T) {
 		t.Errorf("expected body %s, got %s", payload, body)
 	}
 }
+
+func TestHandleArbitrage(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "/api/v1/arbitrage", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handleArbitrage(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("expected status 200, got %d", status)
+	}
+
+	var status ArbitrageEngineStatus
+	if err := json.Unmarshal(rr.Body.Bytes(), &status); err != nil {
+		t.Fatalf("failed to decode arbitrage status JSON: %v", err)
+	}
+
+	if !status.AutonomousActive {
+		t.Errorf("expected AutonomousActive to be true")
+	}
+
+	if status.TotalProfitUSD <= 0 {
+		t.Errorf("expected TotalProfitUSD > 0, got %f", status.TotalProfitUSD)
+	}
+
+	if len(status.Opportunities) == 0 {
+		t.Errorf("expected non-empty opportunities array")
+	}
+
+	foundPolygon := false
+	for _, opp := range status.Opportunities {
+		if opp.IsPolygonOptimal {
+			foundPolygon = true
+			break
+		}
+	}
+	if !foundPolygon {
+		t.Errorf("expected at least one Polygon optimal opportunity")
+	}
+}
+
+func TestHandleNetworks(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "/api/v1/networks", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handleNetworks(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("expected status 200, got %d", status)
+	}
+
+	var networks []NetworkConfig
+	if err := json.Unmarshal(rr.Body.Bytes(), &networks); err != nil {
+		t.Fatalf("failed to decode networks JSON: %v", err)
+	}
+
+	if len(networks) < 4 {
+		t.Errorf("expected at least 4 networks, got %d", len(networks))
+	}
+
+	hasPolygon137 := false
+	for _, n := range networks {
+		if n.ChainID == 137 && n.Currency == "POL" {
+			hasPolygon137 = true
+			if n.GasUSD >= 0.01 {
+				t.Errorf("Polygon sub-cent gas fee expected < $0.01, got %f", n.GasUSD)
+			}
+		}
+	}
+	if !hasPolygon137 {
+		t.Errorf("Polygon PoS 137 network not found in network list")
+	}
+}
+

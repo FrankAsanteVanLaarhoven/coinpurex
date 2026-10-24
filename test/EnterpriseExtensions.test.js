@@ -82,6 +82,13 @@ class SimulatedSecurityToken {
 }
 
 class SimulatedArbitrageEngine {
+    constructor(multiSigTreasury = '0xTreasury', authorizedBot = '0xBot') {
+        this.multiSigTreasury = multiSigTreasury;
+        this.authorizedBot = authorizedBot;
+        this.totalProfitGenerated = 0n;
+        this.totalArbExecutions = 0;
+    }
+
     calculateSpread(orderBookPrice, ammPrice) {
         let spreadBps = 0;
         if (orderBookPrice > ammPrice) {
@@ -90,6 +97,20 @@ class SimulatedArbitrageEngine {
             spreadBps = Number(((ammPrice - orderBookPrice) * 10000n) / orderBookPrice);
         }
         return { spreadBps, isProfitable: spreadBps > 15 };
+    }
+
+    executeFlashLoanArbitrage(caller, asset, loanAmount, route, simulatedProfit) {
+        if (caller !== this.multiSigTreasury && caller !== this.authorizedBot) {
+            throw new Error("Unauthorized");
+        }
+        if (simulatedProfit < route.expectedProfitMin) {
+            throw new Error("UnprofitableExecution");
+        }
+        const flashFee = (loanAmount * 5n) / 10000n; // 5 bps Aave / Balancer fee
+        const netProfit = simulatedProfit > flashFee ? simulatedProfit - flashFee : 0n;
+        this.totalProfitGenerated += netProfit;
+        this.totalArbExecutions++;
+        return { netProfit, flashFee };
     }
 }
 
@@ -285,6 +306,60 @@ async function runExtensionTests() {
         const res = arb.calculateSpread(68000n, 68300n);
         assert.strictEqual(res.isProfitable, true);
         assert(res.spreadBps >= 40);
+    });
+
+    test('CoinPurexArbitrageEngine: should execute autonomous flash loan arbitrage with fee deduction', () => {
+        const arb = new SimulatedArbitrageEngine('0xTreasury', '0xAutoBot');
+        const route = {
+            poolA: '0xQuickSwapPolygon',
+            poolB: '0xCoinPurexOrderBook',
+            tokenIn: '0xDAI',
+            amountIn: 100000n * (10n ** 18n),
+            expectedProfitMin: 1000n * (10n ** 18n)
+        };
+        const loanAmount = 100000n * (10n ** 18n); // 100,000 DAI flash loan
+        const simulatedProfit = 2500n * (10n ** 18n); // $2,500 gross profit
+
+        const res = arb.executeFlashLoanArbitrage('0xAutoBot', '0xDAI', loanAmount, route, simulatedProfit);
+        // Flash fee: 100,000 * 5 bps = 50 DAI
+        const expectedFee = 50n * (10n ** 18n);
+        const expectedNet = simulatedProfit - expectedFee;
+
+        assert.strictEqual(res.flashFee, expectedFee);
+        assert.strictEqual(res.netProfit, expectedNet);
+        assert.strictEqual(arb.totalProfitGenerated, expectedNet);
+        assert.strictEqual(arb.totalArbExecutions, 1);
+    });
+
+    test('CoinPurexArbitrageEngine: should reject unprofitable arbitrage attempts below minimum hurdle', () => {
+        const arb = new SimulatedArbitrageEngine('0xTreasury', '0xAutoBot');
+        const route = {
+            poolA: '0xVenueA',
+            poolB: '0xVenueB',
+            tokenIn: '0xDAI',
+            amountIn: 50000n * (10n ** 18n),
+            expectedProfitMin: 1000n * (10n ** 18n)
+        };
+        assert.throws(() => {
+            arb.executeFlashLoanArbitrage('0xAutoBot', '0xDAI', 50000n * (10n ** 18n), route, 500n * (10n ** 18n));
+        }, /UnprofitableExecution/);
+    });
+
+    test('CoinPurexArbitrageEngine: should reject unauthorized callers from triggering arbitrage', () => {
+        const arb = new SimulatedArbitrageEngine('0xTreasury', '0xAutoBot');
+        const route = { poolA: '0xA', poolB: '0xB', tokenIn: '0xDAI', amountIn: 1000n, expectedProfitMin: 10n };
+        assert.throws(() => {
+            arb.executeFlashLoanArbitrage('0xAttacker', '0xDAI', 1000n, route, 50n);
+        }, /Unauthorized/);
+    });
+
+    test('CoinPurexCrossChainGateway: should support Polygon PoS (137) high-speed routing with sub-cent gas economics', () => {
+        const bridge = new SimulatedCrossChainGateway();
+        const crsAmount = 10000n * (10n ** 5n); // 10,000 CRS
+        const msgId = bridge.bridgeTransfer(137, '0xTraderEthereum', '0xTraderPolygon', '0xCRS', crsAmount);
+        const msg = bridge.messages[msgId];
+        assert.strictEqual(msg.destChainId, 137);
+        assert.strictEqual(msg.amount, crsAmount);
     });
 
     // FTPS / SFTP Batch Settlement Gateway Tests

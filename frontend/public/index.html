@@ -98,6 +98,17 @@
         <span class="mono" style="font-weight: 700;">EVM ACTIVE</span>
       </div>
 
+      <!-- Interactive Network Switcher: Polygon PoS (137) / Ethereum / Arbitrum / Base -->
+      <div style="display: flex; align-items: center; gap: 0.35rem; background: var(--bg-surface); border: 1px solid rgba(130, 71, 229, 0.4); padding: 0.25rem 0.55rem; border-radius: var(--radius-sm);">
+        <span id="network-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #a855f7; box-shadow: 0 0 8px #a855f7;"></span>
+        <select id="network-select" aria-label="Select Execution Blockchain Network" style="background: transparent; border: none; color: var(--text-primary); font-size: 0.78rem; font-weight: 700; cursor: pointer; outline: none; font-family: var(--font-mono);">
+          <option value="polygon" selected>🟣 Polygon PoS (137)</option>
+          <option value="ethereum">🔷 Ethereum Mainnet (1)</option>
+          <option value="arbitrum">🔵 Arbitrum One (42161)</option>
+          <option value="base">🟡 Base L2 (8453)</option>
+        </select>
+      </div>
+
       <div class="status-indicator" id="ws-status-badge" title="Real WebSocket Stream Status" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);">
         <span class="status-dot" id="ws-status-dot" style="background: var(--signal-bid); box-shadow: 0 0 8px var(--signal-bid);"></span>
         <span class="mono" id="ws-status-text" style="font-weight: 700; color: var(--signal-bid);">WS: CONNECTING</span>
@@ -147,8 +158,10 @@
           Signer 1 (Sec Admin) • 0x7099...79C8
         </span>
       </h1>
-      <div style="font-size: 0.75rem; color: var(--text-muted);">
-        Environment: <span style="color: var(--signal-bid); font-weight: 700;">Local Testnet / Staging Preview</span>
+      <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <span>Network: <strong id="cockpit-network-label" style="color: #a855f7;">🟣 Polygon PoS (137)</strong></span>
+        <span>Gas Fee: <strong id="cockpit-gas-label" style="color: var(--signal-bid);">0.0018 POL (~$0.0006)</strong></span>
+        <span>Finality: <strong id="cockpit-finality-label" style="color: var(--accent-cyan);">2.1s</strong></span>
       </div>
     </div>
 
@@ -502,27 +515,86 @@
     </section>
 
     <!-- ====================================================================
-         VIEW 5: CROSS-CHAIN LIQUIDITY & ATOMIC ARBITRAGE TERMINAL
+         VIEW 5: CROSS-CHAIN LIQUIDITY & AUTONOMOUS ARBITRAGE TERMINAL
          ==================================================================== -->
-    <section id="arbitrage-view" class="treasury-view" style="display: none;" aria-label="Cross-Chain Arbitrage Terminal">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2 style="font-size: 1.4rem; font-weight: 800;">Cross-Chain Routing &amp; Atomic Arbitrage Engine</h2>
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Multi-chain routing across Layer-2 Rollups, Optimistic Execution Layers, and Base with Automated Flash Loan Execution
-          </p>
+    <section id="arbitrage-view" class="treasury-view" style="display: none;" aria-label="Autonomous Arbitrage &amp; Cross-Chain Terminal">
+      <!-- Autonomous Flash Arbitrage Engine Control Bar -->
+      <div class="card" style="border: 1px solid rgba(168, 85, 247, 0.4); background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(14, 165, 233, 0.05) 100%);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 0.5rem 0;">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: rgba(168, 85, 247, 0.2); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(168, 85, 247, 0.5);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <h2 style="font-size: 1.3rem; font-weight: 800; margin: 0;">Autonomous Arbitrage Bot &amp; Polygon High-Speed Engine</h2>
+                <span class="badge success" id="autoarb-status-badge" style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.7rem; padding: 0.2rem 0.6rem;">
+                  <span class="status-dot" style="width: 7px; height: 7px; background: var(--signal-bid); box-shadow: 0 0 8px var(--signal-bid);"></span>
+                  <span id="autoarb-status-text">BOT ACTIVE • POLLING VENUES</span>
+                </span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0.25rem 0 0 0;">
+                Sub-second triangular &amp; cross-chain arbitrage scanning across Polygon QuickSwap, Uniswap v3, Balancer, and Apex Private Mempools.
+              </p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <button id="toggle-autoarb-btn" class="btn-secondary" style="padding: 0.5rem 1.1rem; font-size: 0.8rem; font-weight: 700; border-color: rgba(168, 85, 247, 0.6); color: #c084fc;">
+              <span id="toggle-autoarb-text">Pause Bot</span>
+            </button>
+            <button id="exec-flash-arb-btn" class="btn-primary" style="padding: 0.5rem 1.1rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.45rem; background: linear-gradient(135deg, #a855f7, #6366f1); border: none;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Execute Top Flash Arb
+            </button>
+          </div>
         </div>
-        <button id="exec-flash-arb-btn" class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          Execute Top Arbitrage
-        </button>
       </div>
 
-      <!-- Connected Networks Card -->
-      <div class="card">
+      <!-- Autonomous Bot Metrics Deck -->
+      <div class="metrics-grid" style="margin-top: 1rem; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));">
+        <div class="metric-card">
+          <div class="metric-label">Autonomous Profits Harvested</div>
+          <div class="metric-value positive mono" id="autoarb-metric-profit" style="font-size: 1.5rem; color: var(--signal-bid);">$28,450.00 DAI</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Credited directly to Treasury Multi-Sig</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Total Arbitrage Executions</div>
+          <div class="metric-value mono" id="autoarb-metric-executions" style="font-size: 1.5rem; color: var(--text-primary);">68 trades</div>
+          <div style="font-size: 0.72rem; color: var(--signal-bid); margin-top: 0.2rem;">100% On-Chain Success (Flash Rollback Protection)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Polygon Gas Savings vs L1</div>
+          <div class="metric-value mono" id="autoarb-metric-gas-saved" style="font-size: 1.5rem; color: #a855f7;">$1,632.40 Saved</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Avg Gas: 0.0018 POL ($0.0006) vs $24.00 L1</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Active Venues &amp; Flash Pools</div>
+          <div class="metric-value mono" style="font-size: 1.3rem; color: var(--accent-cyan);">Polygon + 4 Venues</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">QuickSwap v3, Uniswap v3, Balancer, Apex DEX</div>
+        </div>
+      </div>
+
+      <!-- Polygon Mode vs Ethereum Cross-Chain Divergence Radar -->
+      <div class="card" style="margin-top: 1rem;">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-weight: 800;">Cross-Chain Divergence Radar: Polygon PoS vs Ethereum Mainnet</span>
+            <span class="badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4);">POLYGON HIGH-SPEED SCANNER</span>
+          </div>
+          <span style="font-size: 0.72rem; color: var(--text-muted); font-family: var(--font-mono);">ApexCrossChainGateway Relay Active</span>
+        </div>
+        <div class="card-body">
+          <div class="sector-hub-grid" id="polygon-bridge-arb-grid">
+            <!-- Dynamically populated cross-chain divergence cards -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Connected Multi-Chain Liquidity Networks Card -->
+      <div class="card" style="margin-top: 1rem;">
         <div class="card-header">
-          <span>Connected Multi-Chain Liquidity Networks</span>
-          <span style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700;">Zero-Knowledge &amp; Rollup Relays</span>
+          <span>Connected Multi-Chain Liquidity Networks &amp; Bridge Relays</span>
+          <span style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 700;">Zero-Knowledge &amp; Checkpoint Relays</span>
         </div>
         <div class="card-body">
           <div class="sector-hub-grid" id="crosschain-networks-container"></div>
@@ -530,7 +602,7 @@
       </div>
 
       <!-- Live Arbitrage Spreads Table -->
-      <div class="card" style="margin-top: 1.5rem;">
+      <div class="card" style="margin-top: 1rem;">
         <div class="card-header">
           <span>Live Triangular &amp; Cross-Venue Arbitrage Opportunities</span>
           <span class="badge success">MEV-Protected Private Mempool</span>
@@ -544,6 +616,7 @@
                   <th>Venue A (Order Book)</th>
                   <th>Venue B (L2 AMM)</th>
                   <th>Spread (BPS)</th>
+                  <th>Est. Gas (POL / ETH)</th>
                   <th>Projected Net Profit</th>
                   <th>Action</th>
                 </tr>

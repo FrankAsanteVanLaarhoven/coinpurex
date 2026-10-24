@@ -4,6 +4,54 @@
  * Zero-dependency, native ES6+ interactive Web3 architecture.
  */
 
+// --- Supported Execution Networks ---
+const NETWORKS = {
+  polygon: {
+    id: 'polygon',
+    name: 'Polygon PoS (137)',
+    chainId: 137,
+    currency: 'POL',
+    symbol: 'POL',
+    gasLabel: '0.0018 POL (~$0.0006)',
+    finality: '2.1s',
+    badgeColor: '#a855f7',
+    icon: '🟣'
+  },
+  ethereum: {
+    id: 'ethereum',
+    name: 'Ethereum Mainnet (1)',
+    chainId: 1,
+    currency: 'ETH',
+    symbol: 'ETH',
+    gasLabel: '0.0035 ETH (~$12.30)',
+    finality: '12.8s',
+    badgeColor: '#38bdf8',
+    icon: '🔷'
+  },
+  arbitrum: {
+    id: 'arbitrum',
+    name: 'Arbitrum One (42161)',
+    chainId: 42161,
+    currency: 'ETH',
+    symbol: 'ETH',
+    gasLabel: '0.00008 ETH (~$0.28)',
+    finality: '0.6s',
+    badgeColor: '#3b82f6',
+    icon: '🔵'
+  },
+  base: {
+    id: 'base',
+    name: 'Base L2 (8453)',
+    chainId: 8453,
+    currency: 'ETH',
+    symbol: 'ETH',
+    gasLabel: '0.00004 ETH (~$0.14)',
+    finality: '0.4s',
+    badgeColor: '#eab308',
+    icon: '🟡'
+  }
+};
+
 // --- Initial Seed & State Configuration ---
 const PERSONAS = [
   { id: 'trader1_auth', label: 'Trader One (a@coinpurex.com)', address: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8', role: 'Principal Admin & Token Owner', email: 'a@coinpurex.com' },
@@ -16,6 +64,11 @@ const PERSONAS = [
 const state = {
   currentTab: 'dex', // 'dex' | 'offering' | 'treasury' | 'telemetry'
   currentPersona: PERSONAS[0],
+  currentNetwork: NETWORKS.polygon,
+  autoArbActive: true,
+  autoArbProfit: 28450.00,
+  autoArbTradesCount: 68,
+  gasSavedVsL1: 1632.40,
   currentUser: {
     authenticated: true,
     email: 'a@coinpurex.com',
@@ -40,7 +93,8 @@ const state = {
       CRS: '0x819c468e5dc88beb0702577cf8a90c2d0566ac8b',
       WBTC: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
       WETH: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-      LINK: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
+      LINK: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+      POL: '0x455e53CBB86018Ac2B8092DDCd39d8444aFFC394'
     }
   },
   
@@ -64,22 +118,22 @@ const state = {
     progressPercent: 41.25
   },
 
-  // DEX Balances (trader internal balances including Ceris Coin CRS)
+  // DEX Balances (trader internal balances including Ceris Coin CRS & Polygon POL)
   balances: {
-    '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': { DAI: 250000, BTC: 5.5, ETH: 245.5, LINK: 1200, CRS: 10000000 },
-    '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC': { DAI: 150000, BTC: 2.0, ETH: 120.0, LINK: 800, CRS: 500000 },
-    '0x90F79bf6EB2c4f870365E785982E1f101E93b906': { DAI: 300000, BTC: 4.0, ETH: 35.0, LINK: 2000, CRS: 200000 },
-    '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65': { DAI: 500000, BTC: 12.0, ETH: 80.0, LINK: 5000, CRS: 150000 },
-    '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc': { DAI: 450000, BTC: 8.5, ETH: 60.0, LINK: 4200, CRS: 100000 }
+    '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': { DAI: 250000, BTC: 5.5, ETH: 245.5, LINK: 1200, CRS: 10000000, POL: 85000 },
+    '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC': { DAI: 150000, BTC: 2.0, ETH: 120.0, LINK: 800, CRS: 500000, POL: 45000 },
+    '0x90F79bf6EB2c4f870365E785982E1f101E93b906': { DAI: 300000, BTC: 4.0, ETH: 35.0, LINK: 2000, CRS: 200000, POL: 60000 },
+    '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65': { DAI: 500000, BTC: 12.0, ETH: 80.0, LINK: 5000, CRS: 150000, POL: 120000 },
+    '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc': { DAI: 450000, BTC: 8.5, ETH: 60.0, LINK: 4200, CRS: 100000, POL: 95000 }
   },
 
   // Wallet Un-deposited Balances
   walletBalances: {
-    '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': { ETH: 15.2, DAI: 50000, BTC: 1.0, LINK: 500 },
-    '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC': { ETH: 8.5, DAI: 25000, BTC: 0.5, LINK: 250 },
-    '0x90F79bf6EB2c4f870365E785982E1f101E93b906': { ETH: 22.0, DAI: 75000, BTC: 2.0, LINK: 1000 },
-    '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65': { ETH: 50.0, DAI: 100000, BTC: 5.0, LINK: 3000 },
-    '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc': { ETH: 35.0, DAI: 80000, BTC: 3.0, LINK: 2000 }
+    '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': { ETH: 15.2, DAI: 50000, BTC: 1.0, LINK: 500, POL: 15000 },
+    '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC': { ETH: 8.5, DAI: 25000, BTC: 0.5, LINK: 250, POL: 8000 },
+    '0x90F79bf6EB2c4f870365E785982E1f101E93b906': { ETH: 22.0, DAI: 75000, BTC: 2.0, LINK: 1000, POL: 20000 },
+    '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65': { ETH: 50.0, DAI: 100000, BTC: 5.0, LINK: 3000, POL: 50000 },
+    '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc': { ETH: 35.0, DAI: 80000, BTC: 3.0, LINK: 2000, POL: 30000 }
   },
 
   // DEX Order Books per pair
@@ -120,6 +174,53 @@ const state = {
         { id: 14, trader: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc', price: 3524.00, amount: 12.0, total: 42288.00 },
         { id: 15, trader: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65', price: 3530.00, amount: 30.0, total: 105900.00 },
         { id: 16, trader: '0x90F79bf6EB2c4f870365E785982E1f101E93b906', price: 3538.00, amount: 55.0, total: 194590.00 }
+      ]
+    },
+    'CRS/DAI': {
+      markPrice: 0.50,
+      change24h: 12.85,
+      high24h: 0.55,
+      low24h: 0.44,
+      volume24h: 1850000,
+      bids: [
+        { id: 21, trader: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65', price: 0.498, amount: 25000, total: 12450.00 },
+        { id: 22, trader: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc', price: 0.495, amount: 50000, total: 24750.00 },
+        { id: 23, trader: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8', price: 0.490, amount: 100000, total: 49000.00 }
+      ],
+      asks: [
+        { id: 24, trader: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc', price: 0.502, amount: 30000, total: 15060.00 },
+        { id: 25, trader: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65', price: 0.508, amount: 65000, total: 33020.00 },
+        { id: 26, trader: '0x90F79bf6EB2c4f870365E785982E1f101E93b906', price: 0.515, amount: 120000, total: 61800.00 }
+      ]
+    },
+    'CRS/POL': {
+      markPrice: 1.48,
+      change24h: 8.40,
+      high24h: 1.55,
+      low24h: 1.36,
+      volume24h: 940000,
+      bids: [
+        { id: 27, trader: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8', price: 1.475, amount: 15000, total: 22125.00 },
+        { id: 28, trader: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC', price: 1.460, amount: 35000, total: 51100.00 }
+      ],
+      asks: [
+        { id: 29, trader: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65', price: 1.485, amount: 20000, total: 29700.00 },
+        { id: 30, trader: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc', price: 1.510, amount: 45000, total: 67950.00 }
+      ]
+    },
+    'POL/DAI': {
+      markPrice: 0.338,
+      change24h: 4.15,
+      high24h: 0.355,
+      low24h: 0.320,
+      volume24h: 3120000,
+      bids: [
+        { id: 31, trader: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc', price: 0.337, amount: 60000, total: 20220.00 },
+        { id: 32, trader: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65', price: 0.335, amount: 120000, total: 40200.00 }
+      ],
+      asks: [
+        { id: 33, trader: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8', price: 0.339, amount: 55000, total: 18645.00 },
+        { id: 34, trader: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC', price: 0.342, amount: 140000, total: 47880.00 }
       ]
     },
     'LINK/DAI': {
@@ -871,32 +972,144 @@ function renderDeFi() {
   }
 }
 
-// --- Render Arbitrage & L2 ---
+// --- Render Arbitrage & Polygon High-Speed Engine ---
 function renderArbitrage() {
+  // Update Bot Metrics Deck
+  const profitEl = document.getElementById('autoarb-metric-profit');
+  if (profitEl) profitEl.textContent = formatUSD(state.autoArbProfit) + ' DAI';
+
+  const execEl = document.getElementById('autoarb-metric-executions');
+  if (execEl) execEl.textContent = `${state.autoArbTradesCount} trades`;
+
+  const gasSavedEl = document.getElementById('autoarb-metric-gas-saved');
+  if (gasSavedEl) gasSavedEl.textContent = formatUSD(state.gasSavedVsL1) + ' Saved';
+
+  // Wire Toggle Auto-Bot Button
+  const toggleBtn = document.getElementById('toggle-autoarb-btn');
+  const toggleText = document.getElementById('toggle-autoarb-text');
+  const statusBadge = document.getElementById('autoarb-status-badge');
+  const statusText = document.getElementById('autoarb-status-text');
+
+  if (toggleBtn && !toggleBtn.dataset.wired) {
+    toggleBtn.dataset.wired = 'true';
+    toggleBtn.addEventListener('click', () => {
+      state.autoArbActive = !state.autoArbActive;
+      if (toggleText) toggleText.textContent = state.autoArbActive ? 'Pause Bot' : 'Resume Bot';
+      if (statusBadge) {
+        statusBadge.className = state.autoArbActive ? 'badge success' : 'badge';
+        statusBadge.style.background = state.autoArbActive ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)';
+        statusBadge.style.color = state.autoArbActive ? 'var(--signal-bid)' : 'var(--signal-ask)';
+      }
+      if (statusText) {
+        statusText.textContent = state.autoArbActive ? 'BOT ACTIVE • POLLING VENUES' : 'BOT PAUSED • STANDBY';
+      }
+      showToast(state.autoArbActive ? '⚡ Autonomous Arbitrage Bot active: Continuous flash loan sweep enabled' : '⏸️ Autonomous Arbitrage Bot paused', state.autoArbActive ? 'success' : 'info');
+      logTelemetry(
+        state.autoArbActive ? 'AutoArbBotStarted' : 'AutoArbBotPaused',
+        'CoinPurexArbitrageEngine',
+        state.autoArbActive ? 'Autonomous high-frequency arbitrage sweep activated across Polygon PoS' : 'Bot paused by administrator'
+      );
+    });
+  }
+
+  // Wire Execute Top Flash Arb Manual Action
   const flashLoanBtn = document.getElementById('exec-flash-arb-btn');
   if (flashLoanBtn && !flashLoanBtn.dataset.wired) {
     flashLoanBtn.dataset.wired = 'true';
     flashLoanBtn.addEventListener('click', () => {
-      showToast('Flash Loan Arbitrage executed across Layer-2 Sequencer & AMM: 44 bps captured, net profit +$2,450 DAI', 'success');
-      logTelemetry('FlashLoanArbExecuted', 'CoinPurexArbitrageEngine', 'Flash loan 500,000 DAI -> 44 bps spread captured');
+      const capturedProfit = 2450.00;
+      state.autoArbProfit += capturedProfit;
+      state.autoArbTradesCount++;
+      state.gasSavedVsL1 += 23.99;
+      state.treasury.reserves.DAI += capturedProfit;
+
+      renderArbitrage();
+      renderTreasury();
+
+      showToast('🚀 Flash Loan Arbitrage executed across Polygon QuickSwap & Order Book: 44 bps captured, net profit +$2,450.00 DAI', 'success');
+      logTelemetry('FlashLoanArbExecuted', 'CoinPurexArbitrageEngine', 'Flash loan 500,000 DAI -> 44 bps spread captured • Net profit +$2,450.00 DAI credited to Multi-Sig Treasury');
     });
   }
 
+  // Cross-Chain Divergence Radar: Polygon PoS vs Ethereum Mainnet
+  const radarGrid = document.getElementById('polygon-bridge-arb-grid');
+  if (radarGrid) {
+    const divergences = [
+      {
+        pair: 'Ceris Coin (CRS/DAI)',
+        spreadBps: '+360 bps',
+        venueA: '$0.500 (CoinPurex Order Book)',
+        venueB: '$0.518 (Polygon QuickSwap v3)',
+        gasPOL: '0.0018 POL ($0.0006)',
+        gasETH: '0.0055 ETH ($19.25)',
+        netProfit: '+$1,800.00 DAI',
+        tag: 'PRIMARY DIVERGENCE',
+        actionLabel: 'Bridge & Execute Arb'
+      },
+      {
+        pair: 'Polygon Native (POL/DAI)',
+        spreadBps: '+118 bps',
+        venueA: '$0.338 (CoinPurex DEX)',
+        venueB: '$0.342 (Polygon Uniswap v3)',
+        gasPOL: '0.0018 POL ($0.0006)',
+        gasETH: '0.0042 ETH ($14.70)',
+        netProfit: '+$620.00 DAI',
+        tag: 'HIGH LIQUIDITY',
+        actionLabel: 'Execute Polygon Arb'
+      },
+      {
+        pair: 'Ceris / POL (CRS/POL)',
+        spreadBps: '+270 bps',
+        venueA: '1.48 POL (CoinPurex)',
+        venueB: '1.52 POL (QuickSwap v3)',
+        gasPOL: '0.0018 POL ($0.0006)',
+        gasETH: 'N/A (Polygon Native)',
+        netProfit: '+$890.00 DAI',
+        tag: 'CROSS-PAIR SPREAD',
+        actionLabel: 'Execute Arb'
+      }
+    ];
+
+    radarGrid.innerHTML = divergences.map(d => `
+      <div class="sector-card" style="padding: 1.1rem; border: 1px solid rgba(168, 85, 247, 0.3); background: rgba(168, 85, 247, 0.03);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">${d.pair}</span>
+          <span class="badge" style="background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); font-size: 0.68rem;">${d.tag}</span>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--signal-bid); font-family: var(--font-mono); font-weight: 800; margin-top: 0.2rem;">
+          Spread: ${d.spreadBps} • Est. Net Profit: ${d.netProfit}
+        </div>
+        <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem;">
+          <div>Venue A: <span class="mono" style="color: var(--text-primary);">${d.venueA}</span></div>
+          <div>Venue B: <span class="mono" style="color: var(--accent-cyan);">${d.venueB}</span></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 0.6rem; font-size: 0.75rem; background: var(--bg-surface); padding: 0.4rem 0.65rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+          <div><span style="color: var(--text-muted); font-size: 0.68rem;">Polygon Gas</span> <div class="mono" style="color: #a855f7; font-weight: 700;">${d.gasPOL}</div></div>
+          <div><span style="color: var(--text-muted); font-size: 0.68rem;">Ethereum Gas</span> <div class="mono" style="color: var(--signal-ask); font-weight: 700;">${d.gasETH}</div></div>
+        </div>
+        <button class="btn-primary" style="width: 100%; margin-top: 0.65rem; padding: 0.38rem; font-size: 0.75rem; background: linear-gradient(135deg, #a855f7, #6366f1); border: none;" onclick="showToast('Executed atomic cross-chain arbitrage for ${d.pair}: ${d.netProfit} harvested to Treasury via Polygon PoS', 'success'); logTelemetry('CrossChainArbExecuted', 'CoinPurexPolygonRelay', 'Spread: ${d.spreadBps} on ${d.pair} • Gas saved: 99.98% vs L1');">
+          ${d.actionLabel}
+        </button>
+      </div>
+    `).join('');
+  }
+
+  // Connected Multi-Chain Liquidity Networks
   const netContainer = document.getElementById('crosschain-networks-container');
   if (netContainer) {
     const networks = [
+      { name: 'Polygon PoS Scaling Bridge', chainId: 'EVM 137', status: 'ACTIVE', latency: '24ms', tvl: '$185.4M', tag: 'CHECKPOINT SYNC • SUB-CENT GAS' },
       { name: 'Layer-2 ZK-Rollup Relay', chainId: 'EVM 324', status: 'ACTIVE', latency: '12ms', tvl: '$48.2M', tag: 'ZERO KNOWLEDGE' },
       { name: 'Optimistic Execution Layer', chainId: 'EVM 42161', status: 'ACTIVE', latency: '18ms', tvl: '$94.6M', tag: 'OPTIMISTIC ROLLUP' },
-      { name: 'Sovereign High-Throughput L2', chainId: 'EVM 8453', status: 'ACTIVE', latency: '8ms', tvl: '$112.5M', tag: 'FAST FINALITY' },
-      { name: 'Multi-Chain PoS Scaling Bridge', chainId: 'EVM 137', status: 'ACTIVE', latency: '24ms', tvl: '$35.1M', tag: 'CHECKPOINT SYNC' }
+      { name: 'Sovereign High-Throughput L2', chainId: 'EVM 8453', status: 'ACTIVE', latency: '8ms', tvl: '$112.5M', tag: 'FAST FINALITY' }
     ];
     netContainer.innerHTML = networks.map(net => `
-      <div class="sector-card" style="padding: 1.1rem;">
+      <div class="sector-card" style="padding: 1.1rem; ${net.chainId === 'EVM 137' ? 'border: 1px solid rgba(168, 85, 247, 0.4); background: rgba(168, 85, 247, 0.04);' : ''}">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-weight: 800; font-size: 0.95rem; color: var(--text-primary);">${net.name}</span>
           <span class="badge bid">${net.status}</span>
         </div>
-        <div style="font-size: 0.72rem; color: var(--accent-cyan); font-family: var(--font-mono);">${net.chainId} • ${net.tag}</div>
+        <div style="font-size: 0.72rem; color: ${net.chainId === 'EVM 137' ? '#c084fc' : 'var(--accent-cyan)'}; font-family: var(--font-mono);">${net.chainId} • ${net.tag}</div>
         <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem; background: var(--bg-surface); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
           <div><span style="color: var(--text-muted); font-size: 0.7rem;">Bridge Latency</span> <div class="mono" style="font-weight: 700; color: var(--signal-bid);">${net.latency}</div></div>
           <div><span style="color: var(--text-muted); font-size: 0.7rem;">Bridge Liquidity</span> <div class="mono" style="font-weight: 700;">${net.tvl}</div></div>
@@ -905,13 +1118,16 @@ function renderArbitrage() {
     `).join('');
   }
 
+  // Live Spreads Table
   const spreadsBody = document.getElementById('arbitrage-spreads-body');
   if (spreadsBody) {
     const opps = [
-      { pair: 'BTC/DAI', venueA: '$68,450.00 (CoinPurex)', venueB: '$68,690.00 (L2 AMM)', spread: '+35 bps', profit: '+$4,820.00' },
-      { pair: 'ETH/DAI', venueA: '$3,520.00 (CoinPurex)', venueB: '$3,535.50 (L2 AMM)', spread: '+44 bps', profit: '+$2,450.00' },
-      { pair: 'SOL/DAI', venueA: '$182.40 (CoinPurex)', venueB: '$183.15 (L2 AMM)', spread: '+41 bps', profit: '+$1,280.00' },
-      { pair: 'LINK/DAI', venueA: '$18.75 (CoinPurex)', venueB: '$18.82 (L2 AMM)', spread: '+37 bps', profit: '+$640.00' }
+      { pair: 'CRS/DAI', venueA: '$0.500 (CoinPurex)', venueB: '$0.518 (Polygon QuickSwap)', spread: '+360 bps', gas: '0.0018 POL ($0.0006)', profit: '+$1,800.00' },
+      { pair: 'CRS/POL', venueA: '1.48 POL (CoinPurex)', venueB: '1.52 POL (QuickSwap v3)', spread: '+270 bps', gas: '0.0018 POL ($0.0006)', profit: '+$890.00' },
+      { pair: 'POL/DAI', venueA: '$0.338 (CoinPurex)', venueB: '$0.342 (Polygon Uniswap)', spread: '+118 bps', gas: '0.0018 POL ($0.0006)', profit: '+$620.00' },
+      { pair: 'BTC/DAI', venueA: '$68,450.00 (CoinPurex)', venueB: '$68,690.00 (L2 AMM)', spread: '+35 bps', gas: '0.00008 ETH ($0.28)', profit: '+$4,820.00' },
+      { pair: 'ETH/DAI', venueA: '$3,520.00 (CoinPurex)', venueB: '$3,535.50 (L2 AMM)', spread: '+44 bps', gas: '0.00008 ETH ($0.28)', profit: '+$2,450.00' },
+      { pair: 'LINK/DAI', venueA: '$18.75 (CoinPurex)', venueB: '$18.82 (L2 AMM)', spread: '+37 bps', gas: '0.00008 ETH ($0.28)', profit: '+$640.00' }
     ];
     spreadsBody.innerHTML = opps.map(o => `
       <tr>
@@ -919,6 +1135,7 @@ function renderArbitrage() {
         <td class="mono">${o.venueA}</td>
         <td class="mono">${o.venueB}</td>
         <td class="mono" style="color: var(--signal-bid); font-weight: 700;">${o.spread}</td>
+        <td class="mono" style="color: #a855f7; font-size: 0.75rem;">${o.gas}</td>
         <td class="mono" style="color: var(--signal-bid); font-weight: 700;">${o.profit}</td>
         <td>
           <button class="btn-primary" style="padding: 0.3rem 0.65rem; font-size: 0.72rem;" onclick="showToast('Executed atomic flash loan arbitrage on ${o.pair}: ${o.profit} net profit', 'success'); logTelemetry('FlashArbExecuted', 'CoinPurexArb', 'Spread: ${o.spread} on ${o.pair}');">
@@ -928,6 +1145,77 @@ function renderArbitrage() {
       </tr>
     `).join('');
   }
+}
+
+function initNetworkSwitcher() {
+  const select = document.getElementById('network-select');
+  if (!select || select.dataset.wired) return;
+  select.dataset.wired = 'true';
+
+  select.addEventListener('change', (e) => {
+    const netKey = e.target.value;
+    const net = NETWORKS[netKey] || NETWORKS.polygon;
+    state.currentNetwork = net;
+
+    // Update Cockpit Bar
+    const netLabel = document.getElementById('cockpit-network-label');
+    const gasLabel = document.getElementById('cockpit-gas-label');
+    const finalityLabel = document.getElementById('cockpit-finality-label');
+    const netDot = document.getElementById('network-dot');
+
+    if (netLabel) {
+      netLabel.textContent = `${net.icon} ${net.name}`;
+      netLabel.style.color = net.badgeColor;
+    }
+    if (gasLabel) {
+      gasLabel.textContent = net.gasLabel;
+    }
+    if (finalityLabel) {
+      finalityLabel.textContent = net.finality;
+    }
+    if (netDot) {
+      netDot.style.background = net.badgeColor;
+      netDot.style.boxShadow = `0 0 8px ${net.badgeColor}`;
+    }
+
+    logTelemetry('NetworkSwitched', 'CoinPurexRelay', `Active execution network set to ${net.name} (ChainID ${net.chainId}) • Finality: ${net.finality}`);
+    showToast(`Switched active network to ${net.name}. Gas fee: ${net.gasLabel}`, 'success');
+
+    if (state.currentTab === 'arbitrage') {
+      renderArbitrage();
+    }
+  });
+}
+
+function executeAutonomousFlashArbitrageStep() {
+  if (!state.autoArbActive) return;
+
+  const pairs = ['CRS/DAI', 'CRS/POL', 'POL/DAI', 'BTC/DAI', 'ETH/DAI'];
+  const pair = pairs[Math.floor(Math.random() * pairs.length)];
+  const bps = Math.floor(18 + Math.random() * 45); // 18 to 63 bps
+  const profit = Number((60 + Math.random() * 320).toFixed(2)); // $60 - $380
+  const gasSaved = 23.9994;
+
+  state.autoArbProfit += profit;
+  state.autoArbTradesCount++;
+  state.gasSavedVsL1 += gasSaved;
+  state.treasury.reserves.DAI += profit;
+
+  logTelemetry(
+    'AutonomousFlashArbHarvested',
+    'CoinPurexArbitrageEngine',
+    `Flash Arb on ${pair} -> +${bps} bps captured • Net profit +$${profit.toFixed(2)} DAI credited to Treasury`
+  );
+
+  // Update UI elements in DOM if visible
+  const profitEl = document.getElementById('autoarb-metric-profit');
+  if (profitEl) profitEl.textContent = formatUSD(state.autoArbProfit) + ' DAI';
+
+  const execEl = document.getElementById('autoarb-metric-executions');
+  if (execEl) execEl.textContent = `${state.autoArbTradesCount} trades`;
+
+  const gasEl = document.getElementById('autoarb-metric-gas-saved');
+  if (gasEl) gasEl.textContent = formatUSD(state.gasSavedVsL1) + ' Saved';
 }
 
 // --- Render Tokenized RWAs & Clearing ---
@@ -2421,6 +2709,11 @@ function initRealLiveDataStreams() {
       });
     }
   }, 8000);
+
+  // 4. Periodic autonomous Flash Arbitrage sweep (every 6s)
+  setInterval(() => {
+    executeAutonomousFlashArbitrageStep();
+  }, 6000);
 }
 
 // --- Trader Sovereign Authentication Handlers ---
@@ -2604,6 +2897,7 @@ function initOfferingHandlers() {
 // --- App Bootstrap ---
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
+  initNetworkSwitcher();
   initChartToolbar();
   initOrderForm();
   initTreasuryControls();

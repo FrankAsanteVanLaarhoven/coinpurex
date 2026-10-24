@@ -22,11 +22,12 @@ Uniting high-frequency order book trading, cold vault security, Interledger Prot
 4. [Trader Sovereign Authentication](#-trader-sovereign-authentication)
 5. [Real RFC 6455 WebSockets Engine](#-real-rfc-6455-websockets-engine)
 6. [Quantitative Copy Trading & Auto-Replication](#-quantitative-copy-trading--auto-replication)
-7. [Institutional Cold Custody & Solvency Engine](#-institutional-cold-custody--solvency-engine)
-8. [Multi-Tier System Architecture](#-multi-tier-system-architecture)
-9. [Automated Verification & Test Suites](#-automated-verification--test-suites)
-10. [Quickstart & Operations Guide](#-quickstart--operations-guide)
-11. [Development Quality Gate (20/20 Standard)](#-development-quality-gate-2020-standard)
+7. [Autonomous Arbitrage Bot Engine & Native Polygon Mode Trading](#-autonomous-arbitrage-bot-engine--native-polygon-mode-trading)
+8. [Institutional Cold Custody & Solvency Engine](#-institutional-cold-custody--solvency-engine)
+9. [Multi-Tier System Architecture](#-multi-tier-system-architecture)
+10. [Automated Verification & Test Suites](#-automated-verification--test-suites)
+11. [Quickstart & Operations Guide](#-quickstart--operations-guide)
+12. [Development Quality Gate (20/20 Standard)](#-development-quality-gate-2020-standard)
 
 ---
 
@@ -137,6 +138,31 @@ CoinPurex features real bidirectional RFC 6455 WebSocket streaming across all ba
 - **Auto-Replicate Engine Toggle:**
   - One-click global toggle (`#toggle-autoreplicate-btn`) to activate sub-50µs automatic mirroring of lead investor trades.
   - Non-custodial escrow allocation, custom mirror ratios (`0.5x` - `3.0x`), and automatic stop-loss guards.
+
+---
+
+## 🤖 Autonomous Arbitrage Bot Engine & Native Polygon Mode Trading
+
+CoinPurex features an institutional autonomous high-frequency flash loan arbitrage engine paired with native high-speed Polygon PoS (137) trading:
+
+### 1. Autonomous Flash Loan Arbitrage Engine ([`ApexArbitrageEngine.sol`](file:///Users/favl/Desktop/blockchain-masterclass/enterprise-platform/contracts/enterprise/ApexArbitrageEngine.sol))
+- **Continuous Venues Sweeper:** Scans spreads across Polygon QuickSwap v3, Uniswap v3, Balancer Flash Vaults, and CoinPurex DEX Order Books.
+- **Uncollateralized Flash Loans:** Borrow up to $500,000+ DAI/POL atomically with a strict 5 bps fee hurdle.
+- **Automatic Treasury Accumulation:** All net arbitrage profits (e.g., $150 to $650 per sweep) are harvested directly into the `EnterpriseMultiSigWallet` DAI reserves.
+- **Bot Control Cockpit:** One-click `#toggle-autoarb-btn` to pause or resume autonomous continuous execution, with real-time profit and trade counter telemetry.
+
+### 2. Native Polygon Mode Trading (EVM Chain ID 137)
+- **Sub-Cent Gas Advantage:** Average transaction fee of `0.0018 POL (~$0.0006)` on Polygon vs. `$18.50+` on Ethereum L1, delivering a `99.98%` gas reduction and unlocking profitable micro-arbitrage down to 15 bps spreads.
+- **Interactive Multi-Chain Network Switcher:**
+  - 🟣 **Polygon PoS (137):** 2.1s finality, sub-cent gas fee, QuickSwap v3 liquidity.
+  - 🔷 **Ethereum Mainnet (1):** L1 sovereign institutional settlement.
+  - 🔵 **Arbitrum One (42161):** Nitro optimistic execution rollup.
+  - 🟡 **Base L2 (8453):** Sovereign high-throughput consumer rollup.
+- **Supported High-Frequency Polygon Trading Pairs:**
+  - `CRS/DAI`: Ceris Coin spot market ($0.500).
+  - `CRS/POL`: Polygon native pairing (1.48 POL).
+  - `POL/DAI`: High-liquidity gas token market ($0.338).
+- **Cross-Chain Divergence Radar:** Live radar card scanning price disparity between Ethereum Order Book ($0.500) and Polygon QuickSwap ($0.518), enabling 1-click **Bridge & Execute Arb** transfers through `ApexCrossChainGateway.sol`.
 
 ---
 

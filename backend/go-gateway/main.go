@@ -704,6 +704,164 @@ func handleOffering(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+type ArbitrageOpportunity struct {
+	Pair             string  `json:"pair"`
+	VenueA           string  `json:"venueA"`
+	VenueB           string  `json:"venueB"`
+	SpreadBps        int     `json:"spreadBps"`
+	EstGasUSD        float64 `json:"estGasUsd"`
+	EstProfitUSD     float64 `json:"estProfitUsd"`
+	IsPolygonOptimal bool    `json:"isPolygonOptimal"`
+}
+
+type ArbitrageEngineStatus struct {
+	AutonomousActive  bool                   `json:"autonomousActive"`
+	Status            string                 `json:"status"`
+	TotalProfitUSD    float64                `json:"totalProfitUsd"`
+	TotalExecutions   int                    `json:"totalExecutions"`
+	GasSavedVsL1USD   float64                `json:"gasSavedVsL1Usd"`
+	ActiveVenues      []string               `json:"activeVenues"`
+	Opportunities     []ArbitrageOpportunity `json:"opportunities"`
+	LastScanTimestamp int64                  `json:"lastScanTimestamp"`
+}
+
+type NetworkConfig struct {
+	ID        string  `json:"id"`
+	Name      string  `json:"name"`
+	ChainID   int     `json:"chainId"`
+	Currency  string  `json:"currency"`
+	GasPrice  string  `json:"gasPrice"`
+	GasUSD    float64 `json:"gasUsd"`
+	Finality  string  `json:"finality"`
+	LatencyMs int     `json:"latencyMs"`
+	Status    string  `json:"status"`
+	Tag       string  `json:"tag"`
+}
+
+func handleArbitrage(w http.ResponseWriter, r *http.Request) {
+	enableCORS(w)
+	if r.Method == http.MethodOptions {
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	status := ArbitrageEngineStatus{
+		AutonomousActive:  true,
+		Status:            "BOT ACTIVE • POLLING VENUES",
+		TotalProfitUSD:    28450.00,
+		TotalExecutions:   68,
+		GasSavedVsL1USD:   1632.40,
+		ActiveVenues:      []string{"Polygon PoS QuickSwap v3", "Ethereum Uniswap v3", "Balancer Flash Vault", "CoinPurex DEX Order Book"},
+		LastScanTimestamp: time.Now().Unix(),
+		Opportunities: []ArbitrageOpportunity{
+			{
+				Pair:             "CRS/DAI",
+				VenueA:           "$0.500 (CoinPurex Order Book)",
+				VenueB:           "$0.518 (Polygon QuickSwap)",
+				SpreadBps:        360,
+				EstGasUSD:        0.0006,
+				EstProfitUSD:     1800.00,
+				IsPolygonOptimal: true,
+			},
+			{
+				Pair:             "CRS/POL",
+				VenueA:           "1.48 POL (CoinPurex)",
+				VenueB:           "1.52 POL (QuickSwap v3)",
+				SpreadBps:        270,
+				EstGasUSD:        0.0006,
+				EstProfitUSD:     890.00,
+				IsPolygonOptimal: true,
+			},
+			{
+				Pair:             "POL/DAI",
+				VenueA:           "$0.338 (CoinPurex)",
+				VenueB:           "$0.342 (Polygon Uniswap)",
+				SpreadBps:        118,
+				EstGasUSD:        0.0006,
+				EstProfitUSD:     620.00,
+				IsPolygonOptimal: true,
+			},
+			{
+				Pair:             "BTC/DAI",
+				VenueA:           "$68,450.00 (CoinPurex)",
+				VenueB:           "$68,690.00 (L2 AMM)",
+				SpreadBps:        35,
+				EstGasUSD:        0.0018,
+				EstProfitUSD:     4820.00,
+				IsPolygonOptimal: true,
+			},
+			{
+				Pair:             "ETH/DAI",
+				VenueA:           "$3,520.00 (CoinPurex)",
+				VenueB:           "$3,535.50 (L2 AMM)",
+				SpreadBps:        44,
+				EstGasUSD:        0.0018,
+				EstProfitUSD:     2450.00,
+				IsPolygonOptimal: true,
+			},
+		},
+	}
+	json.NewEncoder(w).Encode(status)
+}
+
+func handleNetworks(w http.ResponseWriter, r *http.Request) {
+	enableCORS(w)
+	if r.Method == http.MethodOptions {
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	networks := []NetworkConfig{
+		{
+			ID:        "polygon",
+			Name:      "Polygon PoS (137)",
+			ChainID:   137,
+			Currency:  "POL",
+			GasPrice:  "0.0018 POL (~$0.0006)",
+			GasUSD:    0.0006,
+			Finality:  "2.1s",
+			LatencyMs: 24,
+			Status:    "ACTIVE",
+			Tag:       "CHECKPOINT SYNC",
+		},
+		{
+			ID:        "ethereum",
+			Name:      "Ethereum Mainnet (1)",
+			ChainID:   1,
+			Currency:  "ETH",
+			GasPrice:  "0.0035 ETH (~$12.30)",
+			GasUSD:    12.30,
+			Finality:  "12.8s",
+			LatencyMs: 45,
+			Status:    "ACTIVE",
+			Tag:       "L1 SECURE SETTLEMENT",
+		},
+		{
+			ID:        "arbitrum",
+			Name:      "Arbitrum One (42161)",
+			ChainID:   42161,
+			Currency:  "ETH",
+			GasPrice:  "0.00008 ETH (~$0.28)",
+			GasUSD:    0.28,
+			Finality:  "0.6s",
+			LatencyMs: 18,
+			Status:    "ACTIVE",
+			Tag:       "OPTIMISTIC ROLLUP",
+		},
+		{
+			ID:        "base",
+			Name:      "Base L2 (8453)",
+			ChainID:   8453,
+			Currency:  "ETH",
+			GasPrice:  "0.00004 ETH (~$0.14)",
+			GasUSD:    0.14,
+			Finality:  "0.4s",
+			LatencyMs: 8,
+			Status:    "ACTIVE",
+			Tag:       "FAST FINALITY",
+		},
+	}
+	json.NewEncoder(w).Encode(networks)
+}
+
 func main() {
 	go startLivePricePoller()
 	go startWsBroadcaster()
@@ -718,6 +876,8 @@ func main() {
 	mux.HandleFunc("/api/v1/offering", handleOffering)
 	mux.HandleFunc("/api/v1/copytraders", handleCopyTraders)
 	mux.HandleFunc("/api/v1/prices", handlePrices)
+	mux.HandleFunc("/api/v1/arbitrage", handleArbitrage)
+	mux.HandleFunc("/api/v1/networks", handleNetworks)
 	mux.HandleFunc("/api/v1/news", handleNews)
 	mux.HandleFunc("/api/v1/stream", handleLiveStream)
 	mux.HandleFunc("/ws", handleWebSocket)
