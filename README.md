@@ -41,11 +41,11 @@ Built by synthesizing and elevating all 7 sections of the Blockchain Masterclass
 
 ## 🚀 Verification & Testing
 
-### 1. Smart Contract Verification Suite (35 Tests)
+### 1. Smart Contract & Token Verification Suite (46 Tests)
 ```bash
 npm test
 ```
-All 35 automated contract verification tests pass deterministically in 0.00s.
+All 46 automated contract verification tests pass deterministically in 0.00s.
 
 ### 2. High-Throughput Go Gateway Tests
 ```bash

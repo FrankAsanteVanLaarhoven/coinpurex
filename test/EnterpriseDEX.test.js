@@ -331,8 +331,56 @@ async function runDEXTests() {
         }, /CannotTradeQuoteToken/);
     });
 
+    test('should execute Market SELL order matching single limit BUY order', () => {
+        const dex = setupDEX();
+        // Trader 1 places limit BUY for 2 BTC at 50,000 DAI
+        dex.createLimitOrder(trader1, BTC, 2n, 50000n, SIDE.BUY);
+
+        const t2BtcBefore = dex._getBalance(trader2, BTC);
+        const t2DaiBefore = dex._getBalance(trader2, DAI);
+
+        // Trader 2 executes market SELL of 2 BTC
+        dex.createMarketOrder(trader2, BTC, 2n, SIDE.SELL);
+
+        assert.strictEqual(dex._getBalance(trader2, BTC), t2BtcBefore - 2n);
+        assert.strictEqual(dex._getBalance(trader2, DAI), t2DaiBefore + 100000n);
+        assert.strictEqual(dex.orderBook[BTC][SIDE.BUY].length, 0); // Filled
+        assert.strictEqual(dex.trades.length, 1);
+    });
+
+    test('should execute Market SELL order matching across multiple book levels with descending price priority', () => {
+        const dex = setupDEX();
+        // Higher price first (descending priority for bids)
+        dex.createLimitOrder(trader1, BTC, 1n, 52000n, SIDE.BUY); // Level 1 (better price)
+        dex.createLimitOrder(trader1, BTC, 2n, 50000n, SIDE.BUY); // Level 2
+
+        // Market SELL of 2 BTC should take 1 BTC @ 52,000 first, then 1 BTC @ 50,000
+        dex.createMarketOrder(trader2, BTC, 2n, SIDE.SELL);
+
+        assert.strictEqual(dex.trades.length, 2);
+        assert.strictEqual(dex.trades[0].price, 52000n);
+        assert.strictEqual(dex.trades[0].amount, 1n);
+        assert.strictEqual(dex.trades[1].price, 50000n);
+        assert.strictEqual(dex.trades[1].amount, 1n);
+
+        // Level 2 should have 1 BTC remaining
+        const buyBook = dex.orderBook[BTC][SIDE.BUY];
+        assert.strictEqual(buyBook.length, 1);
+        assert.strictEqual(buyBook[0].amount, 2n);
+        assert.strictEqual(buyBook[0].filled, 1n);
+    });
+
+    test('should NOT create market SELL order if trader balance is insufficient', () => {
+        const dex = setupDEX();
+        dex.createLimitOrder(trader1, BTC, 1n, 50000n, SIDE.BUY);
+        assert.throws(() => {
+            dex.createMarketOrder(trader2, BTC, 1000n, SIDE.SELL); // trader2 only has 5 BTC
+        }, /TokenBalanceTooLow/);
+    });
+
     console.log(`Summary: ${passed} passed, ${failed} failed.\n`);
     if (failed > 0) process.exit(1);
+    return { passed, failed };
 }
 
 module.exports = { runDEXTests, SimulatedDEX };

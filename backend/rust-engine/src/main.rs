@@ -313,4 +313,113 @@ mod tests {
         assert_eq!(trades.len(), 1);
         assert_eq!(trades[0].maker_order_id, 2, "Must match MakerB with better price");
     }
+
+    #[test]
+    fn test_multilevel_sweep_and_partial_fill() {
+        let mut book = OrderBook::new("BTC/DAI");
+        book.add_limit_order(Order {
+            id: 1,
+            trader_id: "0xMaker1".into(),
+            side: Side::Sell,
+            price: 68000_000000,
+            amount: 30,
+            filled: 0,
+            is_lead_trader: false,
+        });
+        book.add_limit_order(Order {
+            id: 2,
+            trader_id: "0xMaker2".into(),
+            side: Side::Sell,
+            price: 68100_000000,
+            amount: 50,
+            filled: 0,
+            is_lead_trader: false,
+        });
+
+        // Taker wants 50 units (sweeps 30 from Maker1, 20 from Maker2)
+        let taker = Order {
+            id: 3,
+            trader_id: "0xTaker".into(),
+            side: Side::Buy,
+            price: 68200_000000,
+            amount: 50,
+            filled: 0,
+            is_lead_trader: false,
+        };
+
+        let trades = book.match_order(taker);
+        assert_eq!(trades.len(), 2);
+        assert_eq!(trades[0].price, 68000_000000);
+        assert_eq!(trades[0].amount, 30);
+        assert_eq!(trades[1].price, 68100_000000);
+        assert_eq!(trades[1].amount, 20);
+
+        // Level 2 ask should still have 30 units remaining
+        let remaining_asks = book.asks.get(&68100_000000).unwrap();
+        assert_eq!(remaining_asks.len(), 1);
+        assert_eq!(remaining_asks[0].filled, 20);
+    }
+
+    #[test]
+    fn test_sell_order_matching_bids() {
+        let mut book = OrderBook::new("BTC/DAI");
+        book.add_limit_order(Order {
+            id: 1,
+            trader_id: "0xBidLow".into(),
+            side: Side::Buy,
+            price: 67900_000000,
+            amount: 40,
+            filled: 0,
+            is_lead_trader: false,
+        });
+        book.add_limit_order(Order {
+            id: 2,
+            trader_id: "0xBidHigh".into(),
+            side: Side::Buy,
+            price: 68000_000000,
+            amount: 40,
+            filled: 0,
+            is_lead_trader: false,
+        });
+
+        // Sell order of 50 units @ 67800 should match highest bid (68000) first
+        let taker = Order {
+            id: 3,
+            trader_id: "0xSeller".into(),
+            side: Side::Sell,
+            price: 67800_000000,
+            amount: 50,
+            filled: 0,
+            is_lead_trader: false,
+        };
+
+        let trades = book.match_order(taker);
+        assert_eq!(trades.len(), 2);
+        assert_eq!(trades[0].maker_order_id, 2, "Must match BidHigh first");
+        assert_eq!(trades[0].amount, 40);
+        assert_eq!(trades[1].maker_order_id, 1, "Must match BidLow next");
+        assert_eq!(trades[1].amount, 10);
+    }
+
+    #[test]
+    fn test_unfilled_limit_order_rests_on_book() {
+        let mut book = OrderBook::new("BTC/DAI");
+        let limit_buy = Order {
+            id: 1,
+            trader_id: "0xBuyer".into(),
+            side: Side::Buy,
+            price: 67500_000000,
+            amount: 25,
+            filled: 0,
+            is_lead_trader: false,
+        };
+
+        let trades = book.match_order(limit_buy);
+        assert_eq!(trades.len(), 0, "No trades when book is empty");
+
+        // Order must rest on bids
+        let bids = book.bids.get(&67500_000000).unwrap();
+        assert_eq!(bids.len(), 1);
+        assert_eq!(bids[0].amount, 25);
+    }
 }

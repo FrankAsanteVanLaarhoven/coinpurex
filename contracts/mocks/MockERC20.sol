@@ -89,4 +89,25 @@ contract MockERC20 {
         mint(to, amount);
         emit FaucetDispensed(to, amount);
     }
+
+    /**
+     * @notice Burns tokens from an account with balance & allowance verification.
+     * @param from Account whose tokens will be burned.
+     * @param amount Token volume to burn.
+     */
+    function burn(address from, uint256 amount) public {
+        if (from == address(0)) revert ZeroAddress();
+        if (balanceOf[from] < amount) {
+            revert InsufficientBalance(from, amount, balanceOf[from]);
+        }
+        if (msg.sender != from && allowance[from][msg.sender] != type(uint256).max) {
+            if (allowance[from][msg.sender] < amount) {
+                revert InsufficientAllowance(msg.sender, amount, allowance[from][msg.sender]);
+            }
+            allowance[from][msg.sender] -= amount;
+        }
+        balanceOf[from] -= amount;
+        totalSupply -= amount;
+        emit Transfer(from, address(0), amount);
+    }
 }

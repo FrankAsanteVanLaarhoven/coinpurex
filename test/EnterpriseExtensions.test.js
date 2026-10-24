@@ -331,6 +331,7 @@ async function runExtensionTests() {
 
     console.log(`Summary: ${passed} passed, ${failed} failed.\n`);
     if (failed > 0) process.exit(1);
+    return { passed, failed };
 }
 
 module.exports = { runExtensionTests };

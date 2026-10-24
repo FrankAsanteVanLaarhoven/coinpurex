@@ -5,9 +5,9 @@
 - **Scope and classification:** Local development & institutional preview build for APEX Enterprise Sovereign DEX, Cold Custody, and Multi-Sig Treasury Platform.
 - **Viewports and browser/device:** Desktop (1440x900, 1280x800), Tablet (768x1024), Small Mobile (375x812 iPhone / 360x740 Android).
 - **Commands and evidence paths:**
-  - Contract verification suite: `npm test` -> 35 tests passed in 0.00s.
-  - Go gateway API test suite: `cd backend/go-gateway && go test -v ./...` -> 2 passed in 0.00s.
-  - Rust matching engine test suite: `cd backend/rust-engine && cargo test` -> 2 passed in 0.00s.
+  - Contract verification suite: `npm test` -> 46 tests passed in 0.00s.
+  - Go gateway API test suite: `cd backend/go-gateway && go test -v ./...` -> 5 passed in 0.38s.
+  - Rust matching engine test suite: `cd backend/rust-engine && cargo test` -> 5 passed in 0.00s.
   - HTTP Server: `npm start` -> serving `frontend/public` on port 4200.
 
 ---
