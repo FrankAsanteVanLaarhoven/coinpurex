@@ -20,7 +20,7 @@ async function main() {
         console.log('   - EnterpriseMultiSigWallet (M-of-N Quorum, Multi-Asset, Governance)');
         console.log('   - EnterpriseDEX (Order Book, Price Priority, Matching Engine, Fills)');
         console.log('   - SOTA Extensions (DeFi Vaults, Polygon/Arbitrum, Arbitrage, Securities, FTPS)');
-        console.log('   - Enterprise Custody (Coinbase 48h Time-Lock, Proof of Solvency, XRPL Preimage Escrows)');
+        console.log('   - Enterprise Custody (48h Time-Locked Delay, Proof of Solvency, Cryptographic Preimage Escrows)');
         console.log('===============================================================\n');
     } catch (err) {
         console.error('Test run failed:', err);

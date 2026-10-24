@@ -1,6 +1,6 @@
 /**
  * APEX ENTERPRISE PLATFORM - CLIENT APPLICATION
- * Combines Apple Clean Precision with Institutional High-Density Telemetry.
+ * Combines Clean Precision Ergonomics with Institutional High-Density Telemetry.
  * Zero-dependency, native ES6+ interactive Web3 architecture.
  */
 
@@ -167,7 +167,7 @@ const state = {
     { block: 19842005, event: 'OrderCreated', emitter: 'EnterpriseDEX', details: 'Limit BUY: 1.25 BTC @ 68420.00 DAI by 0x15d3...6A65' }
   ],
 
-  // Quantitative Fund Managers (Superior to eToro)
+  // Quantitative Fund Managers (Institutional Copy Trading)
   copyTraders: [
     {
       id: 'kvoss',
@@ -525,7 +525,7 @@ function renderAppViews() {
   else if (state.currentTab === 'telemetry') renderTelemetry();
 }
 
-// --- Render Copy Trading (Superior to eToro) ---
+// --- Render Quantitative Copy Trading ---
 function renderCopyTrading() {
   const grid = document.getElementById('traders-leaderboard-grid');
   if (grid) {

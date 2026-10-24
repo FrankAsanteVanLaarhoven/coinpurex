@@ -301,7 +301,7 @@ async function runExtensionTests() {
         assert.strictEqual(gateway.batches[batchId].settled, true);
     });
 
-    // Coinbase Custody & XRPL Security Tests
+    // Cold Storage Custody & Cryptographic Escrows Tests
     test('ApexCustodyVault: should publish cryptographic Merkle Proof of Solvency', () => {
         const vault = new SimulatedCustodyVault('0xSecurityOfficer');
         vault.publishProofOfSolvency('0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d', 850000000n);
@@ -319,7 +319,7 @@ async function runExtensionTests() {
         assert.strictEqual(vault.withdrawals[reqId].aborted, true);
     });
 
-    test('ApexCustodyVault: should support XRPL conditional preimage escrows and trustlines', () => {
+    test('ApexCustodyVault: should support conditional preimage escrows and trustlines', () => {
         const vault = new SimulatedCustodyVault('0xSecurityOfficer');
         vault.setTrustline('0xTrader1', '0xRLUSD', 5000000n, true);
         assert.strictEqual(vault.trustlines['0xTrader1_0xRLUSD'].authorized, true);

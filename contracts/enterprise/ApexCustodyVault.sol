@@ -3,10 +3,10 @@ pragma solidity ^0.8.20;
 
 /**
  * @title ApexCustodyVault
- * @notice Enterprise Cold Storage Custody Vault engineered to Coinbase Institutional & XRP Ledger (XRPL) Security Specifications:
- *         1. Time-Locked Delayed Settlements with 48-Hour Abort Window (Coinbase Vault Model).
- *         2. Cryptographic Preimage Escrows (XRPL-style Conditional Escrow / Interledger Protocol RFC-2004).
- *         3. Trustline Limits with Jurisdictional Issuance Authorization (XRPL Trustline Standard).
+ * @notice Enterprise Cold Storage Custody Vault engineered to Institutional Cold Storage & Cryptographic Preimage Escrow Specifications:
+ *         1. Time-Locked Delayed Settlements with 48-Hour Abort Window (Autonomous Cold Delay Model).
+ *         2. Cryptographic Preimage Escrows (Cryptographic Conditional Escrow / Interledger Protocol RFC-2004).
+ *         3. Trustline Limits with Jurisdictional Issuance Authorization (Sovereign Trustline Standard).
  *         4. Real-time Merkle Root Proof-of-Solvency Attestations.
  *         5. FATF Travel Rule (TRISA) compliance validation.
  */
@@ -20,7 +20,7 @@ contract ApexCustodyVault {
     bytes32 public latestSolvencyMerkleRoot;
     uint256 public lastSolvencyTimestamp;
 
-    // --- Coinbase-Style Time-Locked Withdrawal Struct ---
+    // --- Autonomous Time-Locked Withdrawal Struct ---
     struct WithdrawalRequest {
         uint256 id;
         address asset;
@@ -85,7 +85,7 @@ contract ApexCustodyVault {
     }
 
     /**
-     * @notice Publishes a cryptographic Merkle Root proving 1:1 asset backing on-chain (Coinbase/Kraken reserve standard)
+     * @notice Publishes a cryptographic Merkle Root proving 1:1 asset backing on-chain (Institutional reserve standard)
      */
     function publishProofOfSolvency(bytes32 _merkleRoot, uint256 _totalAUM) external onlyAdmin {
         require(_merkleRoot != bytes32(0), "ApexCustody: Invalid merkle root");
@@ -139,7 +139,7 @@ contract ApexCustodyVault {
     }
 
     /**
-     * @notice Emergency abort of any pending withdrawal by Security Officer (Coinbase Vault emergency protection)
+     * @notice Emergency abort of any pending withdrawal by Security Officer (Autonomous cold vault emergency protection)
      */
     function abortVaultWithdrawal(uint256 _requestId, string calldata _reason) external onlySecurityOfficer {
         WithdrawalRequest storage req = withdrawals[_requestId];

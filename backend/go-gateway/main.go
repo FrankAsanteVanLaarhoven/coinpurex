@@ -93,7 +93,7 @@ var (
 			Category:  "SECURITIES / RWA",
 			Sentiment: "bullish",
 			Time:      "2m ago",
-			Source:    "Bloomberg Financial",
+			Source:    "Institutional Wire Feeds",
 			Summary:   "Institutional liquidity providers now settle real-world US Treasury yields on-chain via ERC-3643 compliant permissioned smart contracts.",
 		},
 		{
@@ -129,7 +129,7 @@ var (
 			Category:  "FTPS / SETTLEMENT",
 			Sentiment: "neutral",
 			Time:      "45m ago",
-			Source:    "Reuters Financial",
+			Source:    "Global Financial Wire",
 			Summary:   "Automated SFTP pipeline synchronizes off-chain institutional trade batches with on-chain Merkle root cryptographic proofs.",
 		},
 	}
