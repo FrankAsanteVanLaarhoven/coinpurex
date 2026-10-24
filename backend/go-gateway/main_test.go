@@ -20,7 +20,8 @@ func TestHealthEndpoint(t *testing.T) {
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(map[string]string{
 			"status":  "HEALTHY",
-			"service": "apex-go-gateway",
+			"service": "coinpurex-go-gateway",
+			"domain":  "coinpurex.com",
 			"version": "2.0.0",
 		})
 	})

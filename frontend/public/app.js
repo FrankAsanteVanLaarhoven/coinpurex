@@ -1,5 +1,5 @@
 /**
- * APEX ENTERPRISE PLATFORM - CLIENT APPLICATION
+ * COINPUREX ENTERPRISE PLATFORM (coinpurex.com)
  * Combines Clean Precision Ergonomics with Institutional High-Density Telemetry.
  * Zero-dependency, native ES6+ interactive Web3 architecture.
  */
@@ -137,7 +137,7 @@ const state = {
         to: '0x976EA74026E72bbf5501020b994473cD304e8Bde',
         token: 'ETH',
         amount: 15.0,
-        description: 'Apex Protocol Core Contributor Grant Q4',
+        description: 'CoinPurex Protocol Core Contributor Grant Q4',
         approvals: ['0x70997970C51812dc3A010C7d01b50e0d17dc79C8'],
         executed: false,
         cancelled: false,
@@ -212,7 +212,7 @@ const state = {
       percentileRank: 'Top 0.2% Global Popular Investor',
       tier: 'Elite Pro Tier',
       autoReplicate: true,
-      strategy: 'Apex Delta-Neutral Basis',
+      strategy: 'CoinPurex Delta-Neutral Basis',
       bio: 'Funding rate arbitrage & perpetual basis delta-neutral hedging.',
       roi12m: 89.20,
       sharpe: 4.10,
@@ -278,7 +278,7 @@ const state = {
       id: 'cop-2',
       traderId: 'schen',
       traderName: 'Seraphina Chen',
-      strategy: 'Apex Delta-Neutral Basis',
+      strategy: 'CoinPurex Delta-Neutral Basis',
       allocatedCapital: 5000,
       unrealizedPnl: 485.20,
       unrealizedPnlPct: 9.70,
@@ -352,7 +352,7 @@ const state = {
     ],
     xrplTrustlines: [
       { token: 'USDs (Sovereign USD)', issuer: 'Universal Settlement Gateway', limit: 10000000, active: true },
-      { token: 'DAI (Decentralized)', issuer: 'Apex Treasury Multi-Sig', limit: 50000000, active: true },
+      { token: 'DAI (Decentralized)', issuer: 'CoinPurex Treasury Multi-Sig', limit: 50000000, active: true },
       { token: 'WBTC (Institutional)', issuer: 'Qualified Custody Gateway', limit: 250, active: true },
       { token: 'WETH (Institutional)', issuer: 'Primary Institutional Gateway', limit: 3500, active: true }
     ]
@@ -381,7 +381,7 @@ const state = {
     {
       id: 'news-3',
       category: 'DEFI',
-      title: 'Apex Yield Vault Total Assets Exceed $80M Following Automated Compound Harvest',
+      title: 'CoinPurex Yield Vault Total Assets Exceed $80M Following Automated Compound Harvest',
       time: '35 mins ago',
       source: 'Reserve Analytics',
       impact: 'GROWTH',
@@ -575,7 +575,7 @@ function renderCopyTrading() {
       );
       logTelemetry(
         'AutoReplicateStateToggled',
-        'ApexCopyEngine',
+        'CoinPurexCopyEngine',
         `Auto-Replicate Engine status changed to: ${state.autoReplicateActive ? 'ACTIVE' : 'PAUSED'}`
       );
     });
@@ -825,7 +825,7 @@ function renderDeFi() {
     harvestBtn.dataset.wired = 'true';
     harvestBtn.addEventListener('click', () => {
       showToast('Automated ERC-4626 compound harvest executed: +$14,280 yield distributed to vault shares', 'success');
-      logTelemetry('YieldHarvested', 'ApexDeFiVault', '+$14,280 compounded to LP shares');
+      logTelemetry('YieldHarvested', 'CoinPurexDeFiVault', '+$14,280 compounded to LP shares');
     });
   }
 }
@@ -837,7 +837,7 @@ function renderArbitrage() {
     flashLoanBtn.dataset.wired = 'true';
     flashLoanBtn.addEventListener('click', () => {
       showToast('Flash Loan Arbitrage executed across Layer-2 Sequencer & AMM: 44 bps captured, net profit +$2,450 DAI', 'success');
-      logTelemetry('FlashLoanArbExecuted', 'ApexArbitrageEngine', 'Flash loan 500,000 DAI -> 44 bps spread captured');
+      logTelemetry('FlashLoanArbExecuted', 'CoinPurexArbitrageEngine', 'Flash loan 500,000 DAI -> 44 bps spread captured');
     });
   }
 
@@ -867,10 +867,10 @@ function renderArbitrage() {
   const spreadsBody = document.getElementById('arbitrage-spreads-body');
   if (spreadsBody) {
     const opps = [
-      { pair: 'BTC/DAI', venueA: '$68,450.00 (Apex)', venueB: '$68,690.00 (L2 AMM)', spread: '+35 bps', profit: '+$4,820.00' },
-      { pair: 'ETH/DAI', venueA: '$3,520.00 (Apex)', venueB: '$3,535.50 (L2 AMM)', spread: '+44 bps', profit: '+$2,450.00' },
-      { pair: 'SOL/DAI', venueA: '$182.40 (Apex)', venueB: '$183.15 (L2 AMM)', spread: '+41 bps', profit: '+$1,280.00' },
-      { pair: 'LINK/DAI', venueA: '$18.75 (Apex)', venueB: '$18.82 (L2 AMM)', spread: '+37 bps', profit: '+$640.00' }
+      { pair: 'BTC/DAI', venueA: '$68,450.00 (CoinPurex)', venueB: '$68,690.00 (L2 AMM)', spread: '+35 bps', profit: '+$4,820.00' },
+      { pair: 'ETH/DAI', venueA: '$3,520.00 (CoinPurex)', venueB: '$3,535.50 (L2 AMM)', spread: '+44 bps', profit: '+$2,450.00' },
+      { pair: 'SOL/DAI', venueA: '$182.40 (CoinPurex)', venueB: '$183.15 (L2 AMM)', spread: '+41 bps', profit: '+$1,280.00' },
+      { pair: 'LINK/DAI', venueA: '$18.75 (CoinPurex)', venueB: '$18.82 (L2 AMM)', spread: '+37 bps', profit: '+$640.00' }
     ];
     spreadsBody.innerHTML = opps.map(o => `
       <tr>
@@ -880,7 +880,7 @@ function renderArbitrage() {
         <td class="mono" style="color: var(--signal-bid); font-weight: 700;">${o.spread}</td>
         <td class="mono" style="color: var(--signal-bid); font-weight: 700;">${o.profit}</td>
         <td>
-          <button class="btn-primary" style="padding: 0.3rem 0.65rem; font-size: 0.72rem;" onclick="showToast('Executed atomic flash loan arbitrage on ${o.pair}: ${o.profit} net profit', 'success'); logTelemetry('FlashArbExecuted', 'ApexArb', 'Spread: ${o.spread} on ${o.pair}');">
+          <button class="btn-primary" style="padding: 0.3rem 0.65rem; font-size: 0.72rem;" onclick="showToast('Executed atomic flash loan arbitrage on ${o.pair}: ${o.profit} net profit', 'success'); logTelemetry('FlashArbExecuted', 'CoinPurexArb', 'Spread: ${o.spread} on ${o.pair}');">
             Execute Arb
           </button>
         </td>
@@ -896,7 +896,7 @@ function renderSecurities() {
     sftpClearBtn.dataset.wired = 'true';
     sftpClearBtn.addEventListener('click', () => {
       showToast('Batch Clearing Gateway: 450 ISO-20022 institutional orders settled on-chain ($15.8M)', 'success');
-      logTelemetry('BatchSettled', 'ApexSettlementGateway', '450 trades settled via cryptographic clearing gateway');
+      logTelemetry('BatchSettled', 'CoinPurexSettlementGateway', '450 trades settled via cryptographic clearing gateway');
     });
   }
 
@@ -921,7 +921,7 @@ function renderSecurities() {
           <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-muted);">Total Pool:</span> <span class="mono" style="font-weight: 700;">${r.issuance}</span></div>
           <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-muted);">Custodian:</span> <span>${r.custodian}</span></div>
         </div>
-        <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="showToast('KYC credential validated for ${r.ticker}. Allocation order staged.', 'success'); logTelemetry('RWAAllocated', 'ApexRWA', 'Allocated: ${r.ticker}');">
+        <button class="btn-secondary" style="width: 100%; justify-content: center;" onclick="showToast('KYC credential validated for ${r.ticker}. Allocation order staged.', 'success'); logTelemetry('RWAAllocated', 'CoinPurexRWA', 'Allocated: ${r.ticker}');">
           Subscribe Institutional Allocation
         </button>
       </div>
@@ -1002,7 +1002,7 @@ function stopCopyPosition(id) {
     const pos = state.copiedPositions[posIndex];
     state.copiedPositions.splice(posIndex, 1);
     showToast(`Closed mirror escrow for ${pos.traderName}. Returned $${pos.allocatedCapital} + $${pos.unrealizedPnl} profit.`, 'success');
-    logTelemetry('CopyEscrowClosed', 'ApexCopyEngine', `Mirror position closed for ${pos.traderName} (+$${pos.unrealizedPnl})`);
+    logTelemetry('CopyEscrowClosed', 'CoinPurexCopyEngine', `Mirror position closed for ${pos.traderName} (+$${pos.unrealizedPnl})`);
     renderCopyTrading();
   }
 }
@@ -1013,7 +1013,7 @@ function abortVaultRequest(id) {
     req.status = 'ABORTED_BY_SECURITY';
     req.hoursRemaining = 0;
     showToast(`Emergency abort confirmed by Security Officer for Request #${id}`, 'success');
-    logTelemetry('WithdrawalAborted', 'ApexCustodyVault', `Emergency abort by Security Officer: Request #${id}`);
+    logTelemetry('WithdrawalAborted', 'CoinPurexCustodyVault', `Emergency abort by Security Officer: Request #${id}`);
     renderCustody();
   }
 }
@@ -1023,7 +1023,7 @@ function claimXrplEscrow(id) {
   if (esc) {
     esc.claimed = true;
     showToast(`Valid SHA-256 preimage verified! Claimed ${esc.amount} ${esc.asset}`, 'success');
-    logTelemetry('EscrowPreimageClaimed', 'ApexCustodyVault', `SHA-256 preimage matched for ${id}: ${esc.amount} ${esc.asset}`);
+    logTelemetry('EscrowPreimageClaimed', 'CoinPurexCustodyVault', `SHA-256 preimage matched for ${id}: ${esc.amount} ${esc.asset}`);
     state.custodyVault.xrplEscrows = state.custodyVault.xrplEscrows.filter(e => e.id !== id);
     renderCustody();
   }
@@ -1854,7 +1854,7 @@ function initModals() {
       state.copiedPositions.unshift(newPos);
       closeModal('copy-trader-modal');
       showToast(`Non-custodial mirror escrow authorized: $${capital.toLocaleString()} allocated to ${activeSelectedTrader.name} (${autoReplicate ? '⚡ AUTO-REPLICATE ACTIVE' : 'MANUAL'})`, 'success');
-      logTelemetry('CopyEscrowCreated', 'ApexCopyEngine', `$${capital.toLocaleString()} allocated to mirror ${activeSelectedTrader.name} (${ratio}x ratio, autoReplicate=${autoReplicate})`);
+      logTelemetry('CopyEscrowCreated', 'CoinPurexCopyEngine', `$${capital.toLocaleString()} allocated to mirror ${activeSelectedTrader.name} (${ratio}x ratio, autoReplicate=${autoReplicate})`);
       renderCopyTrading();
     });
   }
@@ -1890,7 +1890,7 @@ function initModals() {
       state.custodyVault.withdrawals.unshift(newReq);
       closeModal('vault-withdrawal-modal');
       showToast(`48-Hour Vault Withdrawal Scheduled: ${amount} ${asset} locked until time lock expiration`, 'success');
-      logTelemetry('VaultWithdrawalInitiated', 'ApexCustodyVault', `48h delay active for ${amount} ${asset} to ${formatAddress(dest)}`);
+      logTelemetry('VaultWithdrawalInitiated', 'CoinPurexCustodyVault', `48h delay active for ${amount} ${asset} to ${formatAddress(dest)}`);
       renderCustody();
     });
   }
@@ -2014,7 +2014,7 @@ async function fetchRealMarketData() {
 function executeAutoReplicateTrade(data) {
   if (!state.autoReplicateActive) return;
 
-  const leadName = data.leadTrader || 'Kaelen Voss (Apex Quant)';
+  const leadName = data.leadTrader || 'Kaelen Voss (CoinPurex Quant)';
   const pair = data.pair || 'BTC/DAI';
   const action = data.action || 'BUY';
   const markPrice = (state.pairs[pair] && state.pairs[pair].markPrice) || (data.price || 68450);
@@ -2055,7 +2055,7 @@ function executeAutoReplicateTrade(data) {
   // Log on-chain telemetry
   logTelemetry(
     'AutoReplicateOrderMatched',
-    'ApexRustEngine',
+    'CoinPurexRustEngine',
     `Lead: ${leadName} • ${action} ${newTrade.amount} @ ${formatUSD(markPrice)} • Mirror Settled in 42µs`
   );
 

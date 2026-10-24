@@ -19,7 +19,7 @@ const TOKENS_CONFIG = [
 
 async function deploy(network = 'localhost') {
     console.log(`\n======================================================`);
-    console.log(` Deploying Apex Enterprise Platform on [${network}]`);
+    console.log(` Deploying CoinPurex Enterprise Platform (coinpurex.com) on [${network}]`);
     console.log(`======================================================`);
 
     const deployment = {

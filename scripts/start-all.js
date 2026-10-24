@@ -1,15 +1,15 @@
-// Apex Enterprise Platform - Multi-Service Orchestrator
+// CoinPurex Enterprise Platform - Multi-Service Orchestrator (coinpurex.com)
 const { spawn } = require('child_process');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
 console.log('================================================================');
-console.log('  APEX ENTERPRISE PLATFORM - HIGH-FREQUENCY SERVICE ORCHESTRATOR');
+console.log('  COINPUREX ENTERPRISE PLATFORM (coinpurex.com) - ORCHESTRATOR');
 console.log('================================================================');
 
 // 1. Start Go High-Throughput Gateway on :8080
-console.log('[1/2] Launching Go Live Data Gateway on http://localhost:8080...');
+console.log('[1/2] Launching CoinPurex Go Live Data Gateway on http://localhost:8080...');
 const gateway = spawn('go', ['run', '.'], {
   cwd: path.join(__dirname, '../backend/go-gateway'),
   stdio: 'inherit'
@@ -45,8 +45,9 @@ const server = http.createServer((req, res) => {
 
 const PORT = 4200;
 server.listen(PORT, () => {
-  console.log(`\n🚀 APEX Enterprise Platform fully online at http://localhost:${PORT}`);
+  console.log(`\n🚀 CoinPurex Enterprise Platform fully online at http://localhost:${PORT}`);
   console.log('   - Sovereign DEX & Multi-Sig Treasury Cockpit: http://localhost:4200');
+  console.log('   - Production Domain: https://coinpurex.com');
   console.log('   - Go Gateway SSE & REST Feeds: http://localhost:8080/api/v1/stream');
   console.log('   - Ready for institutional deployment & live trade execution.');
   console.log('================================================================\n');
@@ -54,7 +55,7 @@ server.listen(PORT, () => {
 
 // Graceful termination
 const shutdown = () => {
-  console.log('\nShutting down APEX platform services...');
+  console.log('\nShutting down CoinPurex platform services...');
   server.close();
   try {
     gateway.kill('SIGTERM');

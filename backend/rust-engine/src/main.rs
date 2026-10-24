@@ -1,4 +1,4 @@
-// Apex Institutional Ultra-Low Latency Rust Matching & Copy-Trade Engine
+// CoinPurex Institutional Ultra-Low Latency Rust Matching & Copy-Trade Engine (coinpurex.com)
 use std::collections::{BTreeMap, VecDeque};
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
@@ -221,7 +221,7 @@ fn main() {
         );
     }
 
-    println!("\n🚀 Launching Apex Rust Matching Engine Server on port 8081...");
+    println!("\n🚀 Launching CoinPurex Rust Matching Engine Server on port 8081 (coinpurex.com)...");
     let book_arc = Arc::new(Mutex::new(book));
     let listener = TcpListener::bind("127.0.0.1:8081");
 

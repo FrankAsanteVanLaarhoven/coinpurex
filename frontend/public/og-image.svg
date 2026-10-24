@@ -44,9 +44,10 @@
   </g>
 
   <!-- Typography -->
-  <text x="440" y="250" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-weight="900" font-size="64" fill="url(#gradText)" letter-spacing="2">APEX // PLATFORM</text>
-  <text x="440" y="315" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-weight="600" font-size="32" fill="#E2E8F0" letter-spacing="0.5">Sovereign DEX &amp; Multi-Sig Governance Treasury</text>
-  <text x="440" y="375" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-weight="400" font-size="22" fill="#94A3B8">High-performance on-chain order book • M-of-N consensus • Real-time telemetry • Apple precision</text>
+  <text x="440" y="235" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-weight="900" font-size="64" fill="url(#gradText)" letter-spacing="2">COINPUREX</text>
+  <text x="440" y="285" font-family="monospace" font-weight="700" font-size="24" fill="#38BDF8" letter-spacing="1">coinpurex.com</text>
+  <text x="440" y="335" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-weight="600" font-size="28" fill="#E2E8F0" letter-spacing="0.5">Sovereign DEX &amp; Multi-Sig Governance Treasury</text>
+  <text x="440" y="380" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif" font-weight="400" font-size="20" fill="#94A3B8">High-performance on-chain order book • M-of-N consensus • Top 1% copy trading • Real live data</text>
 
   <!-- Institutional Badges -->
   <g transform="translate(440, 425)">

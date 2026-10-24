@@ -6,7 +6,7 @@ const { runMockERC20Tests } = require('./MockERC20.test');
 
 async function main() {
     console.log('===============================================================');
-    console.log('   APEX ENTERPRISE PLATFORM - AUTOMATED VERIFICATION SUITE     ');
+    console.log(' COINPUREX ENTERPRISE PLATFORM (coinpurex.com) - TEST SUITE   ');
     console.log('===============================================================');
     const start = Date.now();
 

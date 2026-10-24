@@ -1,4 +1,4 @@
-// Apex Enterprise Go Live Data Flow Gateway
+// CoinPurex Enterprise Go Live Data Flow Gateway (coinpurex.com)
 package main
 
 import (
@@ -64,7 +64,7 @@ var (
 	traders     = []CopyTrader{
 		{
 			ID:                    "trader-alpha",
-			Name:                  "Kaelen Voss (Apex Quant)",
+			Name:                  "Kaelen Voss (CoinPurex Quant)",
 			Handle:                "@voss_quant",
 			Strategy:              "Multi-Asset Delta-Neutral Arbitrage & Momentum",
 			GlobalRank:            1,
@@ -187,11 +187,11 @@ var (
 		},
 		{
 			ID:        2,
-			Title:     "Apex Arbitrage Engine Sweeps 48 bps Spread on BTC/DAI Flash Loan Liquidity Pool",
+			Title:     "CoinPurex Arbitrage Engine Sweeps 48 bps Spread on BTC/DAI Flash Loan Liquidity Pool",
 			Category:  "ARBITRAGE",
 			Sentiment: "bullish",
 			Time:      "5m ago",
-			Source:    "Apex High-Frequency Desk",
+			Source:    "CoinPurex High-Frequency Desk",
 			Summary:   "Atomic flash loan across order book liquidity and AMM depth yields $1,420 net profit automatically credited to Multi-Sig treasury.",
 		},
 		{
@@ -385,7 +385,7 @@ func main() {
 	mux.HandleFunc("/api/v1/health", func(w http.ResponseWriter, r *http.Request) {
 		enableCORS(w)
 		w.Header().Set("Content-Type", "application/json")
-		fmt.Fprintf(w, `{"status":"HEALTHY","engine":"Go-HighThroughput-Gateway","time":"%s"}`, time.Now().UTC().Format(time.RFC3339))
+		fmt.Fprintf(w, `{"status":"HEALTHY","engine":"CoinPurex-HighThroughput-Gateway","domain":"coinpurex.com","time":"%s"}`, time.Now().UTC().Format(time.RFC3339))
 	})
 	mux.HandleFunc("/api/v1/copytraders", handleCopyTraders)
 	mux.HandleFunc("/api/v1/prices", handlePrices)
@@ -393,7 +393,7 @@ func main() {
 	mux.HandleFunc("/api/v1/stream", handleLiveStream)
 
 	port := 8080
-	log.Printf("🚀 Apex High-Throughput Go Gateway online on http://localhost:%d\n", port)
+	log.Printf("🚀 CoinPurex High-Throughput Go Gateway online on http://localhost:%d (Production domain: https://coinpurex.com)\n", port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux); err != nil {
 		log.Fatalf("Server error: %v", err)
 	}

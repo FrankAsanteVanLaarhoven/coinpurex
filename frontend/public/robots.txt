@@ -1,8 +1,8 @@
-# Apex Enterprise Platform - Robots Policy
-# Classification: Local Development & Staging Preview Environment
+# CoinPurex Enterprise Platform - Robots Policy
+# Production Domain: coinpurex.com
 
 User-agent: *
-Disallow: /
+Allow: /
 
-# Canonical production discovery (when promoted to approved domain):
-# Sitemap: https://apex.enterprise.finance/sitemap.xml
+Sitemap: https://coinpurex.com/sitemap.xml
+

@@ -1,6 +1,6 @@
-# APEX // Enterprise Sovereign DEX, Custody & Multi-Sig Treasury Platform
+# CoinPurex // Sovereign DEX, Cold Custody & Multi-Sig Treasury Platform (coinpurex.com)
 
-A state-of-the-art (SOTA), production-grade, enterprise Web3 trading, custody, and governance platform uniting decentralized limit order book trading, institutional cold vault security, cryptographic RFC-2004 preimage escrows, social quantitative copy trading, and institutional multi-signature treasury management.
+A state-of-the-art (SOTA), production-grade, enterprise Web3 trading, custody, and governance platform uniting decentralized limit order book trading, institutional cold vault security, cryptographic RFC-2004 preimage escrows, social quantitative copy trading, and institutional multi-signature treasury management. Operational at **https://coinpurex.com**.
 
 Built by synthesizing and elevating all 7 sections of the Blockchain Masterclass into a unified, high-performance architecture engineered to **Precision Ergonomics** and **Institutional Operational Telemetry** principles.
 
