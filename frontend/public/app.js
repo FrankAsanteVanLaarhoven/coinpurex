@@ -22,6 +22,18 @@ const state = {
   chartType: 'depth', // 'depth' | 'candles'
   chartTimeframe: '1H',
   
+  // Deployed On-Chain Architecture
+  contracts: {
+    multiSig: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    dex: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    tokens: {
+      DAI: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+      WBTC: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
+      WETH: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+      LINK: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
+    }
+  },
+  
   // DEX Balances (trader internal balances)
   balances: {
     '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': { DAI: 250000, BTC: 5.5, ETH: 45.0, LINK: 1200 },
@@ -2057,6 +2069,19 @@ function executeAutoReplicateTrade(data) {
 }
 
 function initRealLiveDataStreams() {
+  // Asynchronously synchronize deployed on-chain contract addresses if exported
+  (async () => {
+    try {
+      const cfgRes = await fetch('contracts-config.json');
+      if (cfgRes.ok) {
+        const cfg = await cfgRes.json();
+        if (cfg.multiSig && cfg.multiSig.address) state.contracts.multiSig = cfg.multiSig.address;
+        if (cfg.dex && cfg.dex.address) state.contracts.dex = cfg.dex.address;
+        if (cfg.tokens) state.contracts.tokens = { ...state.contracts.tokens, ...cfg.tokens };
+      }
+    } catch (e) {}
+  })();
+
   fetchRealMarketData();
   setInterval(fetchRealMarketData, 3500);
 

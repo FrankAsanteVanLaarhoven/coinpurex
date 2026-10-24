@@ -25,3 +25,4 @@ coverage.json
 **/target/
 **/Cargo.lock
 backend/go-gateway/gateway
+backend/go-gateway/bin/

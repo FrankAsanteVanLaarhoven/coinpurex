@@ -5,11 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "node test/run-all-tests.js",
+    "test:contracts": "node test/run-all-tests.js",
+    "test:gateway": "cd backend/go-gateway && go test -v ./...",
+    "test:engine": "cd backend/rust-engine && cargo test",
+    "test:all": "node test/run-all-tests.js && (cd backend/go-gateway && go test -v ./...) && (cd backend/rust-engine && cargo test)",
+    "build:gateway": "cd backend/go-gateway && go build -o bin/go-gateway .",
+    "build:engine": "cd backend/rust-engine && cargo build --release",
+    "build": "npm run build:gateway && npm run build:engine && npm run deploy:local && npm run seed",
     "deploy:local": "node scripts/deploy.js --network localhost",
     "deploy:sepolia": "node scripts/deploy.js --network sepolia",
     "seed": "node scripts/seed.js",
     "serve": "serve -s frontend/public -p 4200",
-    "start": "node -e \"const http=require('http'),fs=require('fs'),path=require('path');const mime={'html':'text/html','css':'text/css','js':'text/javascript','svg':'image/svg+xml','json':'application/json','png':'image/png'};const root=path.join(__dirname,'frontend','public');http.createServer((req,res)=>{let file=path.join(root,req.url==='/'?'index.html':req.url.split('?')[0]);let status=200;if(!fs.existsSync(file)||fs.statSync(file).isDirectory()){file=path.join(root,'404.html');status=404;}const ext=path.extname(file).slice(1);res.writeHead(status,{'Content-Type':mime[ext]||'text/plain'});fs.createReadStream(file).pipe(res);}).listen(4200,()=>console.log('APEX Enterprise Platform online at http://localhost:4200'));\""
+    "start": "node -e \"const http=require('http'),fs=require('fs'),path=require('path');const mime={'html':'text/html','css':'text/css','js':'text/javascript','svg':'image/svg+xml','json':'application/json','png':'image/png'};const root=path.join(__dirname,'frontend','public');http.createServer((req,res)=>{let file=path.join(root,req.url==='/'?'index.html':req.url.split('?')[0]);let status=200;if(!fs.existsSync(file)||fs.statSync(file).isDirectory()){file=path.join(root,'404.html');status=404;}const ext=path.extname(file).slice(1);res.writeHead(status,{'Content-Type':mime[ext]||'text/plain'});fs.createReadStream(file).pipe(res);}).listen(4200,()=>console.log('APEX Enterprise Platform online at http://localhost:4200'));\"",
+    "start:gateway": "cd backend/go-gateway && go run .",
+    "start:engine": "cd backend/rust-engine && cargo run --release",
+    "start:all": "node scripts/start-all.js"
   },
   "keywords": [
     "blockchain",
