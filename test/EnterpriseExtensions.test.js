@@ -204,14 +204,14 @@ async function runExtensionTests() {
     }
 
     // DeFi Tests
-    test('ApexDeFiVault: should deposit assets and mint 1:1 shares on initial deposit', () => {
+    test('CoinPurexDeFiVault: should deposit assets and mint 1:1 shares on initial deposit', () => {
         const vault = new SimulatedDeFiVault();
         const shares = vault.deposit('0xInvestor1', 1000n);
         assert.strictEqual(shares, 1000n);
         assert.strictEqual(vault.totalAssets, 1000n);
     });
 
-    test('ApexDeFiVault: should compound harvested yield and increase share value on redeem', () => {
+    test('CoinPurexDeFiVault: should compound harvested yield and increase share value on redeem', () => {
         const vault = new SimulatedDeFiVault();
         vault.deposit('0xInvestor1', 1000n);
         vault.harvestYield(100n); // 10% yield
@@ -221,7 +221,7 @@ async function runExtensionTests() {
     });
 
     // Securities & RWA Tests
-    test('ApexSecurityToken: should prevent transfers from unverified non-KYC accounts', () => {
+    test('CoinPurexSecurityToken: should prevent transfers from unverified non-KYC accounts', () => {
         const secToken = new SimulatedSecurityToken();
         secToken.verifyInvestor('0xInvestorA', 840, true, 0); // US accredited
         secToken.mint('0xInvestorA', 5000n);
@@ -231,7 +231,7 @@ async function runExtensionTests() {
         }, /Recipient not KYC verified/);
     });
 
-    test('ApexSecurityToken: should allow compliant transfers between verified accredited investors', () => {
+    test('CoinPurexSecurityToken: should allow compliant transfers between verified accredited investors', () => {
         const secToken = new SimulatedSecurityToken();
         secToken.verifyInvestor('0xInvestorA', 840, true, 0);
         secToken.verifyInvestor('0xInvestorB', 840, true, 0);
@@ -241,7 +241,7 @@ async function runExtensionTests() {
         assert.strictEqual(secToken.balances['0xInvestorB'], 2000n);
     });
 
-    test('ApexSecurityToken: should enforce lockup period restrictions', () => {
+    test('CoinPurexSecurityToken: should enforce lockup period restrictions', () => {
         const secToken = new SimulatedSecurityToken();
         secToken.verifyInvestor('0xInvestorA', 840, true, 3600); // 1 hr lockup
         secToken.verifyInvestor('0xInvestorB', 840, true, 0);
@@ -251,7 +251,7 @@ async function runExtensionTests() {
         }, /Lockup active/);
     });
 
-    test('ApexSecurityToken: should execute legal recovery clawback for court/lost key compliance', () => {
+    test('CoinPurexSecurityToken: should execute legal recovery clawback for court/lost key compliance', () => {
         const secToken = new SimulatedSecurityToken();
         secToken.verifyInvestor('0xLostKeyAccount', 840, true, 0);
         secToken.verifyInvestor('0xBeneficiaryRecovery', 840, true, 0);
@@ -262,7 +262,7 @@ async function runExtensionTests() {
     });
 
     // Cross-Chain (Polygon & Arbitrum) Tests
-    test('ApexCrossChainGateway: should dispatch bridge transfer to Polygon (137) and Arbitrum (42161)', () => {
+    test('CoinPurexCrossChainGateway: should dispatch bridge transfer to Polygon (137) and Arbitrum (42161)', () => {
         const bridge = new SimulatedCrossChainGateway();
         const id1 = bridge.bridgeTransfer(137, '0xTrader', '0xPolygonRecipient', '0xToken', 500n);
         const id2 = bridge.bridgeTransfer(42161, '0xTrader', '0xArbitrumRecipient', '0xToken', 800n);
@@ -271,7 +271,7 @@ async function runExtensionTests() {
         assert.strictEqual(bridge.messages[1].destChainId, 42161);
     });
 
-    test('ApexCrossChainGateway: should reject unsupported destination chains', () => {
+    test('CoinPurexCrossChainGateway: should reject unsupported destination chains', () => {
         const bridge = new SimulatedCrossChainGateway();
         assert.throws(() => {
             bridge.bridgeTransfer(999999, '0xTrader', '0xRecipient', '0xToken', 100n);
@@ -279,7 +279,7 @@ async function runExtensionTests() {
     });
 
     // Arbitrage Engine Tests
-    test('ApexArbitrageEngine: should accurately detect cross-venue spread and profitability', () => {
+    test('CoinPurexArbitrageEngine: should accurately detect cross-venue spread and profitability', () => {
         const arb = new SimulatedArbitrageEngine();
         // DEX order book price 68,000 vs AMM 68,300 (diff 300 / 68000 = ~44 bps > 15 bps hurdle)
         const res = arb.calculateSpread(68000n, 68300n);
@@ -288,7 +288,7 @@ async function runExtensionTests() {
     });
 
     // FTPS / SFTP Batch Settlement Gateway Tests
-    test('ApexSettlementGateway: should ingest FTPS cleared trade batch and settle on-chain', () => {
+    test('CoinPurexSettlementGateway: should ingest FTPS cleared trade batch and settle on-chain', () => {
         const gateway = new SimulatedSettlementGateway();
         const batchId = gateway.submitBatch(
             '0x8f7d98c21a4f3b7e8d6c4a1b9e0f3d2c',
@@ -302,14 +302,14 @@ async function runExtensionTests() {
     });
 
     // Cold Storage Custody & Cryptographic Escrows Tests
-    test('ApexCustodyVault: should publish cryptographic Merkle Proof of Solvency', () => {
+    test('CoinPurexCustodyVault: should publish cryptographic Merkle Proof of Solvency', () => {
         const vault = new SimulatedCustodyVault('0xSecurityOfficer');
         vault.publishProofOfSolvency('0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d', 850000000n);
         assert.strictEqual(vault.solvencyRoot.root, '0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d');
         assert.strictEqual(vault.solvencyRoot.aum, 850000000n);
     });
 
-    test('ApexCustodyVault: should enforce 48h withdrawal delay and allow security officer abort', () => {
+    test('CoinPurexCustodyVault: should enforce 48h withdrawal delay and allow security officer abort', () => {
         const vault = new SimulatedCustodyVault('0xSecurityOfficer');
         const reqId = vault.initiateWithdrawal('0xAdmin', '0xUSDC', '0xColdStorage', 1000000n);
         assert.strictEqual(vault.withdrawals[reqId].executed, false);
@@ -319,7 +319,7 @@ async function runExtensionTests() {
         assert.strictEqual(vault.withdrawals[reqId].aborted, true);
     });
 
-    test('ApexCustodyVault: should support conditional preimage escrows and trustlines', () => {
+    test('CoinPurexCustodyVault: should support conditional preimage escrows and trustlines', () => {
         const vault = new SimulatedCustodyVault('0xSecurityOfficer');
         vault.setTrustline('0xTrader1', '0xRLUSD', 5000000n, true);
         assert.strictEqual(vault.trustlines['0xTrader1_0xRLUSD'].authorized, true);

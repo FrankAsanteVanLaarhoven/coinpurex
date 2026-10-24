@@ -19,7 +19,7 @@ async function seed() {
                     to: '0x976EA74026E72bbf5501020b994473cD304e8Bde',
                     token: 'ETH',
                     amount: 15.0,
-                    description: 'Apex Protocol Core Contributor Grant Q4',
+                    description: 'CoinPurex Protocol Core Contributor Grant Q4',
                     approvals: ['0x70997970C51812dc3A010C7d01b50e0d17dc79C8'],
                     approvalsCount: 1,
                     quorum: 2,

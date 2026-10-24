@@ -1,3 +1,3 @@
-module apex-enterprise/go-gateway
+module coinpurex-enterprise/go-gateway
 
 go 1.22

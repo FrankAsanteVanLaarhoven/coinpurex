@@ -6,7 +6,7 @@ import "../interfaces/IERC20.sol";
 /**
  * @title MockERC20
  * @notice Enterprise-grade ERC20 mock token with institutional faucet capabilities.
- * @dev Used for sandbox testing and liquidity seeding in the Apex Enterprise Platform.
+ * @dev Used for sandbox testing and liquidity seeding in the CoinPurex Sovereign Platform (coinpurex.com).
  */
 contract MockERC20 is IERC20 {
     string public name;
