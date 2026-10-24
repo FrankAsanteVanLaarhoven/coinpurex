@@ -41,7 +41,7 @@ func TestHealthEndpoint(t *testing.T) {
 	}
 }
 
-func TestHandleCopyTraders(t *testing.T) {
+func TestHandleCopyTraders_Top1Percent(t *testing.T) {
 	req, err := http.NewRequest(http.MethodGet, "/api/v1/copytraders", nil)
 	if err != nil {
 		t.Fatal(err)
@@ -63,13 +63,25 @@ func TestHandleCopyTraders(t *testing.T) {
 		t.Fatalf("failed to decode traders JSON: %v", err)
 	}
 
-	if len(resTraders) < 3 {
-		t.Errorf("expected at least 3 traders, got %d", len(resTraders))
+	if len(resTraders) < 4 {
+		t.Errorf("expected at least 4 traders, got %d", len(resTraders))
 	}
 
 	for _, trader := range resTraders {
 		if trader.ID == "" || trader.Name == "" || trader.Strategy == "" {
 			t.Errorf("trader has empty fields: %+v", trader)
+		}
+		if trader.GlobalRank <= 0 {
+			t.Errorf("trader %s missing GlobalRank: got %d", trader.Name, trader.GlobalRank)
+		}
+		if trader.PercentileRank == "" {
+			t.Errorf("trader %s missing PercentileRank", trader.Name)
+		}
+		if !trader.AutoReplicateEnabled {
+			t.Errorf("trader %s must have AutoReplicateEnabled set to true", trader.Name)
+		}
+		if trader.AuditedSharpe < 2.0 {
+			t.Errorf("trader %s expected audited Sharpe > 2.0, got %f", trader.Name, trader.AuditedSharpe)
 		}
 	}
 }
@@ -88,6 +100,53 @@ func TestHandleCopyTraders_Options(t *testing.T) {
 	}
 	if origin := rr.Header().Get("Access-Control-Allow-Origin"); origin != "*" {
 		t.Errorf("expected CORS header '*', got '%s'", origin)
+	}
+}
+
+func TestHandlePrices(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "/api/v1/prices", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handlePrices(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("expected status 200, got %d", status)
+	}
+
+	var prices map[string]MarketPrice
+	if err := json.Unmarshal(rr.Body.Bytes(), &prices); err != nil {
+		t.Fatalf("failed to decode prices JSON: %v", err)
+	}
+
+	if _, ok := prices["BTC/DAI"]; !ok {
+		t.Errorf("missing BTC/DAI in live prices")
+	}
+	if _, ok := prices["ETH/DAI"]; !ok {
+		t.Errorf("missing ETH/DAI in live prices")
+	}
+	if _, ok := prices["LINK/DAI"]; !ok {
+		t.Errorf("missing LINK/DAI in live prices")
+	}
+
+	if prices["BTC/DAI"].MarkPrice <= 0 {
+		t.Errorf("BTC/DAI mark price must be > 0, got %f", prices["BTC/DAI"].MarkPrice)
+	}
+}
+
+func TestHandlePrices_Options(t *testing.T) {
+	req, err := http.NewRequest(http.MethodOptions, "/api/v1/prices", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handlePrices(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("expected status 200 on OPTIONS preflight, got %d", status)
 	}
 }
 

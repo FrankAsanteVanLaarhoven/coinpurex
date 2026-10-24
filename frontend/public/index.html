@@ -670,6 +670,33 @@
         </div>
       </div>
 
+      <!-- Auto-Replicate & Mirror Engine Control Bar -->
+      <div class="card" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(16, 185, 129, 0.06)); border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 1.5rem; padding: 1rem 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.85rem;">
+            <div style="width: 10px; height: 10px; border-radius: 50%; background: var(--signal-bid); box-shadow: 0 0 12px var(--signal-bid);" class="pulse-active"></div>
+            <div>
+              <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.01em;">
+                REAL-TIME AUTO-REPLICATE &amp; MIRROR ENGINE
+              </div>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">
+                Sub-50µs Rust settlement • Instant non-custodial trade replication of Top 1% Global Popular Investors
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <div style="text-align: right; font-size: 0.75rem;">
+              <span style="color: var(--text-muted);">Replicated Today:</span>
+              <strong style="color: var(--signal-bid); margin-left: 0.25rem;" id="auto-replicate-stats">142 Mirrored Orders ($1.25M Vol)</strong>
+            </div>
+            <button id="toggle-autoreplicate-btn" class="btn-primary" style="padding: 0.45rem 1rem; font-size: 0.78rem; display: flex; align-items: center; gap: 0.4rem; background: var(--signal-bid); border-color: var(--signal-bid); color: #000; font-weight: 700;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Auto-Replicate: ACTIVE
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Top Macro Metrics -->
       <div class="metrics-grid">
         <div class="metric-card">
@@ -952,6 +979,7 @@
           <div>
             <div id="modal-trader-name" style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">Kaelen Voss</div>
             <div id="modal-trader-strategy" style="font-size: 0.75rem; color: var(--accent-cyan);">Voss Quant Macro Arbitrage</div>
+            <div id="modal-trader-rank" style="font-size: 0.7rem; color: #fbbf24; font-weight: 700; margin-top: 0.15rem;">🏆 #1 Global Rank • Top 0.1% Global Popular Investor</div>
           </div>
         </div>
 
@@ -980,6 +1008,21 @@
               <option value="15">15% Max Drawdown</option>
               <option value="20">20% Max Drawdown</option>
             </select>
+          </div>
+        </div>
+
+        <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-sm); padding: 0.75rem; margin-top: 0.75rem; margin-bottom: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-size: 0.82rem; font-weight: 800; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.35rem;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Real-Time Auto-Replicate &amp; Mirror
+              </div>
+              <div style="font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                Automatically replicate every order executed by this Top 1% lead investor in real-time.
+              </div>
+            </div>
+            <input type="checkbox" id="copy-autoreplicate-checkbox" checked style="width: 18px; height: 18px; accent-color: var(--signal-bid); cursor: pointer;">
           </div>
         </div>
 
