@@ -1,6 +1,6 @@
 {
   "network": "localhost",
-  "timestamp": "2026-10-24T06:22:38.513Z",
+  "timestamp": "2026-10-24T06:43:12.246Z",
   "multiSig": {
     "address": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     "approvers": [
@@ -16,8 +16,24 @@
   },
   "tokens": {
     "DAI": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    "CRS": "0x819c468e5dc88beb0702577cf8a90c2d0566ac8b",
     "WBTC": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
     "WETH": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
     "LINK": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
+  },
+  "offering": {
+    "address": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+    "tokenAddress": "0x819c468e5dc88beb0702577cf8a90c2d0566ac8b",
+    "tokenSymbol": "CRS",
+    "tokenName": "Ceris Coin",
+    "decimals": 5,
+    "totalSupply": 100000000,
+    "offeringAllocation": 20000000,
+    "tokensPerEth": 5000,
+    "softCapEth": 50,
+    "hardCapEth": 1000,
+    "minContributionEth": 0.05,
+    "maxContributionEth": 25,
+    "status": "ACTIVE"
   }
 }

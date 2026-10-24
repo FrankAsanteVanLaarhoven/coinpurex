@@ -12,6 +12,7 @@ const DEFAULT_QUORUM = 2; // 2-of-3 Multi-Sig Threshold
 
 const TOKENS_CONFIG = [
     { ticker: 'DAI', name: 'Dai Stablecoin', symbol: 'DAI', decimals: 18, isQuote: true },
+    { ticker: 'CRS', name: 'Ceris Coin', symbol: 'CRS', decimals: 5, isQuote: false, etherscan: 'https://etherscan.io/token/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b' },
     { ticker: 'WBTC', name: 'Wrapped Bitcoin', symbol: 'WBTC', decimals: 8, isQuote: false },
     { ticker: 'WETH', name: 'Wrapped Ethereum', symbol: 'WETH', decimals: 18, isQuote: false },
     { ticker: 'LINK', name: 'Chainlink Token', symbol: 'LINK', decimals: 18, isQuote: false }
@@ -36,9 +37,25 @@ async function deploy(network = 'localhost') {
         },
         tokens: {
             DAI: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+            CRS: '0x819c468e5dc88beb0702577cf8a90c2d0566ac8b',
             WBTC: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
             WETH: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
             LINK: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
+        },
+        offering: {
+            address: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
+            tokenAddress: '0x819c468e5dc88beb0702577cf8a90c2d0566ac8b',
+            tokenSymbol: 'CRS',
+            tokenName: 'Ceris Coin',
+            decimals: 5,
+            totalSupply: 100000000,
+            offeringAllocation: 20000000,
+            tokensPerEth: 5000,
+            softCapEth: 50,
+            hardCapEth: 1000,
+            minContributionEth: 0.05,
+            maxContributionEth: 25.0,
+            status: 'ACTIVE'
         }
     };
 
@@ -46,10 +63,15 @@ async function deploy(network = 'localhost') {
     console.log(`  - Approvers: ${deployment.multiSig.approvers.length} signers`);
     console.log(`  - Quorum Threshold: ${deployment.multiSig.quorum} of ${deployment.multiSig.approvers.length}`);
 
-    console.log(`✓ Mock ERC20 Tokens deployed:`);
+    console.log(`✓ Tokens deployed & registered:`);
     for (const [sym, addr] of Object.entries(deployment.tokens)) {
         console.log(`  - [${sym}]: ${addr}`);
     }
+
+    console.log(`✓ CerisCoin (CRS) Offering Launchpad: ${deployment.offering.address}`);
+    console.log(`  - Allocation: ${deployment.offering.offeringAllocation.toLocaleString()} CRS`);
+    console.log(`  - Exchange Rate: 1 ETH = ${deployment.offering.tokensPerEth} CRS (~$0.50/CRS)`);
+    console.log(`  - Soft/Hard Cap: ${deployment.offering.softCapEth} ETH / ${deployment.offering.hardCapEth} ETH`);
 
     console.log(`✓ EnterpriseDEX deployed at: ${deployment.dex.address}`);
     console.log(`✓ DEX Admin transferred to MultiSig Treasury: ${deployment.multiSig.address}`);

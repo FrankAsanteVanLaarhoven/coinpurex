@@ -6,16 +6,24 @@
 
 // --- Initial Seed & State Configuration ---
 const PERSONAS = [
-  { id: 'signer1', label: 'Signer 1 (Sec Admin)', address: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8', role: 'Approver' },
-  { id: 'signer2', label: 'Signer 2 (Risk Officer)', address: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC', role: 'Approver' },
-  { id: 'signer3', label: 'Signer 3 (Treasury Exec)', address: '0x90F79bf6EB2c4f870365E785982E1f101E93b906', role: 'Approver' },
+  { id: 'trader1_auth', label: 'Trader One (a@coinpurex.com)', address: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8', role: 'Principal Admin & Token Owner', email: 'a@coinpurex.com' },
+  { id: 'trader2_auth', label: 'Trader Two (b@coinpurex.com)', address: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC', role: 'Sovereign Quant Trader', email: 'b@coinpurex.com' },
+  { id: 'signer3', label: 'Signer 3 (Treasury Exec)', address: '0x90F79bf6EB2c4f870365E785982E1f101E93b906', role: 'Approver', email: 'c@coinpurex.com' },
   { id: 'trader1', label: 'Trader Alpha (Maker)', address: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65', role: 'Trader' },
   { id: 'trader2', label: 'Trader Beta (Taker)', address: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc', role: 'Trader' }
 ];
 
 const state = {
-  currentTab: 'dex', // 'dex' | 'treasury' | 'telemetry'
+  currentTab: 'dex', // 'dex' | 'offering' | 'treasury' | 'telemetry'
   currentPersona: PERSONAS[0],
+  currentUser: {
+    authenticated: true,
+    email: 'a@coinpurex.com',
+    name: 'Trader One',
+    role: 'Principal Admin & Token Owner',
+    address: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+    token: 'cpx_sec_token_a_trader1_session'
+  },
   activePair: 'BTC/DAI',
   orderType: 'LIMIT', // 'LIMIT' | 'MARKET'
   orderSide: 'BUY',   // 'BUY' | 'SELL'
@@ -26,21 +34,43 @@ const state = {
   contracts: {
     multiSig: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     dex: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+    offering: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
     tokens: {
       DAI: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+      CRS: '0x819c468e5dc88beb0702577cf8a90c2d0566ac8b',
       WBTC: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9',
       WETH: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
       LINK: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
     }
   },
   
-  // DEX Balances (trader internal balances)
+  // Offering State
+  offering: {
+    tokenName: 'Ceris Coin',
+    tokenSymbol: 'CRS',
+    tokenAddress: '0x819c468e5dc88beb0702577cf8a90c2d0566ac8b',
+    offeringAddress: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
+    treasuryAddress: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    tokensPerEth: 5000,
+    priceUsd: 0.50,
+    softCapEth: 50,
+    hardCapEth: 1000,
+    totalRaisedEth: 412.5,
+    totalTokensSold: 2062500,
+    totalContributors: 284,
+    minContributionEth: 0.05,
+    maxContributionEth: 25.0,
+    status: 'ACTIVE',
+    progressPercent: 41.25
+  },
+
+  // DEX Balances (trader internal balances including Ceris Coin CRS)
   balances: {
-    '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': { DAI: 250000, BTC: 5.5, ETH: 45.0, LINK: 1200 },
-    '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC': { DAI: 150000, BTC: 2.0, ETH: 20.0, LINK: 800 },
-    '0x90F79bf6EB2c4f870365E785982E1f101E93b906': { DAI: 300000, BTC: 4.0, ETH: 35.0, LINK: 2000 },
-    '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65': { DAI: 500000, BTC: 12.0, ETH: 80.0, LINK: 5000 },
-    '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc': { DAI: 450000, BTC: 8.5, ETH: 60.0, LINK: 4200 }
+    '0x70997970C51812dc3A010C7d01b50e0d17dc79C8': { DAI: 250000, BTC: 5.5, ETH: 245.5, LINK: 1200, CRS: 10000000 },
+    '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC': { DAI: 150000, BTC: 2.0, ETH: 120.0, LINK: 800, CRS: 500000 },
+    '0x90F79bf6EB2c4f870365E785982E1f101E93b906': { DAI: 300000, BTC: 4.0, ETH: 35.0, LINK: 2000, CRS: 200000 },
+    '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65': { DAI: 500000, BTC: 12.0, ETH: 80.0, LINK: 5000, CRS: 150000 },
+    '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc': { DAI: 450000, BTC: 8.5, ETH: 60.0, LINK: 4200, CRS: 100000 }
   },
 
   // Wallet Un-deposited Balances
@@ -524,11 +554,21 @@ function renderHeader() {
   if (badge) {
     badge.textContent = `${state.currentPersona.label} • ${formatAddress(state.currentPersona.address)}`;
   }
+
+  const loginLabel = document.getElementById('login-btn-label');
+  if (loginLabel) {
+    if (state.currentUser && state.currentUser.authenticated) {
+      loginLabel.innerHTML = `✓ ${state.currentUser.name} <span class="mono" style="font-size: 0.7rem; opacity: 0.85;">(${state.currentUser.email})</span>`;
+    } else {
+      loginLabel.textContent = 'Trader Login';
+    }
+  }
 }
 
 function renderAppViews() {
   const views = {
     'dex': document.getElementById('dex-view'),
+    'offering': document.getElementById('offering-view'),
     'copytrading': document.getElementById('copytrading-view'),
     'custody': document.getElementById('custody-view'),
     'treasury': document.getElementById('treasury-view'),
@@ -550,6 +590,7 @@ function renderAppViews() {
 
   // Call active renderer
   if (state.currentTab === 'dex') renderDEX();
+  else if (state.currentTab === 'offering') renderOfferingView();
   else if (state.currentTab === 'copytrading') renderCopyTrading();
   else if (state.currentTab === 'custody') renderCustody();
   else if (state.currentTab === 'treasury') renderTreasury();
@@ -1758,6 +1799,79 @@ function renderTelemetry() {
   `).join('');
 }
 
+// --- Render Ceris Coin (CRS) Official Offering View ---
+function renderOfferingView() {
+  const view = document.getElementById('offering-view');
+  if (!view) return;
+
+  // Update Macro Metrics
+  const raisedDisplay = document.getElementById('offering-raised-display');
+  if (raisedDisplay) {
+    raisedDisplay.textContent = `${state.offering.totalRaisedEth.toLocaleString()} / ${state.offering.hardCapEth.toLocaleString()} ETH`;
+  }
+
+  const progressLabel = document.getElementById('offering-progress-label');
+  if (progressLabel) {
+    const isSoftCleared = state.offering.totalRaisedEth >= state.offering.softCapEth;
+    progressLabel.textContent = `${state.offering.progressPercent.toFixed(2)}% Filled • ${isSoftCleared ? 'Soft Cap Cleared ✓' : 'Soft Cap Pending'}`;
+    progressLabel.style.color = isSoftCleared ? 'var(--signal-bid)' : 'var(--signal-ask)';
+  }
+
+  const progressPct = document.getElementById('offering-progress-pct');
+  if (progressPct) {
+    progressPct.textContent = `${state.offering.progressPercent.toFixed(2)}%`;
+  }
+
+  const progressBar = document.getElementById('offering-progress-bar');
+  if (progressBar) {
+    progressBar.style.width = `${Math.min(100, state.offering.progressPercent)}%`;
+  }
+
+  // Update Authenticated Account Balances Card
+  const authAccount = document.getElementById('buy-auth-account');
+  if (authAccount) {
+    authAccount.textContent = (state.currentUser && state.currentUser.authenticated)
+      ? `${state.currentUser.name} (${state.currentUser.email})`
+      : `${state.currentPersona.label}`;
+  }
+
+  const userAddress = state.currentPersona.address;
+  const crsBal = (state.balances[userAddress] && state.balances[userAddress].CRS) || 0;
+  const ethBal = (state.balances[userAddress] && state.balances[userAddress].ETH) || 0;
+
+  const crsBalEl = document.getElementById('buy-auth-crs-bal');
+  if (crsBalEl) {
+    crsBalEl.textContent = `${crsBal.toLocaleString()} CRS`;
+  }
+
+  const ethBalEl = document.getElementById('buy-auth-eth-bal');
+  if (ethBalEl) {
+    ethBalEl.textContent = `${ethBal.toFixed(2)} ETH`;
+  }
+
+  // Calculate estimated tokens based on current input value
+  updateOfferingTokenCalculation();
+}
+
+function updateOfferingTokenCalculation() {
+  const input = document.getElementById('offering-buy-eth-input');
+  if (!input) return;
+  const ethAmount = parseFloat(input.value) || 0;
+  const tokens = ethAmount * state.offering.tokensPerEth;
+  // 5 decimals = tokens * 100,000 base units
+  const baseUnits = Math.round(tokens * 100000);
+
+  const tokenDisplay = document.getElementById('offering-receive-tokens-display');
+  if (tokenDisplay) {
+    tokenDisplay.textContent = `${tokens.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CRS`;
+  }
+
+  const baseDisplay = document.getElementById('offering-receive-base-display');
+  if (baseDisplay) {
+    baseDisplay.textContent = `${baseUnits.toLocaleString('en-US')} units`;
+  }
+}
+
 // --- Modal Utilities ---
 function openModal(id) {
   const modal = document.getElementById(id);
@@ -2125,6 +2239,184 @@ function initRealLiveDataStreams() {
   }, 8000);
 }
 
+// --- Trader Sovereign Authentication Handlers ---
+function initAuthHandlers() {
+  const openLoginBtn = document.getElementById('login-modal-btn');
+  if (openLoginBtn) {
+    openLoginBtn.addEventListener('click', () => {
+      openModal('login-modal');
+    });
+  }
+
+  const loginForm = document.getElementById('trader-login-form');
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email-input').value.trim().toLowerCase();
+      const password = document.getElementById('login-password-input').value;
+
+      authenticateTrader(email, password);
+    });
+  }
+
+  // 1-Click Quick Testing Authentication Buttons
+  const q1 = document.getElementById('quick-login-trader1-btn');
+  if (q1) {
+    q1.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('login-email-input').value = 'a@coinpurex.com';
+      document.getElementById('login-password-input').value = 'bloqum';
+      authenticateTrader('a@coinpurex.com', 'bloqum');
+    });
+  }
+
+  const q2 = document.getElementById('quick-login-trader2-btn');
+  if (q2) {
+    q2.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('login-email-input').value = 'b@coinpurex.com';
+      document.getElementById('login-password-input').value = 'bloqum';
+      authenticateTrader('b@coinpurex.com', 'bloqum');
+    });
+  }
+}
+
+function authenticateTrader(email, password) {
+  let matchedPersona = null;
+  let userData = null;
+
+  if (email === 'a@coinpurex.com' && password === 'bloqum') {
+    matchedPersona = PERSONAS[0]; // Trader One (10M CRS)
+    userData = {
+      authenticated: true,
+      email: 'a@coinpurex.com',
+      name: 'Trader One',
+      role: 'Principal Admin & Token Owner',
+      address: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+      token: 'cpx_sec_token_a_trader1_session'
+    };
+  } else if (email === 'b@coinpurex.com' && password === 'bloqum') {
+    matchedPersona = PERSONAS[1]; // Trader Two (500k CRS)
+    userData = {
+      authenticated: true,
+      email: 'b@coinpurex.com',
+      name: 'Trader Two',
+      role: 'Sovereign Quant Trader',
+      address: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
+      token: 'cpx_sec_token_b_trader2_session'
+    };
+  } else {
+    showToast('Invalid credentials. Use a@coinpurex.com / bloqum or b@coinpurex.com / bloqum', 'error');
+    return;
+  }
+
+  state.currentPersona = matchedPersona;
+  state.currentUser = userData;
+
+  // Sync persona select dropdown if present
+  const select = document.getElementById('persona-select');
+  if (select) {
+    select.value = matchedPersona.id;
+  }
+
+  closeModal('login-modal');
+  showToast(`Authenticated as ${userData.name} (${userData.email}). CRS Token balance: ${(state.balances[matchedPersona.address]?.CRS || 0).toLocaleString()} CRS`, 'success');
+  logTelemetry('TraderAuthenticated', 'CoinPurexAuth', `Session established for ${userData.email} (${formatAddress(matchedPersona.address)})`);
+
+  renderHeader();
+  renderOrderForm();
+  renderUserOrders();
+  renderTreasury();
+  if (state.currentTab === 'offering') {
+    renderOfferingView();
+  }
+}
+
+// --- Ceris Coin Offering & Buy Own Coin Handlers ---
+function initOfferingHandlers() {
+  const buyInput = document.getElementById('offering-buy-eth-input');
+  if (buyInput) {
+    buyInput.addEventListener('input', updateOfferingTokenCalculation);
+  }
+
+  const executeBuyBtn = document.getElementById('execute-buy-crs-btn');
+  if (executeBuyBtn) {
+    executeBuyBtn.addEventListener('click', () => {
+      const input = document.getElementById('offering-buy-eth-input');
+      const ethAmount = parseFloat(input ? input.value : 0);
+
+      if (!ethAmount || ethAmount < state.offering.minContributionEth) {
+        showToast(`Minimum contribution is ${state.offering.minContributionEth} ETH`, 'error');
+        return;
+      }
+      if (ethAmount > state.offering.maxContributionEth) {
+        showToast(`Maximum contribution is ${state.offering.maxContributionEth} ETH per transaction`, 'error');
+        return;
+      }
+
+      const userAddr = state.currentPersona.address;
+      const userBals = state.balances[userAddr] = state.balances[userAddr] || { DAI: 0, BTC: 0, ETH: 0, LINK: 0, CRS: 0 };
+
+      if ((userBals.ETH || 0) < ethAmount) {
+        showToast(`Insufficient ETH balance (${(userBals.ETH || 0).toFixed(2)} ETH). Claim test tokens from faucet or deposit!`, 'error');
+        return;
+      }
+
+      const crsTokens = ethAmount * state.offering.tokensPerEth;
+
+      // Deduct ETH and credit CRS directly to user account
+      userBals.ETH -= ethAmount;
+      userBals.CRS = (userBals.CRS || 0) + crsTokens;
+
+      // Update offering statistics
+      state.offering.totalRaisedEth += ethAmount;
+      state.offering.totalTokensSold += crsTokens;
+      state.offering.totalContributors += 1;
+      state.offering.progressPercent = Math.min(100, (state.offering.totalRaisedEth / state.offering.hardCapEth) * 100);
+
+      // Log to on-chain telemetry
+      logTelemetry(
+        'OfferingPurchase',
+        'CoinPurexOffering',
+        `${crsTokens.toLocaleString()} CRS minted for ${ethAmount.toFixed(2)} ETH by ${state.currentPersona.label}`
+      );
+
+      showToast(
+        `🎉 Successfully purchased ${crsTokens.toLocaleString()} CRS! Your updated balance: ${userBals.CRS.toLocaleString()} CRS`,
+        'success'
+      );
+
+      // Update UI displays
+      renderHeader();
+      renderOfferingView();
+      renderTreasury();
+    });
+  }
+
+  // Deploy New Offering Instance Generator
+  const deployBtn = document.getElementById('deploy-new-offering-btn');
+  if (deployBtn) {
+    deployBtn.addEventListener('click', () => {
+      const name = document.getElementById('deploy-token-name')?.value || 'Ceris Coin';
+      const symbol = document.getElementById('deploy-token-symbol')?.value || 'CRS';
+      const rate = parseInt(document.getElementById('deploy-token-rate')?.value) || 5000;
+      const hardCap = parseInt(document.getElementById('deploy-hard-cap')?.value) || 1000;
+      const treasury = document.getElementById('deploy-treasury-target')?.value || state.contracts.multiSig;
+
+      const randomHex = Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join('');
+      const newContractAddress = `0x${randomHex}`;
+
+      logTelemetry(
+        'ContractDeployed',
+        'CoinPurexFactory',
+        `New CoinPurexOffering deployed at ${newContractAddress} (${symbol}, ${rate} ${symbol}/ETH, Cap: ${hardCap} ETH -> ${formatAddress(treasury)})`
+      );
+
+      showToast(`🚀 Deployed fresh Coin Offering instance at ${formatAddress(newContractAddress)} for ${symbol}! Rate: ${rate}/ETH`, 'success');
+    });
+  }
+}
+
 // --- App Bootstrap ---
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
@@ -2132,6 +2424,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initOrderForm();
   initTreasuryControls();
   initModals();
+  initAuthHandlers();
+  initOfferingHandlers();
 
   renderHeader();
   renderLiveNewsTicker();

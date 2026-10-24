@@ -10,6 +10,7 @@ async function seed() {
         treasury: {
             ethBalance: 245.5,
             daiBalance: 1250000,
+            crsBalance: 20000000,
             wbtcBalance: 14.25,
             wethBalance: 120.0,
             linkBalance: 15400,
@@ -45,6 +46,22 @@ async function seed() {
                 },
                 {
                     id: 2,
+                    to: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
+                    token: 'CRS',
+                    amount: 20000000,
+                    description: 'Ceris Coin (CRS) Offering Launchpad Liquidity Pool Provisioning',
+                    approvals: [
+                        '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+                        '0x90F79bf6EB2c4f870365E785982E1f101E93b906'
+                    ],
+                    approvalsCount: 2,
+                    quorum: 2,
+                    executed: true,
+                    cancelled: false,
+                    createdAt: '2026-10-23T16:00:00Z'
+                },
+                {
+                    id: 3,
                     to: '0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc',
                     token: 'LINK',
                     amount: 2500,
@@ -58,8 +75,44 @@ async function seed() {
                 }
             ]
         },
+        offering: {
+            tokenName: 'Ceris Coin',
+            tokenSymbol: 'CRS',
+            tokenContract: '0x819c468e5dc88beb0702577cf8a90c2d0566ac8b',
+            offeringContract: '0x0165878A594ca255338adfa4d48449f69242Eb8F',
+            treasury: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+            tokensPerEth: 5000,
+            priceUsd: 0.50,
+            softCapEth: 50,
+            hardCapEth: 1000,
+            totalRaisedEth: 412.5,
+            totalTokensSold: 2062500,
+            totalContributors: 284,
+            minContributionEth: 0.05,
+            maxContributionEth: 25.0,
+            status: 'ACTIVE',
+            progressPercent: 41.25,
+            etherscanUrl: 'https://etherscan.io/token/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b#readContract'
+        },
         dex: {
             pairs: {
+                'CRS/DAI': {
+                    markPrice: 0.50,
+                    change24h: 12.50,
+                    high24h: 0.54,
+                    low24h: 0.44,
+                    volume24h: 580000,
+                    bids: [
+                        { price: 0.495, amount: 25000, total: 12375.00, depth: 0.90 },
+                        { price: 0.490, amount: 50000, total: 24500.00, depth: 0.75 },
+                        { price: 0.480, amount: 120000, total: 57600.00, depth: 0.50 }
+                    ],
+                    asks: [
+                        { price: 0.505, amount: 30000, total: 15150.00, depth: 0.88 },
+                        { price: 0.510, amount: 65000, total: 33150.00, depth: 0.70 },
+                        { price: 0.520, amount: 100000, total: 52000.00, depth: 0.45 }
+                    ]
+                },
                 'BTC/DAI': {
                     markPrice: 68450.00,
                     change24h: 3.42,

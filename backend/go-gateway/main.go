@@ -173,6 +173,24 @@ var (
 			Volume24H:   1250000,
 			LastUpdated: time.Now().Unix(),
 		},
+		"CRS/DAI": {
+			Symbol:      "CRS/DAI",
+			MarkPrice:   0.50,
+			Change24H:   12.50,
+			High24H:     0.54,
+			Low24H:      0.44,
+			Volume24H:   580000,
+			LastUpdated: time.Now().Unix(),
+		},
+		"CRS/ETH": {
+			Symbol:      "CRS/ETH",
+			MarkPrice:   0.000200,
+			Change24H:   8.40,
+			High24H:     0.000215,
+			Low24H:      0.000185,
+			Volume24H:   340000,
+			LastUpdated: time.Now().Unix(),
+		},
 	}
 
 	news = []NewsItem{
@@ -378,6 +396,115 @@ func startLivePricePoller() {
 	}
 }
 
+type LoginRequest struct {
+	Login    string `json:"login"`
+	Password string `json:"password"`
+}
+
+type UserProfile struct {
+	Authenticated bool     `json:"authenticated"`
+	Token         string   `json:"token"`
+	Login         string   `json:"login"`
+	Name          string   `json:"name"`
+	Role          string   `json:"role"`
+	Address       string   `json:"address"`
+	CrsBalance    float64  `json:"crsBalance"`
+	EthBalance    float64  `json:"ethBalance"`
+	DaiBalance    float64  `json:"daiBalance"`
+	Permissions   []string `json:"permissions"`
+}
+
+func handleLogin(w http.ResponseWriter, r *http.Request) {
+	enableCORS(w)
+	if r.Method == http.MethodOptions {
+		return
+	}
+
+	var req LoginRequest
+	if r.Method == http.MethodPost {
+		json.NewDecoder(r.Body).Decode(&req)
+	} else {
+		req.Login = r.URL.Query().Get("login")
+		req.Password = r.URL.Query().Get("password")
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	if req.Login == "a@coinpurex.com" && req.Password == "bloqum" {
+		profile := UserProfile{
+			Authenticated: true,
+			Token:         "cpx_sec_token_a_trader1_session",
+			Login:         "a@coinpurex.com",
+			Name:          "Trader One",
+			Role:          "Principal Trader & Primary Signer",
+			Address:       "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+			CrsBalance:    10000000.0,
+			EthBalance:    245.5,
+			DaiBalance:    1250000.0,
+			Permissions:   []string{"TRADE", "TREASURY_SIGNER", "OFFERING_MANAGE", "VAULT_WITHDRAW"},
+		}
+		json.NewEncoder(w).Encode(profile)
+		return
+	}
+
+	if req.Login == "b@coinpurex.com" && req.Password == "bloqum" {
+		profile := UserProfile{
+			Authenticated: true,
+			Token:         "cpx_sec_token_b_trader2_session",
+			Login:         "b@coinpurex.com",
+			Name:          "Trader Two",
+			Role:          "Sovereign Quant Trader",
+			Address:       "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+			CrsBalance:    500000.0,
+			EthBalance:    120.0,
+			DaiBalance:    250000.0,
+			Permissions:   []string{"TRADE", "COPY_TRADE", "L2_BRIDGE", "OFFERING_CONTRIBUTE"},
+		}
+		json.NewEncoder(w).Encode(profile)
+		return
+	}
+
+	w.WriteHeader(http.StatusUnauthorized)
+	json.NewEncoder(w).Encode(map[string]string{
+		"error":   "Invalid credentials",
+		"message": "Authorized accounts: a@coinpurex.com / bloqum, b@coinpurex.com / bloqum",
+	})
+}
+
+func handleOffering(w http.ResponseWriter, r *http.Request) {
+	enableCORS(w)
+	if r.Method == http.MethodOptions {
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"tokenName":          "Ceris Coin",
+		"tokenSymbol":        "CRS",
+		"tokenAddress":       "0x819c468e5dc88beb0702577cf8a90c2d0566ac8b",
+		"offeringAddress":    "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+		"decimals":           5,
+		"totalSupply":        100000000,
+		"offeringAllocation": 20000000,
+		"tokensPerEth":       5000,
+		"priceUsd":           0.50,
+		"softCapEth":         50,
+		"hardCapEth":         1000,
+		"totalRaisedEth":     412.5,
+		"totalTokensSold":    2062500,
+		"totalContributors":  284,
+		"status":             "ACTIVE",
+		"links": map[string]string{
+			"etherscanToken":     "https://etherscan.io/token/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b",
+			"etherscanContract":  "https://etherscan.io/address/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b",
+			"etherscanBalances":  "https://etherscan.io/token/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b#balances",
+			"bitoxExchange":      "https://exchange.bitox.io/#!/trade/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b-ETH",
+			"ethercExchange":     "https://etherc.io/#0x819c468e5dc88beb0702577cf8a90c2d0566ac8b-ETH",
+			"forkdeltaExchange":  "https://forkdelta.app/#!/trade/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b-ETH",
+			"etherdeltaExchange": "https://etherdelta.com/#0x819c468e5dc88beb0702577cf8a90c2d0566ac8b-ETH",
+		},
+	})
+}
+
 func main() {
 	go startLivePricePoller()
 
@@ -387,6 +514,8 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		fmt.Fprintf(w, `{"status":"HEALTHY","engine":"CoinPurex-HighThroughput-Gateway","domain":"coinpurex.com","time":"%s"}`, time.Now().UTC().Format(time.RFC3339))
 	})
+	mux.HandleFunc("/api/v1/auth/login", handleLogin)
+	mux.HandleFunc("/api/v1/offering", handleOffering)
 	mux.HandleFunc("/api/v1/copytraders", handleCopyTraders)
 	mux.HandleFunc("/api/v1/prices", handlePrices)
 	mux.HandleFunc("/api/v1/news", handleNews)

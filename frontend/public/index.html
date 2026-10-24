@@ -77,6 +77,10 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         Tokenized RWAs
       </button>
+      <button class="nav-tab-btn" data-tab="offering" id="tab-offering-btn" aria-label="Switch to Ceris Coin Offering Launchpad">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M17 10l-5-4-5 4"/></svg>
+        Coin Offering (CRS)
+      </button>
       <button class="nav-tab-btn" data-tab="news" id="tab-news-btn" aria-label="Switch to Live Market Intelligence">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
         Live Intelligence
@@ -87,12 +91,17 @@
       </button>
     </nav>
 
-    <!-- Right Controls: Persona Switcher & Web3 Status -->
+    <!-- Right Controls: Trader Login, Persona Switcher & Web3 Status -->
     <div class="nav-actions">
       <div class="status-indicator" title="Connected to Local EVM Sandbox">
         <span class="status-dot"></span>
         <span class="mono" style="font-weight: 700;">EVM ACTIVE</span>
       </div>
+
+      <button class="btn-primary" id="login-modal-btn" aria-label="Open Trader Login" style="padding: 0.45rem 0.85rem; font-size: 0.78rem; display: flex; align-items: center; gap: 0.4rem; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #000; font-weight: 800; border-radius: var(--radius-sm); border: none; cursor: pointer;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        <span id="login-btn-label">Trader Login</span>
+      </button>
 
       <button class="btn-secondary" id="faucet-btn" aria-label="Open Token Faucet">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
@@ -853,6 +862,197 @@
             <div id="xrpl-trustlines-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
           </div>
         </div>
+    <!-- ====================================================================
+         VIEW 9: CERIS COIN (CRS) OFFERING & SOVEREIGN LAUNCHPAD
+         ==================================================================== -->
+    <section id="offering-view" class="treasury-view" style="display: none;" aria-label="Ceris Coin Offering Launchpad">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <span class="badge success" style="font-weight: 800; font-size: 0.72rem; letter-spacing: 0.05em;">SOVEREIGN PLATFORM ASSET</span>
+            <span class="mono" style="font-size: 0.75rem; color: var(--accent-cyan);">Exchange: coinpurex.com</span>
+          </div>
+          <h2 style="font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; display: flex; align-items: center; gap: 0.5rem;">
+            <span>Ceris Coin (CRS) Official Offering &amp; Launchpad</span>
+          </h2>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; max-width: 900px;">
+            Verified Ethereum Mainnet contract <code class="mono" style="color: var(--accent-cyan); background: var(--bg-surface); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--border-subtle);">0x819c468e5dc88beb0702577cf8a90c2d0566ac8b</code>.
+            Directly registered to your authenticated sovereign credentials (<strong style="color: var(--text-primary);">a@coinpurex.com</strong> / <strong style="color: var(--text-primary);">b@coinpurex.com</strong>) with zero third-party diversion.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          <a href="https://etherscan.io/token/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.75rem; text-decoration: none; display: flex; align-items: center; gap: 0.35rem;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Etherscan Token
+          </a>
+          <a href="https://etherscan.io/token/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b#balances" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.75rem; text-decoration: none; display: flex; align-items: center; gap: 0.35rem;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            Wallet Balances
+          </a>
+          <a href="https://etherscan.io/address/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.75rem; text-decoration: none; display: flex; align-items: center; gap: 0.35rem;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Contract Code
+          </a>
+        </div>
+      </div>
+
+      <!-- Verified Exchange Listings Bar -->
+      <div class="card" style="background: linear-gradient(135deg, rgba(14, 165, 233, 0.08), rgba(99, 102, 241, 0.06)); border: 1px solid rgba(56, 189, 248, 0.3); margin-bottom: 1.5rem; padding: 1rem 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div style="font-size: 0.72rem; color: var(--accent-cyan); font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.2rem;">
+              VERIFIED SECONDARY EXCHANGE MARKETS (0x819c468e...-ETH)
+            </div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary);">
+              Ceris Coin is actively listed and tradable across verified non-custodial decentralized order book venues:
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <a href="https://exchange.bitox.io/#!/trade/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b-ETH" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.75rem; text-decoration: none; padding: 0.35rem 0.75rem;">
+              🏛 Bitox Exchange
+            </a>
+            <a href="https://etherc.io/#0x819c468e5dc88beb0702577cf8a90c2d0566ac8b-ETH" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.75rem; text-decoration: none; padding: 0.35rem 0.75rem;">
+              ⚡ Etherc Exchange
+            </a>
+            <a href="https://forkdelta.app/#!/trade/0x819c468e5dc88beb0702577cf8a90c2d0566ac8b-ETH" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.75rem; text-decoration: none; padding: 0.35rem 0.75rem;">
+              🔱 Forkdelta
+            </a>
+            <a href="https://etherdelta.com/#0x819c468e5dc88beb0702577cf8a90c2d0566ac8b-ETH" target="_blank" rel="noopener noreferrer" class="btn-secondary" style="font-size: 0.75rem; text-decoration: none; padding: 0.35rem 0.75rem;">
+              🌐 Etherdelta
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Offering Macro Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-card-label">Total Token Supply</div>
+          <div class="metric-card-value" style="color: var(--accent-cyan);">100,000,000 CRS</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Standard 5 Decimals (10^5)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Public Offering Allocation</div>
+          <div class="metric-card-value" style="color: var(--signal-bid);">20,000,000 CRS</div>
+          <div style="font-size: 0.75rem; color: var(--signal-bid);">20.0% of Total Genesis Supply</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Offering Exchange Rate</div>
+          <div class="metric-card-value">1 ETH = 5,000 CRS</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Approx. $0.50 USD / CRS</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-card-label">Capital Raised / Hard Cap</div>
+          <div class="metric-card-value" id="offering-raised-display">412.5 / 1,000 ETH</div>
+          <div style="font-size: 0.75rem; color: var(--signal-bid);" id="offering-progress-label">41.25% Filled • Soft Cap Cleared</div>
+        </div>
+      </div>
+
+      <!-- Live Offering Progress Bar -->
+      <div class="card" style="margin-top: 1.25rem; margin-bottom: 1.5rem; padding: 1.25rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.8rem;">
+          <span style="font-weight: 700; color: var(--text-primary);">Offering Pool Progress</span>
+          <span class="mono" style="color: var(--signal-bid); font-weight: 800;" id="offering-progress-pct">41.25%</span>
+        </div>
+        <div style="width: 100%; height: 12px; background: rgba(255, 255, 255, 0.05); border-radius: var(--radius-full); overflow: hidden; border: 1px solid var(--border-subtle);">
+          <div id="offering-progress-bar" style="width: 41.25%; height: 100%; background: linear-gradient(90deg, var(--accent-cyan), var(--signal-bid)); border-radius: var(--radius-full); transition: width 0.4s ease;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.72rem; color: var(--text-muted);">
+          <span>Soft Cap: 50 ETH (Reached ✓)</span>
+          <span>Participants: 284 Sovereign Investors</span>
+          <span>Hard Cap: 1,000 ETH</span>
+        </div>
+      </div>
+
+      <!-- Interactive 2-Column Operational Deck: Buy Own Coin & Recreate Offering -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+        <!-- Card 1: Activate Offering & Buy Own Coin -->
+        <div class="card">
+          <div class="card-header">
+            <span>Activate Offering &amp; Buy Your Own Coin (CRS)</span>
+            <span class="badge success">Offering Active</span>
+          </div>
+          <div class="card-body" style="gap: 1rem;">
+            <div style="background: var(--bg-surface); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 0.8rem;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                <span style="color: var(--text-muted);">Authenticated Account:</span>
+                <strong style="color: var(--text-primary);" id="buy-auth-account">Trader One (a@coinpurex.com)</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+                <span style="color: var(--text-muted);">Current CRS Holdings:</span>
+                <strong style="color: var(--signal-bid);" id="buy-auth-crs-bal">10,000,000 CRS</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Available ETH Balance:</span>
+                <strong style="color: var(--accent-cyan);" id="buy-auth-eth-bal">245.5 ETH</strong>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="offering-buy-eth-input">ETH Contribution Amount</label>
+              <input type="number" id="offering-buy-eth-input" class="form-input" placeholder="e.g. 1.0" min="0.05" max="25" step="0.1" value="1.0">
+              <span style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem;">Min: 0.05 ETH • Max: 25.0 ETH per transaction</span>
+            </div>
+
+            <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-sm); padding: 0.75rem;">
+              <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">You Will Receive</div>
+              <div style="font-size: 1.4rem; font-weight: 800; color: var(--signal-bid);" id="offering-receive-tokens-display">
+                5,000.00 CRS
+              </div>
+              <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                Standard 5-decimal base units: <code class="mono" id="offering-receive-base-display">500,000,000 units</code>
+              </div>
+            </div>
+
+            <button id="execute-buy-crs-btn" class="btn-execute buy" style="padding: 0.75rem; font-weight: 800; font-size: 0.9rem;">
+              Contribute ETH &amp; Mint Ceris Coin (CRS)
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2: Recreate New Offering Instance Tool -->
+        <div class="card">
+          <div class="card-header">
+            <span>Recreate / Deploy New Offering Instance</span>
+            <span class="mono" style="font-size: 0.72rem; color: var(--accent-cyan);">Solidity 0.8.20</span>
+          </div>
+          <div class="card-body" style="gap: 1rem;">
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">
+              Deploy a fresh Initial Coin Offering contract (<code class="mono" style="color: var(--accent-cyan);">CoinPurexOffering.sol</code>) for additional token distribution rounds or auxiliary platform tokens:
+            </p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div class="input-group">
+                <label class="input-label" for="deploy-token-name">Token Name</label>
+                <input type="text" id="deploy-token-name" class="form-input" value="Ceris Coin">
+              </div>
+              <div class="input-group">
+                <label class="input-label" for="deploy-token-symbol">Token Symbol</label>
+                <input type="text" id="deploy-token-symbol" class="form-input" value="CRS">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div class="input-group">
+                <label class="input-label" for="deploy-token-rate">Rate (CRS / ETH)</label>
+                <input type="number" id="deploy-token-rate" class="form-input" value="5000">
+              </div>
+              <div class="input-group">
+                <label class="input-label" for="deploy-hard-cap">Hard Cap (ETH)</label>
+                <input type="number" id="deploy-hard-cap" class="form-input" value="1000">
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label class="input-label" for="deploy-treasury-target">Destination Multi-Sig Vault</label>
+              <input type="text" id="deploy-treasury-target" class="form-input mono" value="0x5FbDB2315678afecb367f032d93F642f64180aa3">
+            </div>
+
+            <button id="deploy-new-offering-btn" class="btn-primary" style="padding: 0.75rem; font-weight: 800; font-size: 0.85rem; background: linear-gradient(135deg, #0ea5e9, #6366f1); border: none; color: #fff;">
+              Deploy Fresh Offering Instance
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1075,6 +1275,53 @@
         <button id="confirm-vault-withdrawal-btn" class="btn-execute sell" style="margin-top: 0.5rem;">
           Lock Withdrawal into 48h Vault Schedule
         </button>
+      </div>
+    </div>
+  <!-- ====================================================================
+       MODAL 6: TRADER LOGIN & CREDENTIAL VERIFICATION
+       ==================================================================== -->
+  <div class="modal-backdrop" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="login-modal-title">Trader Sovereign Authentication</h3>
+        <button class="modal-close-btn" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: rgba(14, 165, 233, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-sm); padding: 0.75rem; margin-bottom: 1rem; font-size: 0.78rem; color: var(--text-secondary);">
+          Log in with your official <strong style="color: var(--accent-cyan);">coinpurex.com</strong> credentials to access your sovereign token balances, DEX liquidity, and coin offering administration.
+        </div>
+
+        <form id="trader-login-form">
+          <div class="input-group">
+            <label class="input-label" for="login-email-input">Trader Login (Email)</label>
+            <input type="email" id="login-email-input" class="form-input" placeholder="a@coinpurex.com" required value="a@coinpurex.com">
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="login-password-input">Password</label>
+            <input type="password" id="login-password-input" class="form-input" placeholder="••••••" required value="bloqum">
+          </div>
+
+          <button type="submit" id="submit-login-btn" class="btn-primary" style="width: 100%; padding: 0.65rem; font-weight: 800; font-size: 0.85rem; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #000; border: none; margin-top: 0.5rem; cursor: pointer;">
+            Authenticate Trader Session
+          </button>
+        </form>
+
+        <div style="margin-top: 1.25rem; border-top: 1px solid var(--border-subtle); padding-top: 1rem;">
+          <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 700;">
+            1-Click Quick Testing Authentication:
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <button id="quick-login-trader1-btn" class="btn-secondary" style="width: 100%; text-align: left; padding: 0.5rem 0.75rem; font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <span>⚡ <strong>Trader One</strong>: a@coinpurex.com</span>
+              <span class="badge success" style="font-size: 0.65rem;">10M CRS • Admin</span>
+            </button>
+            <button id="quick-login-trader2-btn" class="btn-secondary" style="width: 100%; text-align: left; padding: 0.5rem 0.75rem; font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+              <span>⚡ <strong>Trader Two</strong>: b@coinpurex.com</span>
+              <span class="badge info" style="font-size: 0.65rem;">500k CRS • Quant</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

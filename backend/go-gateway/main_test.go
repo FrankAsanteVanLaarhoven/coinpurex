@@ -193,3 +193,95 @@ func TestHandleNews_Options(t *testing.T) {
 		t.Errorf("expected status 200 on OPTIONS preflight, got %d", status)
 	}
 }
+
+func TestHandleLogin_TraderOne(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "/api/v1/auth/login?login=a@coinpurex.com&password=bloqum", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handleLogin(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("expected status 200 for Trader One login, got %d", status)
+	}
+
+	var profile UserProfile
+	if err := json.Unmarshal(rr.Body.Bytes(), &profile); err != nil {
+		t.Fatalf("failed to decode profile JSON: %v", err)
+	}
+
+	if !profile.Authenticated || profile.Name != "Trader One" || profile.Login != "a@coinpurex.com" {
+		t.Errorf("unexpected profile data for Trader One: %+v", profile)
+	}
+	if profile.Address != "0x70997970C51812dc3A010C7d01b50e0d17dc79C8" {
+		t.Errorf("expected primary address for Trader One, got %s", profile.Address)
+	}
+}
+
+func TestHandleLogin_TraderTwo(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "/api/v1/auth/login?login=b@coinpurex.com&password=bloqum", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handleLogin(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("expected status 200 for Trader Two login, got %d", status)
+	}
+
+	var profile UserProfile
+	if err := json.Unmarshal(rr.Body.Bytes(), &profile); err != nil {
+		t.Fatalf("failed to decode profile JSON: %v", err)
+	}
+
+	if !profile.Authenticated || profile.Name != "Trader Two" || profile.Login != "b@coinpurex.com" {
+		t.Errorf("unexpected profile data for Trader Two: %+v", profile)
+	}
+	if profile.Address != "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC" {
+		t.Errorf("expected secondary address for Trader Two, got %s", profile.Address)
+	}
+}
+
+func TestHandleLogin_Invalid(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "/api/v1/auth/login?login=bad@user.com&password=wrong", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handleLogin(rr, req)
+
+	if status := rr.Code; status != http.StatusUnauthorized {
+		t.Errorf("expected status 401 for bad login, got %d", status)
+	}
+}
+
+func TestHandleOffering(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "/api/v1/offering", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handleOffering(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("expected status 200 for offering endpoint, got %d", status)
+	}
+
+	var data map[string]interface{}
+	if err := json.Unmarshal(rr.Body.Bytes(), &data); err != nil {
+		t.Fatalf("failed to decode offering JSON: %v", err)
+	}
+
+	if data["tokenSymbol"] != "CRS" || data["tokenName"] != "Ceris Coin" {
+		t.Errorf("expected Ceris Coin (CRS), got %v", data)
+	}
+	if data["tokenAddress"] != "0x819c468e5dc88beb0702577cf8a90c2d0566ac8b" {
+		t.Errorf("expected mainnet token address 0x819c468e5dc88beb0702577cf8a90c2d0566ac8b, got %v", data["tokenAddress"])
+	}
+}

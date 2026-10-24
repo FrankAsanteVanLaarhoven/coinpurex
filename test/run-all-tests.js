@@ -3,6 +3,7 @@ const { runMultiSigTests } = require('./EnterpriseMultiSigWallet.test');
 const { runDEXTests } = require('./EnterpriseDEX.test');
 const { runExtensionTests } = require('./EnterpriseExtensions.test');
 const { runMockERC20Tests } = require('./MockERC20.test');
+const { runCerisCoinTests } = require('./CerisCoin.test');
 
 async function main() {
     console.log('===============================================================');
@@ -15,8 +16,9 @@ async function main() {
         const r2 = await runDEXTests();
         const r3 = await runExtensionTests();
         const r4 = await runMockERC20Tests();
+        const r5 = await runCerisCoinTests();
 
-        const totalPassed = (r1?.passed || 0) + (r2?.passed || 0) + (r3?.passed || 0) + (r4?.passed || 0);
+        const totalPassed = (r1?.passed || 0) + (r2?.passed || 0) + (r3?.passed || 0) + (r4?.passed || 0) + (r5?.passed || 0);
         const duration = ((Date.now() - start) / 1000).toFixed(2);
         console.log('===============================================================');
         console.log(` ✅ ALL ${totalPassed} TESTS PASSED SUCCESSFULLY in ${duration}s`);
@@ -25,6 +27,7 @@ async function main() {
         console.log('   - SOTA Extensions (DeFi Vaults, Polygon/Arbitrum, Arbitrage, Securities, FTPS)');
         console.log('   - Enterprise Custody (48h Time-Locked Delay, Proof of Solvency, Cryptographic Preimage Escrows)');
         console.log('   - MockERC20 (Institutional Faucet, Burn, Allowance & Boundary Invariants)');
+        console.log('   - CerisCoin & CoinPurexOffering (0x819c468e Recreated Standard, Caps, Treasury)');
         console.log('===============================================================\n');
     } catch (err) {
         console.error('Test run failed:', err);
