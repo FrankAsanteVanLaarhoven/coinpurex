@@ -1,12 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-interface IERC20Standard {
-    function totalSupply() external view returns (uint256);
-    function balanceOf(address account) external view returns (uint256);
-    function transfer(address to, uint256 amount) external returns (bool);
-    function transferFrom(address from, address to, uint256 amount) external returns (bool);
-}
+import "../interfaces/IERC20.sol";
 
 /**
  * @title ApexDeFiVault
@@ -68,7 +63,7 @@ contract ApexDeFiVault {
         shares = convertToShares(assets);
         if (shares == 0) revert ZeroShares();
 
-        bool success = IERC20Standard(asset).transferFrom(msg.sender, address(this), assets);
+        bool success = IERC20(asset).transferFrom(msg.sender, address(this), assets);
         require(success, "Transfer failed");
 
         totalAssets += assets;
@@ -89,7 +84,7 @@ contract ApexDeFiVault {
         totalSupply -= shares;
         totalAssets -= assets;
 
-        bool success = IERC20Standard(asset).transfer(receiver, assets);
+        bool success = IERC20(asset).transfer(receiver, assets);
         require(success, "Transfer failed");
 
         emit Withdraw(msg.sender, receiver, owner, assets, shares);
@@ -99,7 +94,7 @@ contract ApexDeFiVault {
      * @notice Distributes institutional yield harvested from lending/arbitrage strategies.
      */
     function harvestYield(uint256 yieldAssets) external onlyGovernance {
-        bool success = IERC20Standard(asset).transferFrom(msg.sender, address(this), yieldAssets);
+        bool success = IERC20(asset).transferFrom(msg.sender, address(this), yieldAssets);
         require(success, "Yield transfer failed");
         totalAssets += yieldAssets;
         emit YieldHarvested(yieldAssets, block.timestamp);

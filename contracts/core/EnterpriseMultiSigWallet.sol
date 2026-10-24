@@ -1,13 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/**
- * @dev Minimal interface for ERC20 transfers within the Multi-Sig wallet.
- */
-interface IERC20Minimal {
-    function transfer(address to, uint256 amount) external returns (bool);
-    function balanceOf(address account) external view returns (uint256);
-}
+import "../interfaces/IERC20.sol";
 
 /**
  * @title EnterpriseMultiSigWallet
@@ -283,7 +277,7 @@ contract EnterpriseMultiSigWallet {
             if (!success) revert TransferExecutionFailed();
         } else {
             // ERC-20 token transfer
-            bool success = IERC20Minimal(t.token).transfer(t.to, t.amount);
+            bool success = IERC20(t.token).transfer(t.to, t.amount);
             if (!success) revert TransferExecutionFailed();
         }
 

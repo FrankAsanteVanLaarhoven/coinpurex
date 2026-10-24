@@ -1,14 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-interface IERC20Token {
-    function totalSupply() external view returns (uint256);
-    function balanceOf(address account) external view returns (uint256);
-    function transfer(address to, uint256 amount) external returns (bool);
-    function allowance(address owner, address spender) external view returns (uint256);
-    function approve(address spender, uint256 amount) external returns (bool);
-    function transferFrom(address from, address to, uint256 amount) external returns (bool);
-}
+import "../interfaces/IERC20.sol";
 
 /**
  * @title EnterpriseDEX
@@ -166,7 +159,7 @@ contract EnterpriseDEX {
     function deposit(uint256 amount, bytes32 ticker) external tokenExist(ticker) nonReentrant {
         if (amount == 0) revert ZeroAmountNotAllowed();
 
-        bool success = IERC20Token(tokens[ticker].tokenAddress).transferFrom(
+        bool success = IERC20(tokens[ticker].tokenAddress).transferFrom(
             msg.sender,
             address(this),
             amount
@@ -187,7 +180,7 @@ contract EnterpriseDEX {
 
         traderBalances[msg.sender][ticker] -= amount;
 
-        bool success = IERC20Token(tokens[ticker].tokenAddress).transfer(msg.sender, amount);
+        bool success = IERC20(tokens[ticker].tokenAddress).transfer(msg.sender, amount);
         if (!success) revert TokenTransferFailed();
 
         emit Withdraw(msg.sender, ticker, amount);

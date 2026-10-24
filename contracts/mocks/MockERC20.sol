@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "../interfaces/IERC20.sol";
+
 /**
  * @title MockERC20
  * @notice Enterprise-grade ERC20 mock token with institutional faucet capabilities.
  * @dev Used for sandbox testing and liquidity seeding in the Apex Enterprise Platform.
  */
-contract MockERC20 {
+contract MockERC20 is IERC20 {
     string public name;
     string public symbol;
     uint8 public immutable decimals;
@@ -15,8 +17,6 @@ contract MockERC20 {
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
 
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
     event FaucetDispensed(address indexed recipient, uint256 amount);
 
     error InsufficientBalance(address account, uint256 requested, uint256 available);
