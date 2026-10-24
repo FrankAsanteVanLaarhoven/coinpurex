@@ -32,6 +32,10 @@
     "solidity",
     "ethereum"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FrankAsanteVanLaarhoven/coinpurex.git"
+  },
   "author": "CoinPurex Institutional Web3 Engineering (coinpurex.com)",
   "license": "MIT"
 }

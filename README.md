@@ -1,6 +1,7 @@
 # CoinPurex // Institutional Sovereign DEX, Cold Custody, Multi-Sig Treasury & Coin Offering Platform
 
 [![Production Domain](https://img.shields.io/badge/Production%20Domain-coinpurex.com-0ea5e9?style=flat-square&logo=ethereum)](https://coinpurex.com)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-coinpurex-181717?style=flat-square&logo=github)](https://github.com/FrankAsanteVanLaarhoven/coinpurex)
 [![Quality Gate](https://img.shields.io/badge/Quality%20Gate-20%2F20%20PASS-10b981?style=flat-square)](https://coinpurex.com)
 [![Solidity](https://img.shields.io/badge/Solidity-0.8.20-363636?style=flat-square&logo=solidity)](https://soliditylang.org)
 [![Go Gateway](https://img.shields.io/badge/Go%20Gateway-1.22-00ADD8?style=flat-square&logo=go)](https://golang.org)
