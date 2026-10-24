@@ -2182,6 +2182,206 @@ function executeAutoReplicateTrade(data) {
   }
 }
 
+// --- Real RFC 6455 WebSockets Engine ---
+let primaryWs = null;
+let binanceWs = null;
+let wsReconnectTimer = null;
+
+function updateWebSocketUI(status, label) {
+  const badge = document.getElementById('ws-status-badge');
+  const dot = document.getElementById('ws-status-dot');
+  const text = document.getElementById('ws-status-text');
+  const tickerBadge = document.getElementById('live-feed-badge-text');
+
+  if (status === 'connected') {
+    if (badge) {
+      badge.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+      badge.style.background = 'rgba(16, 185, 129, 0.08)';
+    }
+    if (dot) {
+      dot.style.background = 'var(--signal-bid)';
+      dot.style.boxShadow = '0 0 8px var(--signal-bid)';
+    }
+    if (text) {
+      text.textContent = label || 'WS: LIVE';
+      text.style.color = 'var(--signal-bid)';
+    }
+    if (tickerBadge) {
+      tickerBadge.textContent = 'WS STREAM LIVE';
+    }
+  } else if (status === 'reconnecting') {
+    if (badge) {
+      badge.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+      badge.style.background = 'rgba(245, 158, 11, 0.08)';
+    }
+    if (dot) {
+      dot.style.background = 'var(--signal-ask)';
+      dot.style.boxShadow = '0 0 8px var(--signal-ask)';
+    }
+    if (text) {
+      text.textContent = 'WS: RECONNECTING';
+      text.style.color = 'var(--signal-ask)';
+    }
+    if (tickerBadge) {
+      tickerBadge.textContent = 'WS RECONNECTING';
+    }
+  } else {
+    if (text) text.textContent = 'WS: OFFLINE';
+  }
+}
+
+function initRealWebSockets() {
+  if (typeof WebSocket === 'undefined') {
+    console.warn('WebSocket not supported in this runtime');
+    return;
+  }
+
+  // 1. Establish Primary Real CoinPurex Gateway WebSocket
+  connectCoinPurexWebSocket();
+
+  // 2. Establish Public Global Crypto Live Stream via Binance WebSocket
+  connectBinanceWebSocket();
+}
+
+function connectCoinPurexWebSocket() {
+  if (primaryWs && (primaryWs.readyState === WebSocket.OPEN || primaryWs.readyState === WebSocket.CONNECTING)) {
+    return;
+  }
+
+  const isHttps = window.location.protocol === 'https:';
+  const proto = isHttps ? 'wss://' : 'ws://';
+  const wsHost = window.location.host || 'localhost:4200';
+  const wsUrl = `${proto}${wsHost}/ws`;
+
+  try {
+    primaryWs = new WebSocket(wsUrl);
+
+    primaryWs.onopen = () => {
+      updateWebSocketUI('connected', 'WS: COINPUREX LIVE');
+      logTelemetry('WebSocketConnected', 'CoinPurexGateway', `Connected to real RFC 6455 WebSocket at ${wsUrl}`);
+
+      // Send subscription packet over real WebSocket
+      primaryWs.send(JSON.stringify({
+        action: 'subscribe',
+        pairs: Object.keys(state.pairs),
+        timestamp: Date.now()
+      }));
+
+      // Periodic ping heartbeat over WebSocket
+      setInterval(() => {
+        if (primaryWs && primaryWs.readyState === WebSocket.OPEN) {
+          primaryWs.send(JSON.stringify({ action: 'ping', timestamp: Date.now() }));
+        }
+      }, 15000);
+    };
+
+    primaryWs.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+
+        if (msg.type === 'WS_CONNECTED' && msg.prices) {
+          Object.entries(msg.prices).forEach(([symbol, pData]) => {
+            if (state.pairs[symbol]) {
+              state.pairs[symbol].markPrice = pData.markPrice;
+              state.pairs[symbol].change24h = pData.change24h;
+              state.pairs[symbol].high24h = pData.high24h;
+              state.pairs[symbol].low24h = pData.low24h;
+              state.pairs[symbol].volume24h = pData.volume24h;
+              updateOrderBookLevels(symbol, pData.markPrice);
+            }
+          });
+          renderTickerBar();
+          if (state.currentTab === 'dex') renderOrderBook();
+        } else if (msg.type === 'PRICE_UPDATE' && msg.symbol && msg.data) {
+          const sym = msg.symbol;
+          if (state.pairs[sym]) {
+            state.pairs[sym].markPrice = msg.data.markPrice;
+            state.pairs[sym].change24h = msg.data.change24h;
+            state.pairs[sym].high24h = msg.data.high24h;
+            state.pairs[sym].low24h = msg.data.low24h;
+            state.pairs[sym].volume24h = msg.data.volume24h;
+            updateOrderBookLevels(sym, msg.data.markPrice);
+            if (sym === state.activePair) {
+              renderTickerBar();
+              if (state.currentTab === 'dex') renderOrderBook();
+            }
+          }
+        } else if (msg.type === 'AUTO_REPLICATE_TRADE_EVENT' && msg.data) {
+          executeAutoReplicateTrade(msg.data);
+        }
+      } catch (err) {}
+    };
+
+    primaryWs.onerror = () => {
+      updateWebSocketUI('reconnecting');
+    };
+
+    primaryWs.onclose = () => {
+      updateWebSocketUI('reconnecting');
+      clearTimeout(wsReconnectTimer);
+      wsReconnectTimer = setTimeout(() => {
+        connectCoinPurexWebSocket();
+      }, 3000);
+    };
+  } catch (err) {
+    updateWebSocketUI('reconnecting');
+  }
+}
+
+function connectBinanceWebSocket() {
+  if (binanceWs && (binanceWs.readyState === WebSocket.OPEN || binanceWs.readyState === WebSocket.CONNECTING)) {
+    return;
+  }
+
+  // Combined real-time ticker stream for BTC, ETH, LINK
+  const binanceUrl = 'wss://stream.binance.com:9443/ws/btcusdt@ticker/ethusdt@ticker/linkusdt@ticker';
+
+  try {
+    binanceWs = new WebSocket(binanceUrl);
+
+    binanceWs.onopen = () => {
+      updateWebSocketUI('connected', 'WS: DUAL STREAM LIVE');
+      logTelemetry('BinanceWsConnected', 'GlobalCryptoFeed', 'Connected to real Binance live market ticker WebSocket');
+    };
+
+    binanceWs.onmessage = (event) => {
+      try {
+        const item = JSON.parse(event.data);
+        let pairKey = null;
+        if (item.s === 'BTCUSDT') pairKey = 'BTC/DAI';
+        else if (item.s === 'ETHUSDT') pairKey = 'ETH/DAI';
+        else if (item.s === 'LINKUSDT') pairKey = 'LINK/DAI';
+
+        if (pairKey && state.pairs[pairKey]) {
+          const p = state.pairs[pairKey];
+          p.markPrice = parseFloat(item.c); // Last price
+          p.change24h = parseFloat(item.P); // 24h percentage change
+          p.high24h = parseFloat(item.h);   // High price
+          p.low24h = parseFloat(item.l);    // Low price
+          p.volume24h = parseFloat(item.q); // Quote volume
+
+          updateOrderBookLevels(pairKey, p.markPrice);
+
+          if (pairKey === state.activePair) {
+            renderTickerBar();
+            if (state.currentTab === 'dex') renderOrderBook();
+          }
+        }
+      } catch (err) {}
+    };
+
+    binanceWs.onerror = () => {
+      // Graceful fallback to primary CoinPurex WebSocket
+    };
+
+    binanceWs.onclose = () => {
+      setTimeout(() => {
+        connectBinanceWebSocket();
+      }, 5000);
+    };
+  } catch (err) {}
+}
+
 function initRealLiveDataStreams() {
   // Asynchronously synchronize deployed on-chain contract addresses if exported
   (async () => {
@@ -2196,29 +2396,13 @@ function initRealLiveDataStreams() {
     } catch (e) {}
   })();
 
+  // 1. Initialize Real RFC 6455 WebSockets (Primary & Binance Global)
+  initRealWebSockets();
+
+  // 2. Fetch initial market rates
   fetchRealMarketData();
-  setInterval(fetchRealMarketData, 3500);
 
-  // Initialize Go Gateway SSE stream if available
-  if (typeof EventSource !== 'undefined') {
-    try {
-      const streamUrl = (window.location.port === '4200') ? 'http://localhost:8080/api/v1/stream' : '/api/v1/stream';
-      const evtSource = new EventSource(streamUrl);
-      evtSource.onmessage = (event) => {
-        try {
-          const payload = JSON.parse(event.data);
-          if (payload.type === 'AUTO_REPLICATE_TRADE_EVENT') {
-            executeAutoReplicateTrade(payload.data);
-          }
-        } catch (e) {}
-      };
-      evtSource.onerror = () => {
-        evtSource.close();
-      };
-    } catch (e) {}
-  }
-
-  // Periodic autonomous lead investor trade replication (every 8s)
+  // 3. Periodic autonomous lead investor trade replication (every 8s fallback if offline)
   setInterval(() => {
     if (state.autoReplicateActive && state.copyTraders.length > 0) {
       const randTrader = state.copyTraders[Math.floor(Math.random() * state.copyTraders.length)];

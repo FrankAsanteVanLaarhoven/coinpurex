@@ -98,6 +98,11 @@
         <span class="mono" style="font-weight: 700;">EVM ACTIVE</span>
       </div>
 
+      <div class="status-indicator" id="ws-status-badge" title="Real WebSocket Stream Status" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);">
+        <span class="status-dot" id="ws-status-dot" style="background: var(--signal-bid); box-shadow: 0 0 8px var(--signal-bid);"></span>
+        <span class="mono" id="ws-status-text" style="font-weight: 700; color: var(--signal-bid);">WS: CONNECTING</span>
+      </div>
+
       <button class="btn-primary" id="login-modal-btn" aria-label="Open Trader Login" style="padding: 0.45rem 0.85rem; font-size: 0.78rem; display: flex; align-items: center; gap: 0.4rem; background: linear-gradient(135deg, #0ea5e9, #38bdf8); color: #000; font-weight: 800; border-radius: var(--radius-sm); border: none; cursor: pointer;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         <span id="login-btn-label">Trader Login</span>
@@ -178,6 +183,12 @@
           <div class="metric-item">
             <span class="metric-label">24h Volume</span>
             <span class="metric-value" id="ticker-volume">$4,218,000.00</span>
+          </div>
+          <div class="metric-item" style="display: flex; align-items: center;">
+            <span class="badge success" id="live-feed-badge" style="font-size: 0.68rem; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.35rem; padding: 0.25rem 0.5rem;">
+              <span class="status-dot" style="width: 6px; height: 6px; background: var(--signal-bid); box-shadow: 0 0 6px var(--signal-bid);"></span>
+              <span id="live-feed-badge-text">WS STREAM LIVE</span>
+            </span>
           </div>
         </div>
       </div>

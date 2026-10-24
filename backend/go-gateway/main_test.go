@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"io"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -283,5 +285,54 @@ func TestHandleOffering(t *testing.T) {
 	}
 	if data["tokenAddress"] != "0x819c468e5dc88beb0702577cf8a90c2d0566ac8b" {
 		t.Errorf("expected mainnet token address 0x819c468e5dc88beb0702577cf8a90c2d0566ac8b, got %v", data["tokenAddress"])
+	}
+}
+
+func TestHandleWebSocket_MissingKey(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "/ws", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Upgrade", "websocket")
+
+	rr := httptest.NewRecorder()
+	handleWebSocket(rr, req)
+
+	if status := rr.Code; status != http.StatusBadRequest {
+		t.Errorf("expected status 400 for missing Sec-WebSocket-Key, got %d", status)
+	}
+}
+
+func TestWriteWsText_Framing(t *testing.T) {
+	// Test RFC 6455 framing
+	serverConn, clientConn := net.Pipe()
+	defer serverConn.Close()
+	defer clientConn.Close()
+
+	payload := []byte(`{"type":"PRICE_UPDATE","symbol":"BTC/DAI","price":68450}`)
+	go func() {
+		err := writeWsText(serverConn, payload)
+		if err != nil {
+			t.Errorf("writeWsText failed: %v", err)
+		}
+	}()
+
+	header := make([]byte, 2)
+	if _, err := io.ReadFull(clientConn, header); err != nil {
+		t.Fatalf("failed reading header: %v", err)
+	}
+	if header[0] != 0x81 {
+		t.Errorf("expected 0x81 for text FIN frame, got 0x%x", header[0])
+	}
+	if int(header[1]) != len(payload) {
+		t.Errorf("expected length %d, got %d", len(payload), header[1])
+	}
+
+	body := make([]byte, len(payload))
+	if _, err := io.ReadFull(clientConn, body); err != nil {
+		t.Fatalf("failed reading body: %v", err)
+	}
+	if string(body) != string(payload) {
+		t.Errorf("expected body %s, got %s", payload, body)
 	}
 }
